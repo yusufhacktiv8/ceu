@@ -1,0 +1,36 @@
+version: '2'
+services:
+  db:
+    build: ./db
+    volumes:
+      - ./db/pgdata:/pgdata
+    ports:
+      - "6543:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=ceu
+      - PGDATA=/pgdata
+
+  api:
+    build:
+      context: ./api
+      args:
+        app_env: ${APP_ENV}
+    volumes:
+      - ./api:/api
+
+    ports:
+      - "8080:8080"
+    links:
+      - db
+
+  admin:
+    build:
+      context: ./admin
+      args:
+        app_env: ${APP_ENV}
+    volumes:
+      - ./admin/src:/admin/src
+    ports:
+      - "3000:3000"
