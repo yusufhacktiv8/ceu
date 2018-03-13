@@ -11,18 +11,18 @@ RUN mkdir -p /admin
 WORKDIR /admin
 COPY ./ ./
 
-RUN npm install
+RUN yarn install
 
 # if dev settings will use create-react start script for hot code relaoding via docker-compose shared volume
 # if production setting will build optimized static files and serve using http-server
 CMD if [ ${NODE_ENV} = production ]; \
 	then \
-	npm install -g http-server && \
-	npm run build && \
+	yarn global add http-server && \
+	yarn run build && \
 	cd build && \
 	hs -p 3000; \
 	else \
-	npm run start; \
+	yarn start; \
 	fi
 
 EXPOSE 3000
