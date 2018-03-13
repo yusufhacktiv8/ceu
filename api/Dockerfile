@@ -11,16 +11,16 @@ RUN mkdir -p /api
 WORKDIR /api
 COPY ./ ./
 
-RUN npm install
-RUN npm install -g nodemon
+RUN yarn install
+RUN yarn global add nodemon
 
 # if dev settings will use create-react start script for hot code relaoding via docker-compose shared volume
 # if production setting will build optimized static files and serve using http-server
 CMD if [ ${NODE_ENV} = production ]; \
 	then \
-	npm start; \
+	yarn start; \
 	else \
-	npm run dev; \
+	yarn run dev; \
 	fi
 
 EXPOSE 8080

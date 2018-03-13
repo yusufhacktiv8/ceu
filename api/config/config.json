@@ -1,0 +1,19 @@
+{
+  "development": {
+    "username": "docker",
+    "password": "docker",
+    "database": "ceu",
+    "host": "db",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "docker",
+    "password": "docker",
+    "database": "ceu_test",
+    "host": "db",
+    "dialect": "localhost"
+  },
+  "production": {
+    "use_env_variable": "CEUDB"
+  }
+}
