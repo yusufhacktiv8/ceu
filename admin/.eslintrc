@@ -1,0 +1,12 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "no-console":0,
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "no-param-reassign": ["error", { "props": false }],
+    "strict": ["error", "global"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "jsx-a11y/img-has-alt": [0]
+  }
+}
