@@ -9,7 +9,7 @@ import LoginForm from './login/LoginForm';
 
 const App = () => (
   <div className="App">
-    <Route exact path="/" component={Workspace} />
+    <Route path="/" component={Workspace} />
     <Route exact path="/login" component={LoginForm} />
   </div>
 );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Affix } from 'antd';
-import { Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
+import StudentList from '../student/StudentList';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -52,7 +53,9 @@ class Workspace extends Component {
           </Affix>
         </Header>
         <Content style={{ backgroundColor: '#FFF' }}>
-          {this.props.children}
+          <div style={{ padding: 10 }}>
+            <Route path="/students" component={StudentList} />
+          </div>
         </Content>
       </Layout>
     );
