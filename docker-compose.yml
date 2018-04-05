@@ -17,6 +17,9 @@ services:
       context: ./api
       args:
         app_env: ${APP_ENV}
+        port_env: ${PORT_ENV}
+        token_password_env: ${TOKEN_PASSWORD_ENV}
+
     volumes:
       - ./api:/api
 
@@ -30,6 +33,7 @@ services:
       context: ./admin
       args:
         app_env: ${APP_ENV}
+        server_url_env: ${SERVER_URL_ENV}
     volumes:
       - ./admin/src:/admin/src
     ports:

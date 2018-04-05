@@ -6,6 +6,7 @@ FROM node
 ENV NPM_CONFIG_LOGLEVEL warn
 ARG app_env
 ENV NODE_ENV $app_env
+ENV REACT_APP_SERVER_URL $server_url_env
 
 RUN mkdir -p /admin
 WORKDIR /admin
@@ -13,7 +14,7 @@ COPY ./ ./
 
 RUN yarn install
 
-# if dev settings will use create-react start script for hot code relaoding via docker-compose shared volume
+# if dev settings will use create-react start script for hot code reloading via docker-compose shared volume
 # if production setting will build optimized static files and serve using http-server
 CMD if [ ${NODE_ENV} = production ]; \
 	then \
