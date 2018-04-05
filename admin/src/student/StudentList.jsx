@@ -39,7 +39,7 @@ class StudentList extends Component {
       .catch((error) => {
         console.error(error);
         if (error.response) {
-
+          message.error(error.response.data);
         } else {
           message.error(error.message);
         }
