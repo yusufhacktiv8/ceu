@@ -5,6 +5,8 @@ FROM node
 # $ docker build ./frontend --build-args app_env=production
 ENV NPM_CONFIG_LOGLEVEL warn
 ARG app_env
+ARG token_password_env
+ARG port_env
 ENV NODE_ENV $app_env
 ENV REACT_APP_TOKEN_PASSWORD $token_password_env
 ENV PORT $port_env
