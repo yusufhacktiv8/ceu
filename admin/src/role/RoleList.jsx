@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import showError from '../utils/ShowError';
 import RoleWindow from './RoleWindow';
 
 const ROLES_URL = `${process.env.REACT_APP_SERVER_URL}/api/roles`;
@@ -38,12 +39,7 @@ class RoleList extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
-        if (error.response) {
-          message.error(error.response.data);
-        } else {
-          message.error(error.message);
-        }
+        showError(error);
       })
       .finally(() => {
         this.setState({
@@ -68,11 +64,7 @@ class RoleList extends Component {
       message.success('Save role success');
     })
       .catch((error) => {
-        if (error.response) {
-          message.error(error.response.data);
-        } else {
-          message.error(error.message);
-        }
+        showError(error);
       })
       .finally(() => {
         hide();
@@ -89,7 +81,7 @@ class RoleList extends Component {
       })
       .catch((error) => {
         hide();
-        console.error(error);
+        showError(error);
       });
   }
 
