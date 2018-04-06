@@ -28,6 +28,11 @@ class RoleList extends Component {
     });
   }
 
+  onSaveSuccess = () => {
+    this.closeEditWindow();
+    this.fetchRoles();
+  }
+
   fetchRoles() {
     this.setState({
       loading: true,
@@ -60,23 +65,6 @@ class RoleList extends Component {
     }, () => { this.fetchRoles(); });
   }
 
-  saveRole(role) {
-    const hide = message.loading('Action in progress..', 0);
-    const roleId = this.state.role.id;
-    const axiosObj = roleId ? axios.put(`${ROLES_URL}/${roleId}`, role) : axios.post(ROLES_URL, role);
-    axiosObj.then(() => {
-      this.handleCancel();
-      this.fetchRoles();
-      message.success('Save role success');
-    })
-      .catch((error) => {
-        showError(error);
-      })
-      .finally(() => {
-        hide();
-      });
-  }
-
   deleteRole(role) {
     const hide = message.loading('Action in progress..', 0);
     axios.delete(`${ROLES_URL}/${role.id}`)
@@ -101,19 +89,9 @@ class RoleList extends Component {
     });
   }
 
-  handleCancel = () => {
+  closeEditWindow = () => {
     this.setState({
       roleWindowVisible: false,
-    });
-  }
-
-  handleSave = () => {
-    this.roleWindow.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-      this.saveRole(values);
-      this.setState({ roleWindowVisible: false });
     });
   }
 
@@ -230,8 +208,9 @@ class RoleList extends Component {
 
         <RoleWindow
           visible={this.state.roleWindowVisible}
-          onSave={this.handleSave}
-          onCancel={this.handleCancel}
+          onSaveSuccess={this.onSaveSuccess}
+          onCancel={this.closeEditWindow}
+          onClose={this.closeEditWindow}
           role={this.state.role}
           ref={roleWindow => (this.roleWindow = roleWindow)}
         />
