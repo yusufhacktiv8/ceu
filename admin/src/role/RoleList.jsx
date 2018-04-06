@@ -19,10 +19,16 @@ class RoleList extends Component {
     roleWindowVisible: false,
   }
   componentDidMount() {
-    this.getRoles();
+    this.fetchRoles();
   }
 
-  getRoles() {
+  onSearchChange = (e) => {
+    this.setState({
+      searchText: e.target.value,
+    });
+  }
+
+  fetchRoles() {
     this.setState({
       loading: true,
     });
@@ -48,10 +54,10 @@ class RoleList extends Component {
       });
   }
 
-  filterRoles() {
+  filterRoles = () => {
     this.setState({
       currentPage: 1,
-    }, () => { this.getRoles(); });
+    }, () => { this.fetchRoles(); });
   }
 
   saveRole(role) {
@@ -60,7 +66,7 @@ class RoleList extends Component {
     const axiosObj = roleId ? axios.put(`${ROLES_URL}/${roleId}`, role) : axios.post(ROLES_URL, role);
     axiosObj.then(() => {
       this.handleCancel();
-      this.getRoles();
+      this.fetchRoles();
       message.success('Save role success');
     })
       .catch((error) => {
@@ -75,17 +81,18 @@ class RoleList extends Component {
     const hide = message.loading('Action in progress..', 0);
     axios.delete(`${ROLES_URL}/${role.id}`)
       .then(() => {
-        hide();
-        this.getRoles();
         message.success('Delete role success');
+        this.fetchRoles();
       })
       .catch((error) => {
-        hide();
         showError(error);
+      })
+      .finally(() => {
+        hide();
       });
   }
 
-  openEditWindow(record) {
+  openEditWindow = (record) => {
     this.setState({
       role: record,
       roleWindowVisible: true,
@@ -94,13 +101,13 @@ class RoleList extends Component {
     });
   }
 
-  handleCancel() {
+  handleCancel = () => {
     this.setState({
       roleWindowVisible: false,
     });
   }
 
-  handleSave() {
+  handleSave = () => {
     this.roleWindow.validateFields((err, values) => {
       if (err) {
         return;
@@ -110,10 +117,11 @@ class RoleList extends Component {
     });
   }
 
-  pageChanged(page) {
+  pageChanged = (pagination) => {
+    const page = pagination.current;
     this.setState({
       currentPage: page,
-    }, () => { this.getRoles(); });
+    }, () => { this.fetchRoles(); });
   }
 
   render() {
@@ -123,11 +131,7 @@ class RoleList extends Component {
           <Col span={8}>
             <Input
               value={this.state.searchText}
-              onChange={(e) => {
-                this.setState({
-                  searchText: e.target.value,
-                });
-              }}
+              onChange={this.onSearchChange}
               placeholder="Name or SID"
             />
           </Col>
@@ -136,7 +140,7 @@ class RoleList extends Component {
               <Button
                 shape="circle"
                 icon="search"
-                onClick={() => this.filterRoles()}
+                onClick={this.filterRoles}
                 style={{ marginRight: 15 }}
               />
               <Button
@@ -160,7 +164,7 @@ class RoleList extends Component {
                 current: this.state.currentPage,
                 pageSize: this.state.pageSize,
               }}
-              onChange={pagination => this.pageChanged(pagination.current)}
+              onChange={this.pageChanged}
               size="small"
             >
               <Column
@@ -204,8 +208,8 @@ class RoleList extends Component {
 
         <RoleWindow
           visible={this.state.roleWindowVisible}
-          onSave={() => this.handleSave()}
-          onCancel={() => this.handleCancel()}
+          onSave={this.handleSave}
+          onCancel={this.handleCancel}
           role={this.state.role}
           ref={roleWindow => (this.roleWindow = roleWindow)}
         />
