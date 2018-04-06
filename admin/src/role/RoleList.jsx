@@ -111,6 +111,7 @@ class RoleList extends Component {
               value={this.state.searchText}
               onChange={this.onSearchChange}
               placeholder="Name or SID"
+              maxLength="50"
             />
           </Col>
           <Col span={16}>
