@@ -7,6 +7,7 @@
     "no-param-reassign": ["error", { "props": false }],
     "strict": ["error", "global"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": [0, { ignore: [], customValidators: []}],
     "jsx-a11y/img-has-alt": [0]
   }
 }
