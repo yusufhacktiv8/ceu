@@ -171,11 +171,33 @@ class RoleList extends Component {
                 title="Code"
                 dataIndex="code"
                 key="code"
+                render={(columnText) => {
+                  const reg = new RegExp(this.state.searchText, 'gi');
+                  const match = columnText.match(reg);
+                  return (
+                    <span>
+                      {columnText.split(reg).map((text, i) => (
+                        i > 0 ? [<span style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                      ))}
+                    </span>
+                  );
+                }}
               />
               <Column
                 title="Name"
                 dataIndex="name"
                 key="name"
+                render={(columnText) => {
+                  const reg = new RegExp(this.state.searchText, 'gi');
+                  const match = columnText.match(reg);
+                  return (
+                    <span>
+                      {columnText.split(reg).map((text, i) => (
+                        i > 0 ? [<span style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                      ))}
+                    </span>
+                  );
+                }}
               />
               <Column
                 title="Action"
