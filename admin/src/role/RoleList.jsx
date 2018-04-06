@@ -149,13 +149,13 @@ class RoleList extends Component {
                 title="Code"
                 dataIndex="code"
                 key="code"
-                render={(columnText) => {
+                render={(columnText, record) => {
                   const reg = new RegExp(this.state.searchText, 'gi');
                   const match = columnText.match(reg);
                   return (
-                    <span>
+                    <span key={record.code}>
                       {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
                       ))}
                     </span>
                   );
@@ -165,13 +165,13 @@ class RoleList extends Component {
                 title="Name"
                 dataIndex="name"
                 key="name"
-                render={(columnText) => {
+                render={(columnText, record) => {
                   const reg = new RegExp(this.state.searchText, 'gi');
                   const match = columnText.match(reg);
                   return (
-                    <span>
+                    <span key={record.code}>
                       {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
                       ))}
                     </span>
                   );
