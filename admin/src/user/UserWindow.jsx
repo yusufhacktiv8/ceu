@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
+import RoleSelect from '../role/RoleSelect';
 
 const USERS_URL = `${process.env.REACT_APP_SERVER_URL}/api/users`;
 
@@ -91,6 +92,20 @@ class UserWindow extends Component {
               <Input maxLength="100" />,
             )}
           </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem label="Role">
+                {getFieldDecorator('role', {
+                  initialValue: user.Role ? user.Role.id : undefined,
+                  rules: [
+                    { required: true, message: 'Please input role' },
+                  ],
+                })(
+                  <RoleSelect />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
           <Row>
             <Col span={12}>
               <FormItem label="Email">
