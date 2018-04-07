@@ -2,9 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const StudentController = require('../controllers/students');
+const { isAuthorizedAs } = require('../helpers/AuthUtils');
 
 /* GET users listing. */
-router.get('/', StudentController.findAll);
+router.get('/', isAuthorizedAs('ADMIN'), StudentController.findAll);
 router.get('/:studentId', StudentController.findOne);
 router.post('/', StudentController.create);
 router.put('/:studentId', StudentController.update);

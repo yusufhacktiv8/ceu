@@ -24,7 +24,7 @@ exports.signIn = function (req, res) {
         if (bcryptResult) {
           const token = jwt.sign({
             name: user.name,
-            roles: user.roles,
+            role: user.Role.code,
           }, process.env.REACT_APP_TOKEN_PASSWORD, { expiresIn: 60 * 30 });
           res.json({
             token,
