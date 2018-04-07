@@ -1,5 +1,7 @@
-const generatePassword = require('password-generator');
+const bcrypt = require('bcrypt');
 const models = require('../models');
+
+const saltRounds = 10;
 
 const sendError = (err, res) => {
   res.status(500).send(`Error while doing operation: ${err.name}, ${err.message}`);
@@ -67,16 +69,17 @@ exports.create = function create(req, res) {
     where: { id: roleId },
   })
   .then((role) => {
-    userForm.password = generatePassword();
-    models.User.create(userForm)
-    .then((user) => {
-      user.setRole(role)
-      .then((result) => {
-        res.json(result);
+    bcrypt.hash(userForm.password, saltRounds, (err, hash) => {
+      models.User.create({ ...userForm, password: hash })
+      .then((user) => {
+        user.setRole(role)
+        .then((result) => {
+          res.json(result);
+        });
+      })
+      .catch((errCreate) => {
+        sendError(errCreate, res);
       });
-    })
-    .catch((err) => {
-      sendError(err, res);
     });
   });
 };
