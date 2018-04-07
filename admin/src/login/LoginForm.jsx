@@ -1,59 +1,52 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import axios from 'axios';
 
 import constant from '../constant';
 
 const FormItem = Form.Item;
 
-const LOGIN_URL = `${constant.serverUrl}/authenticate`;
+const LOGIN_URL = `${constant.serverUrl}/api/security/signin`;
 
 class NormalLoginForm extends React.Component {
+  state = {
+    redirectToWorkspace: false,
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         axios.post(LOGIN_URL, values)
           .then((response) => {
-            const status = response.data.status;
             const token = response.data.token;
             if (typeof (Storage) !== 'undefined') {
-              if (status === 'LOGIN_ERROR') {
-                notification.error({
-                  message: 'Wrong username or password',
-                  description: '',
-                });
-              } else {
-                window.sessionStorage.setItem('token', token);
-                window.location.href = '/';
-              }
+              window.sessionStorage.setItem('token', token);
+
+              axios.defaults.headers.common = {
+                Authorization: `Bearer ${token}`,
+              };
+              this.setState({
+                redirectToWorkspace: true,
+              });
             } else {
-                alert('Sorry! No Web Storage support..');
+              message.error('Sorry! No Web Storage support..');
             }
           })
-          .catch((err2) => {
-            let errorMessage = '';
-            if (err2.response) {
-              if (err2.response.status === 500) {
-                errorMessage = 'Ex. wrong username or password';
-              } else {
-                errorMessage = `Status: ${err.response.status}`;
-              }
-            } else if (err2.request) {
-              errorMessage = 'Login error.';
+          .catch((errPost) => {
+            if (errPost.response) {
+              message.error(errPost.response.data);
             } else {
-              errorMessage = err.message;
+              message.error(errPost.message);
             }
-            notification.error({
-              message: 'Wrong username or password',
-              description: errorMessage,
-            });
           });
       }
     });
   }
   render() {
+    if (this.state.redirectToWorkspace) {
+      return <Redirect to="/" />;
+    }
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">

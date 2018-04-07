@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Affix } from 'antd';
 import { Route, Link } from 'react-router-dom';
+import RolePage from '../role/RolePage';
+import UserPage from '../user/UserPage';
 import StudentList from '../student/StudentList';
 
 const { Header, Content } = Layout;
@@ -53,7 +55,9 @@ class Workspace extends Component {
           </Affix>
         </Header>
         <Content style={{ backgroundColor: '#FFF' }}>
-          <div style={{ padding: 10 }}>
+          <div>
+            <Route path="/roles" component={RolePage} />
+            <Route path="/users" component={UserPage} />
             <Route path="/students" component={StudentList} />
           </div>
         </Content>
