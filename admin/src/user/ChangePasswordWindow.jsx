@@ -56,13 +56,13 @@ class ChangePasswordWindow extends Component {
 
   render() {
     const { saving } = this.state;
-    const { visible, onCancel, form } = this.props;
+    const { visible, onCancel, user, form } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
         wrapClassName="vertical-center-modal"
         visible={visible}
-        title="Change Password"
+        title={`Change Password - ${user.username}`}
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
