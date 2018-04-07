@@ -66,7 +66,7 @@ class RoleSelect extends Component {
         value={this.state.value}
       >
         {this.state.roles.map(role => (
-          <Option value={role.id}>{role.name}</Option>
+          <Option key={role.id} value={role.id}>{role.name}</Option>
         ))}
       </Select>
     );
