@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
 import showError from '../utils/ShowError';
 import UserWindow from './UserWindow';
+import ChangePasswordWindow from './ChangePasswordWindow';
 
 const USERS_URL = `${process.env.REACT_APP_SERVER_URL}/api/users`;
 const Column = Table.Column;
@@ -17,6 +18,7 @@ class UserList extends Component {
     currentPage: 1,
     pageSize: 10,
     userWindowVisible: false,
+    changePasswordWindowVisible: false,
   }
   componentDidMount() {
     this.fetchUsers();
@@ -86,6 +88,21 @@ class UserList extends Component {
       userWindowVisible: true,
     }, () => {
       this.userWindow.resetFields();
+    });
+  }
+
+  closeChangePasswordWindow = () => {
+    this.setState({
+      changePasswordWindowVisible: false,
+    });
+  }
+
+  openChangePasswordWindow = (record) => {
+    this.setState({
+      user: record,
+      changePasswordWindowVisible: true,
+    }, () => {
+      this.changePasswordWindow.resetFields();
     });
   }
 
@@ -189,6 +206,12 @@ class UserList extends Component {
                       onClick={() => this.openEditWindow(record)}
                       style={{ marginRight: 5 }}
                     />
+                    <Button
+                      icon="key"
+                      size="small"
+                      onClick={() => this.openChangePasswordWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
                     <Popconfirm
                       title={`Are you sure delete user ${record.name}`}
                       onConfirm={() => this.deleteUser(record)}
@@ -214,6 +237,15 @@ class UserList extends Component {
           onClose={this.closeEditWindow}
           user={this.state.user}
           ref={userWindow => (this.userWindow = userWindow)}
+        />
+
+        <ChangePasswordWindow
+          visible={this.state.changePasswordWindowVisible}
+          onSaveSuccess={this.onChangePasswordSuccess}
+          onCancel={this.closeChangePasswordWindow}
+          onClose={this.closeChangePasswordWindow}
+          user={this.state.user}
+          ref={changePasswordWindow => (this.changePasswordWindow = changePasswordWindow)}
         />
       </div>
     );
