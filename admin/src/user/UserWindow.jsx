@@ -7,7 +7,7 @@ import RoleSelect from '../role/RoleSelect';
 const USERS_URL = `${process.env.REACT_APP_SERVER_URL}/api/users`;
 
 const FormItem = Form.Item;
-const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})');
 
 class UserWindow extends Component {
   state = {
@@ -121,7 +121,7 @@ class UserWindow extends Component {
             </Col>
           </Row>
           {
-            user.id ? null : (
+            (visible === false || user.id !== undefined) ? null : (
               <FormItem label="Password" style={{ whiteSpace: 'normal' }}>
                 {getFieldDecorator('password', {
                   initialValue: '',
@@ -136,7 +136,7 @@ class UserWindow extends Component {
             )
           }
           {
-            user.id ? null : (
+            (visible === false || user.id !== undefined) ? null : (
               <FormItem label="Retype Password">
                 {getFieldDecorator('retypePassword', {
                   initialValue: '',
