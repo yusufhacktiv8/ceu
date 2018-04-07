@@ -32,6 +32,9 @@ class RoleWindow extends Component {
           });
         })
           .catch((error) => {
+            this.setState({
+              saving: false,
+            });
             showError(error);
           });
       });
@@ -50,7 +53,7 @@ class RoleWindow extends Component {
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
           <Button key="save" type="primary" loading={saving} onClick={this.onSave}>
-            Submit
+            Save
           </Button>,
         ]}
       >
