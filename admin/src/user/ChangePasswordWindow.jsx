@@ -62,7 +62,7 @@ class ChangePasswordWindow extends Component {
       <Modal
         wrapClassName="vertical-center-modal"
         visible={visible}
-        title="ChangePassword"
+        title="Change Password"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
@@ -79,7 +79,7 @@ class ChangePasswordWindow extends Component {
                 { required: true, message: 'Please input current password' },
               ],
             })(
-              <Input maxLength="50" />,
+              <Input type="password" maxLength="50" />,
             )}
           </FormItem>
           <FormItem label="New Password" style={{ whiteSpace: 'normal' }}>

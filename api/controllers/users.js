@@ -98,9 +98,8 @@ exports.update = function update(req, res) {
     .then((role) => {
       user.setRole(role)
       .then((updateResult) => {
-        user.username = userForm.username;
-        user.password = userForm.password;
         user.name = userForm.name;
+        user.email = userForm.email;
 
         user.save()
         .then((saveResult) => {
@@ -112,14 +111,28 @@ exports.update = function update(req, res) {
   .catch((err) => {
     sendError(err, res);
   });
+};
 
-  models.User.update(
-    userForm,
-    {
-      where: { id: req.params.userId },
-    })
-  .then((result) => {
-    res.json(result);
+exports.changePassword = function changePassword(req, res) {
+  const form = req.body;
+
+  models.User.findOne({
+    where: { id: req.params.userId },
+  })
+  .then((user) => {
+    bcrypt.compare(form.currentPassword, user.password, (err, valid) => {
+      if (valid) {
+        bcrypt.hash(form.newPassword, saltRounds, (err2, hash) => {
+          user.password = hash;
+          user.save()
+          .then((saveResult) => {
+            res.json(saveResult);
+          });
+        });
+      } else {
+        res.send('Wrong password', 400);
+      }
+    });
   })
   .catch((err) => {
     sendError(err, res);

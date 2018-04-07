@@ -35,6 +35,11 @@ class UserList extends Component {
     this.fetchUsers();
   }
 
+  onChangePasswordSuccess = () => {
+    this.closeChangePasswordWindow();
+    this.fetchUsers();
+  }
+
   fetchUsers() {
     this.setState({
       loading: true,
