@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, Input, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
 
 const USERS_URL = `${process.env.REACT_APP_SERVER_URL}/api/users`;
 
 const FormItem = Form.Item;
+const strongRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
 
 class UserWindow extends Component {
   state = {
@@ -14,7 +15,7 @@ class UserWindow extends Component {
 
   onSave = () => {
     const { user, onSaveSuccess, form } = this.props;
-    form.validateFields((err, values) => {
+    form.validateFields({ force: true }, (err, values) => {
       if (err) {
         return;
       }
@@ -38,12 +39,25 @@ class UserWindow extends Component {
     });
   }
 
+  retypePasswordValidator = (rule, value, callback) => {
+    const { form } = this.props;
+    const passwordFieldError = form.getFieldError('password');
+    if (!passwordFieldError) {
+      const passwordFieldValue = form.getFieldValue('password');
+      if (value !== passwordFieldValue) {
+        callback('Password is not same');
+      }
+    }
+    callback();
+  }
+
   render() {
     const { saving } = this.state;
     const { visible, onCancel, form, user } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         visible={visible}
         title="User"
         okText="Save"
@@ -77,16 +91,50 @@ class UserWindow extends Component {
               <Input maxLength="100" />,
             )}
           </FormItem>
-          <FormItem label="Email">
-            {getFieldDecorator('email', {
-              initialValue: user.email,
-              rules: [
-                { type: 'email', message: 'The is not valid E-mail' },
-              ],
-            })(
-              <Input maxLength="100" />,
-            )}
-          </FormItem>
+          <Row>
+            <Col span={12}>
+              <FormItem label="Email">
+                {getFieldDecorator('email', {
+                  initialValue: user.email,
+                  rules: [
+                    { type: 'email', message: 'The is not valid E-mail' },
+                  ],
+                })(
+                  <Input maxLength="100" />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          {
+            user.id ? null : (
+              <FormItem label="Password" style={{ whiteSpace: 'normal' }}>
+                {getFieldDecorator('password', {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: 'Please input password' },
+                    { pattern: strongRegex, message: 'Password must contain lowercase, uppercase, numeric and special character. \n Must have minimum 8 characters length.' },
+                  ],
+                })(
+                  <Input type="password" maxLength="30" />,
+                )}
+              </FormItem>
+            )
+          }
+          {
+            user.id ? null : (
+              <FormItem label="Retype Password">
+                {getFieldDecorator('retypePassword', {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: 'Please input retype password' },
+                    { validator: this.retypePasswordValidator },
+                  ],
+                })(
+                  <Input type="password" maxLength="30" />,
+                )}
+              </FormItem>
+            )
+          }
         </Form>
       </Modal>
     );
