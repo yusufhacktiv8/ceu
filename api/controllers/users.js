@@ -120,18 +120,25 @@ exports.changePassword = function changePassword(req, res) {
     where: { id: req.params.userId },
   })
   .then((user) => {
-    bcrypt.compare(form.currentPassword, user.password, (err, valid) => {
-      if (valid) {
-        bcrypt.hash(form.newPassword, saltRounds, (err2, hash) => {
-          user.password = hash;
-          user.save()
-          .then((saveResult) => {
-            res.json(saveResult);
-          });
-        });
-      } else {
-        res.send('Wrong password', 400);
-      }
+    // bcrypt.compare(form.currentPassword, user.password, (err, valid) => {
+    //   if (valid) {
+    //     bcrypt.hash(form.newPassword, saltRounds, (err2, hash) => {
+    //       user.password = hash;
+    //       user.save()
+    //       .then((saveResult) => {
+    //         res.json(saveResult);
+    //       });
+    //     });
+    //   } else {
+    //     res.send('Wrong password', 400);
+    //   }
+    // });
+    bcrypt.hash(form.newPassword, saltRounds, (err2, hash) => {
+      user.password = hash;
+      user.save()
+      .then((saveResult) => {
+        res.json(saveResult);
+      });
     });
   })
   .catch((err) => {

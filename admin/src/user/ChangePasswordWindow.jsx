@@ -72,16 +72,6 @@ class ChangePasswordWindow extends Component {
         ]}
       >
         <Form layout="vertical">
-          <FormItem label="Current Password">
-            {getFieldDecorator('currentPassword', {
-              initialValue: '',
-              rules: [
-                { required: true, message: 'Please input current password' },
-              ],
-            })(
-              <Input type="password" maxLength="50" />,
-            )}
-          </FormItem>
           <FormItem label="New Password" style={{ whiteSpace: 'normal' }}>
             {getFieldDecorator('newPassword', {
               initialValue: '',
