@@ -96,38 +96,15 @@ class Workspace extends Component {
                   ><Icon type="pie-chart" />Dashboard</Link>
                 </Menu.Item>
                 <Menu.Item key="students">
-                  <Link
-                    to="/students"
-                    onClick={() => {
-                      this.setState({
-                        selectedKeys: ['students'],
-                      });
-                    }}
-                  ><Icon type="contacts" />Students</Link>
+                  <Link to="/students"><Icon type="contacts" />Students</Link>
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
                     <Menu.Item key="users">
-                      <Link
-                        to="/users"
-                        onClick={() => {
-                          this.setState({
-                            selectedKeys: ['users'],
-                          });
-                        }}
-                      >
-                      Users</Link>
+                      <Link to="/users">Users</Link>
                     </Menu.Item>
                     <Menu.Item key="roles">
-                      <Link
-                        to="/roles"
-                        onClick={() => {
-                          this.setState({
-                            selectedKeys: ['roles'],
-                          });
-                        }}
-                      >
-                      Roles</Link></Menu.Item>
+                      <Link to="/roles">Roles</Link></Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
               </Menu>
