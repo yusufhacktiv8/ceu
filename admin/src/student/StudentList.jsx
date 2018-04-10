@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import StudentWindow from './StudentWindow';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const Column = Table.Column;
@@ -208,6 +209,15 @@ class StudentList extends Component {
             </Table>
           </Col>
         </Row>
+
+        <StudentWindow
+          visible={this.state.studentWindowVisible}
+          onSaveSuccess={this.onSaveSuccess}
+          onCancel={this.closeEditWindow}
+          onClose={this.closeEditWindow}
+          role={this.state.role}
+          ref={StudentWindow => (this.StudentWindow = StudentWindow)}
+        />
       </div>
     );
   }
