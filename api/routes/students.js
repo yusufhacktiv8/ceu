@@ -6,16 +6,16 @@ const { isAuthorizedAs } = require('../helpers/AuthUtils');
 
 /* GET users listing. */
 router.get('/', isAuthorizedAs('ADMIN'), StudentController.findAll);
-router.get('/:studentId', StudentController.findOne);
-router.post('/', StudentController.create);
-router.put('/:studentId', StudentController.update);
-router.delete('/:studentId', StudentController.delete);
-router.post('/:studentId/courses', StudentController.addCourses);
-router.get('/:studentId/courses', StudentController.findCourses);
-router.delete('/:studentId/courses/:courseId', StudentController.deleteCourse);
-router.get('/:studentId/scores', StudentController.findScores);
-router.post('/:studentId/kompres', StudentController.addKompre);
-router.get('/:studentId/kompres', StudentController.findKompres);
-router.post('/:studentId/uploadfile/krs', StudentController.krsUpload);
+router.get('/:studentId', isAuthorizedAs('ADMIN'), StudentController.findOne);
+router.post('/', isAuthorizedAs('ADMIN'), StudentController.create);
+router.put('/:studentId', isAuthorizedAs('ADMIN'), StudentController.update);
+router.delete('/:studentId', isAuthorizedAs('ADMIN'), StudentController.delete);
+router.post('/:studentId/courses', isAuthorizedAs('ADMIN'), StudentController.addCourses);
+router.get('/:studentId/courses', isAuthorizedAs('ADMIN'), StudentController.findCourses);
+router.delete('/:studentId/courses/:courseId', isAuthorizedAs('ADMIN'), StudentController.deleteCourse);
+router.get('/:studentId/scores', isAuthorizedAs('ADMIN'), StudentController.findScores);
+router.post('/:studentId/kompres', isAuthorizedAs('ADMIN'), StudentController.addKompre);
+router.get('/:studentId/kompres', isAuthorizedAs('ADMIN'), StudentController.findKompres);
+router.post('/:studentId/uploadfile/krs', isAuthorizedAs('ADMIN'), StudentController.krsUpload);
 
 module.exports = router;
