@@ -7,7 +7,7 @@ const { Header, Content } = Layout;
 export default () => (
   <Layout style={{ height: '100%' }}>
     <Header className="page-header">
-      <span>Users</span>
+      <span>Settings &gt; Security &gt; <span className="page-header-title">Users</span></span>
     </Header>
     <Content className="page-content">
       <UserList />

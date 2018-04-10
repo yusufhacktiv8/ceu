@@ -4,10 +4,11 @@ import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import RolePage from '../role/RolePage';
 import UserPage from '../user/UserPage';
-import StudentList from '../student/StudentList';
+import StudentPage from '../student/StudentPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 
 const parseJwt = (token) => {
   const base64Url = token.split('.')[1];
@@ -40,9 +41,20 @@ class Workspace extends Component {
       Authorization: `Bearer ${token}`,
     };
     const name = parseJwt(token).name;
+    const location = window.location.href;
+    let selectedKeys = 'dashboard';
+    if (location.includes('roles')) {
+      selectedKeys = ['roles'];
+    } else if (location.includes('users')) {
+      selectedKeys = ['users'];
+    } else if (location.includes('students')) {
+      selectedKeys = ['students'];
+    }
     this.setState({
       name,
+      selectedKeys,
     });
+    console.log(window.location.href);
   }
 
   render() {
@@ -95,6 +107,31 @@ class Workspace extends Component {
                     }}
                   ><Icon type="contacts" />Students</Link>
                 </Menu.Item>
+                <SubMenu title={<span><Icon type="setting" />Settings</span>}>
+                  <MenuItemGroup title="Security">
+                    <Menu.Item key="users">
+                      <Link
+                        to="/users"
+                        onClick={() => {
+                          this.setState({
+                            selectedKeys: ['users'],
+                          });
+                        }}
+                      >
+                      Users</Link>
+                    </Menu.Item>
+                    <Menu.Item key="roles">
+                      <Link
+                        to="/roles"
+                        onClick={() => {
+                          this.setState({
+                            selectedKeys: ['roles'],
+                          });
+                        }}
+                      >
+                      Roles</Link></Menu.Item>
+                  </MenuItemGroup>
+                </SubMenu>
               </Menu>
             </div>
           </Affix>
@@ -103,7 +140,7 @@ class Workspace extends Component {
           <div>
             <Route path="/roles" component={RolePage} />
             <Route path="/users" component={UserPage} />
-            <Route path="/students" component={StudentList} />
+            <Route path="/students" component={StudentPage} />
           </div>
         </Content>
       </Layout>
