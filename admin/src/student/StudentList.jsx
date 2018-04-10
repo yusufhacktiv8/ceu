@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
 import StudentWindow from './StudentWindow';
+import showError from '../utils/ShowError';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const Column = Table.Column;
@@ -18,10 +19,15 @@ class StudentList extends Component {
     studentWindowVisible: false,
   }
   componentDidMount() {
-    this.getStudents();
+    this.fetchStudents();
   }
 
-  getStudents() {
+  onSaveSuccess = () => {
+    this.closeEditWindow();
+    this.fetchStudents();
+  }
+
+  fetchStudents() {
     this.setState({
       loading: true,
     });
@@ -32,18 +38,13 @@ class StudentList extends Component {
     } })
       .then((response) => {
         this.setState({
-          students: response.data.students,
+          students: response.data.rows,
           count: response.data.count,
           loading: false,
         });
       })
       .catch((error) => {
-        console.error(error);
-        if (error.response) {
-          message.error(error.response.data);
-        } else {
-          message.error(error.message);
-        }
+        showError(error);
       })
       .finally(() => {
         this.setState({
@@ -55,22 +56,7 @@ class StudentList extends Component {
   filterStudents() {
     this.setState({
       currentPage: 1,
-    }, () => { this.getStudents(); });
-  }
-
-  saveStudent(student) {
-    const hide = message.loading('Action in progress..', 0);
-    axios.post(STUDENTS_URL, student)
-      .then(() => {
-        hide();
-        this.handleCancel();
-        this.getStudents();
-        message.success('Save student success');
-      })
-      .catch((error) => {
-        hide();
-        console.error(error);
-      });
+    }, () => { this.fetchStudents(); });
   }
 
   deleteStudent(student) {
@@ -78,12 +64,14 @@ class StudentList extends Component {
     axios.delete(`${STUDENTS_URL}/${student.id}`)
       .then(() => {
         hide();
-        this.getStudents();
+        this.fetchStudents();
         message.success('Delete student success');
       })
       .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
         hide();
-        console.error(error);
       });
   }
 
@@ -124,7 +112,7 @@ class StudentList extends Component {
   pageChanged(page) {
     this.setState({
       currentPage: page,
-    }, () => { this.getStudents(); });
+    }, () => { this.fetchStudents(); });
   }
 
   render() {
@@ -223,7 +211,7 @@ class StudentList extends Component {
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}
           onClose={this.closeEditWindow}
-          role={this.state.role}
+          student={this.state.student}
           ref={studentWindow => (this.studentWindow = studentWindow)}
         />
       </div>

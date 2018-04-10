@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, InputNumber, Radio, DatePicker, Button, Tabs, message, Row, Col } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import showError from '../utils/ShowError';
 import LevelSelect from './LevelSelect';
 
@@ -142,7 +143,7 @@ class StudentWindow extends Component {
                 <Col span={24}>
                   <FormItem label="Birth Date">
                     {getFieldDecorator('birthDate', {
-                      initialValue: student.birthDate,
+                      initialValue: student.birthDate ? moment(student.birthDate) : null,
                     })(
                       <DatePicker />,
                     )}

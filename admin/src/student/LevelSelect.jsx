@@ -41,8 +41,8 @@ class LevelSelect extends Component {
         onChange={this.handleChange}
         value={this.state.value}
       >
-        <Option value="1">Level 1</Option>
-        <Option value="2">Level 2</Option>
+        <Option value={1}>Level 1</Option>
+        <Option value={2}>Level 2</Option>
       </Select>
     );
   }
