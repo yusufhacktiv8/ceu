@@ -1,7 +1,6 @@
 const moment = require('moment');
 const Sequelize = require('sequelize');
 const AWS = require('aws-sdk');
-const fs = require('fs');
 const shortid = require('shortid');
 const _ = require('lodash');
 const models = require('../models');
