@@ -84,6 +84,10 @@ class StudentList extends Component {
     });
   }
 
+  openDetailsPage = (record) => {
+    this.props.history.push(`/studentdetails/${record.id}`);
+  }
+
   closeEditWindow = () => {
     this.setState({
       studentWindowVisible: false,
@@ -186,6 +190,12 @@ class StudentList extends Component {
                       icon="ellipsis"
                       size="small"
                       onClick={() => this.openEditWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Button
+                      icon="bars"
+                      size="small"
+                      onClick={() => this.openDetailsPage(record)}
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm

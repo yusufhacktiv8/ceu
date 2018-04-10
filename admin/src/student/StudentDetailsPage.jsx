@@ -1,16 +1,14 @@
 import React from 'react';
 import { Layout } from 'antd';
-import StudentList from './StudentList';
 
 const { Header, Content } = Layout;
 
-export default ({ history }) => (
+export default () => (
   <Layout style={{ height: '100%' }}>
     <Header className="page-header">
-      <span className="page-header-title">Students</span>
+      <span>Students &gt;</span><span className="page-header-title"> Details</span>
     </Header>
     <Content className="page-content">
-      <StudentList history={history} />
     </Content>
   </Layout>
 );

@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import RolePage from '../role/RolePage';
 import UserPage from '../user/UserPage';
 import StudentPage from '../student/StudentPage';
+import StudentDetailsPage from '../student/StudentDetailsPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -116,6 +117,7 @@ class Workspace extends Component {
             <Route path="/roles" component={RolePage} />
             <Route path="/users" component={UserPage} />
             <Route path="/students" component={StudentPage} />
+            <Route path="/studentdetails/:studentId" component={StudentDetailsPage} />
           </div>
         </Content>
       </Layout>
