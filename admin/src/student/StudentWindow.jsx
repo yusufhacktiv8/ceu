@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Radio, Button, Tabs, message, Row, Col } from 'antd';
+import { Modal, Form, Input, InputNumber, Radio, DatePicker, Button, Tabs, message, Row, Col } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
 import LevelSelect from './LevelSelect';
@@ -63,7 +63,7 @@ class StudentWindow extends Component {
         ]}
       >
         <Form layout="vertical" style={{ marginTop: -15 }}>
-          <Tabs defaultActiveKey="1" style={{ minHeight: 435 }}>
+          <Tabs defaultActiveKey="1" style={{ minHeight: 445 }}>
             <TabPane tab="Main" key="1">
               <Row gutter={10}>
                 <Col span={12}>
@@ -100,7 +100,7 @@ class StudentWindow extends Component {
                         { required: true, message: 'Please input name' },
                       ],
                     })(
-                      <Input maxLength="50" />,
+                      <Input maxLength="100" />,
                     )}
                   </FormItem>
                 </Col>
@@ -132,6 +132,172 @@ class StudentWindow extends Component {
                       ],
                     })(
                       <LevelSelect />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tab="Details" key="2">
+              <Row>
+                <Col span={24}>
+                  <FormItem label="Birth Date">
+                    {getFieldDecorator('birthDate', {
+                      initialValue: student.birthDate,
+                    })(
+                      <DatePicker />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <FormItem label="Father Name">
+                    {getFieldDecorator('fatherName', {
+                      initialValue: student.fatherName,
+                    })(
+                      <Input maxLength="50" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <FormItem label="Mother Name">
+                    {getFieldDecorator('motherName', {
+                      initialValue: student.motherName,
+                    })(
+                      <Input maxLength="50" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tab="Contact" key="3">
+              <Row>
+                <Col span={12}>
+                  <FormItem label="Email">
+                    {getFieldDecorator('email', {
+                      initialValue: student.email,
+                      rules: [
+                        { type: 'email', message: 'The is not valid E-mail' },
+                      ],
+                    })(
+                      <Input maxLength="100" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <FormItem label="Address">
+                    {getFieldDecorator('address', {
+                      initialValue: student.address,
+                    })(
+                      <Input maxLength="150" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row gutter={10}>
+                <Col span={12}>
+                  <FormItem label="Landline">
+                    {getFieldDecorator('phone', {
+                      initialValue: student.phone,
+                    })(
+                      <Input maxLength="30" />,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="Mobile">
+                    {getFieldDecorator('mobilePhone', {
+                      initialValue: student.mobilePhone,
+                    })(
+                      <Input maxLength="30" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col span={24}>
+                  <FormItem label="Parent Address">
+                    {getFieldDecorator('parentAddress', {
+                      initialValue: student.parentAddress,
+                    })(
+                      <Input maxLength="150" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row gutter={10}>
+                <Col span={12}>
+                  <FormItem label="Parent Landline">
+                    {getFieldDecorator('parentPhone', {
+                      initialValue: student.parentPhone,
+                    })(
+                      <Input maxLength="30" />,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="Parent Mobile">
+                    {getFieldDecorator('parentMobilePhone', {
+                      initialValue: student.parentMobilePhone,
+                    })(
+                      <Input maxLength="30" />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tab="Education" key="4">
+              <Row gutter={10}>
+                <Col span={12}>
+                  <FormItem label="Enroll Year">
+                    {getFieldDecorator('enrollYear', {
+                      initialValue: student.enrollYear,
+                    })(
+                      <InputNumber
+                        min={2000}
+                        max={2099}
+                      />,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="Graduate Year">
+                    {getFieldDecorator('graduateYear', {
+                      initialValue: student.graduateYear,
+                    })(
+                      <InputNumber
+                        min={2000}
+                        max={2099}
+                      />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row gutter={10}>
+                <Col span={12}>
+                  <FormItem label="Certificate Number">
+                    {getFieldDecorator('certificateNumber', {
+                      initialValue: student.certificateNumber,
+                    })(
+                      <Input maxLength="100" />,
+                    )}
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="IPK">
+                    {getFieldDecorator('ipk', {
+                      initialValue: student.ipk,
+                    })(
+                      <InputNumber
+                        min={0}
+                        max={4}
+                        step={0.1}
+                      />,
                     )}
                   </FormItem>
                 </Col>
