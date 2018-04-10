@@ -31,7 +31,6 @@ const userMenu = (
 
 class Workspace extends Component {
   state = {
-    selectedKeys: ['dashboard'],
     name: 'Anonymous',
   }
 
@@ -41,7 +40,14 @@ class Workspace extends Component {
       Authorization: `Bearer ${token}`,
     };
     const name = parseJwt(token).name;
-    const location = window.location.href;
+    this.setState({
+      name,
+    });
+  }
+
+  render() {
+    console.log(this.props.location.pathname);
+    const location = this.props.location.pathname;
     let selectedKeys = 'dashboard';
     if (location.includes('roles')) {
       selectedKeys = ['roles'];
@@ -50,14 +56,6 @@ class Workspace extends Component {
     } else if (location.includes('students')) {
       selectedKeys = ['students'];
     }
-    this.setState({
-      name,
-      selectedKeys,
-    });
-    console.log(window.location.href);
-  }
-
-  render() {
     return (
       <Layout style={{ height: '100%' }}>
         <Header style={{ backgroundColor: '#FFF', padding: 0, lineHeight: 1, height: 90 }}>
@@ -84,7 +82,7 @@ class Workspace extends Component {
             <div>
               <Menu
                 onClick={this.handleClick}
-                selectedKeys={this.state.selectedKeys}
+                selectedKeys={selectedKeys}
                 mode="horizontal"
               >
                 <Menu.Item key="dashboard">
