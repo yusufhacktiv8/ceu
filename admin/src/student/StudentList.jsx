@@ -91,6 +91,14 @@ class StudentList extends Component {
     this.setState({
       student: record,
       studentWindowVisible: true,
+    }, () => {
+      this.studentWindow.resetFields();
+    });
+  }
+
+  closeEditWindow = () => {
+    this.setState({
+      studentWindowVisible: false,
     });
   }
 
@@ -216,7 +224,7 @@ class StudentList extends Component {
           onCancel={this.closeEditWindow}
           onClose={this.closeEditWindow}
           role={this.state.role}
-          ref={StudentWindow => (this.StudentWindow = StudentWindow)}
+          ref={studentWindow => (this.studentWindow = studentWindow)}
         />
       </div>
     );
