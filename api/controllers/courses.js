@@ -128,17 +128,17 @@ const checkScores = course => (
         const scoreValue = score.scoreValue;
         const scoreTypeCode = score.ScoreType.code;
         let percentage = 0;
-        switch (scoreValue) {
-          case (scoreTypeCode === 'CASEREPORT'):
+        switch (scoreTypeCode) {
+          case 'CASEREPORT':
             percentage = 0.1;
             break;
-          case (scoreTypeCode === 'WEEKLYDISCUSSION'):
+          case 'WEEKLYDISCUSSION':
             percentage = 0.2;
             break;
-          case (scoreTypeCode === 'CASETEST'):
+          case 'CASETEST':
             percentage = 0.35;
             break;
-          case (scoreTypeCode === 'POSTTEST'):
+          case 'POSTTEST':
             percentage = 0.35;
             break;
           default:
