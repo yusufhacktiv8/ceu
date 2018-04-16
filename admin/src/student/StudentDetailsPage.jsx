@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Steps, Row, Col, Button, message, Icon } from 'antd';
 import RegistrationForm from './RegistrationForm';
+import CourseList from './course/CourseList';
 
 const { Header, Content } = Layout;
 const { Step } = Steps;
@@ -35,11 +36,31 @@ export default class StudentDetailsPage extends Component {
             <Step title="Graduate" />
           </Steps>
           <div className="steps-content">
-            <Row>
-              <Col span={12}>
-                <RegistrationForm student={{}} />
-              </Col>
-            </Row>
+            {
+              this.state.current === 0
+              &&
+              <Row>
+                <Col span={12}>
+                  <RegistrationForm student={{}} />
+                </Col>
+              </Row>
+            }
+
+            {
+              this.state.current === 1
+              &&
+              <Row>
+                <Col span={12}>
+                  <CourseList courses={[{
+                      Department: {
+                        code: 'ABC',
+                      },
+                      title: 'Title',
+                      status: 0,
+                    }]} />
+                </Col>
+              </Row>
+            }
           </div>
           <div className="steps-action">
             {
