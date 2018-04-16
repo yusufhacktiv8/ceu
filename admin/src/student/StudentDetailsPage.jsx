@@ -1,23 +1,65 @@
-import React from 'react';
-import { Layout, Steps } from 'antd';
+import React, { Component } from 'react';
+import { Layout, Steps, Row, Col, Button, message, Icon } from 'antd';
+import RegistrationForm from './RegistrationForm';
 
 const { Header, Content } = Layout;
 const { Step } = Steps;
+const stepsCount = 6;
 
-export default () => (
-  <Layout style={{ height: '100%' }}>
-    <Header className="page-header">
-      <span>Students &gt;</span><span className="page-header-title"> Details</span>
-    </Header>
-    <Content className="page-content">
-      <Steps current={1}>
-        <Step title="Registration" description="This is a description." />
-        <Step title="Level 1" description="This is a description." />
-        <Step title="Level 2" description="This is a description." />
-        <Step title="Yudisium" description="This is a description." />
-        <Step title="UKMPPD" description="This is a description." />
-        <Step title="Graduate" description="This is a description." />
-      </Steps>
-    </Content>
-  </Layout>
-);
+export default class StudentDetailsPage extends Component {
+  state = {
+    current: 0,
+  }
+  next() {
+    const current = this.state.current + 1;
+    this.setState({ current });
+  }
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current });
+  }
+  render() {
+    const { current } = this.state;
+    return (
+      <Layout style={{ height: '100%' }}>
+        <Header className="page-header">
+          <span>Students &gt;</span><span className="page-header-title"> Details</span>
+        </Header>
+        <Content className="page-content">
+          <Steps current={current}>
+            <Step title="Registration" />
+            <Step title="Level 1" />
+            <Step title="Level 2" />
+            <Step title="Yudisium" />
+            <Step title="UKMPPD" />
+            <Step title="Graduate" />
+          </Steps>
+          <div className="steps-content">
+            <Row>
+              <Col span={12}>
+                <RegistrationForm student={{}} />
+              </Col>
+            </Row>
+          </div>
+          <div className="steps-action">
+            {
+              this.state.current > 0
+              &&
+              <Button style={{ marginRight: 8 }} onClick={() => this.prev()}><Icon type="left" /> Prev</Button>
+            }
+            {
+              this.state.current < stepsCount - 1
+              &&
+              <Button onClick={() => this.next()}>Next <Icon type="right" /></Button>
+            }
+            {
+              this.state.current === stepsCount - 1
+              &&
+              <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
+            }
+          </div>
+        </Content>
+      </Layout>
+    );
+  }
+}

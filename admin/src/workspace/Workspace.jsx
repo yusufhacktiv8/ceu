@@ -54,7 +54,7 @@ class Workspace extends Component {
       selectedKeys = ['roles'];
     } else if (location.includes('users')) {
       selectedKeys = ['users'];
-    } else if (location.includes('students')) {
+    } else if (location.includes('students') || location.includes('studentdetails')) {
       selectedKeys = ['students'];
     }
     return (
