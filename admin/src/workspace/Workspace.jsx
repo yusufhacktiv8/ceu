@@ -6,6 +6,7 @@ import RolePage from '../role/RolePage';
 import UserPage from '../user/UserPage';
 import StudentPage from '../student/StudentPage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
+import DepartmentPage from '../settings/department/DepartmentPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -56,6 +57,8 @@ class Workspace extends Component {
       selectedKeys = ['users'];
     } else if (location.includes('students') || location.includes('studentdetails')) {
       selectedKeys = ['students'];
+    } else if (location.includes('departments')) {
+      selectedKeys = ['departments'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -107,6 +110,11 @@ class Workspace extends Component {
                     <Menu.Item key="roles">
                       <Link to="/roles">Roles</Link></Menu.Item>
                   </MenuItemGroup>
+                  <MenuItemGroup title="Application">
+                    <Menu.Item key="departments">
+                      <Link to="/departments">Departments</Link>
+                    </Menu.Item>
+                  </MenuItemGroup>
                 </SubMenu>
               </Menu>
             </div>
@@ -118,6 +126,7 @@ class Workspace extends Component {
             <Route path="/users" component={UserPage} />
             <Route path="/students" component={StudentPage} />
             <Route path="/studentdetails/:studentId" component={StudentDetailsPage} />
+            <Route path="/departments" component={DepartmentPage} />
           </div>
         </Content>
       </Layout>
