@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
 import showError from '../../utils/ShowError';
 import DepartmentWindow from './DepartmentWindow';
+import LevelSelect from '../../student/LevelSelect';
 
 const DEPARTMENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/departments`;
 const Column = Table.Column;
@@ -14,6 +15,7 @@ class DepartmentList extends Component {
     departments: [],
     loading: false,
     count: 0,
+    level: 1,
     currentPage: 1,
     pageSize: 10,
     departmentWindowVisible: false,
@@ -28,6 +30,12 @@ class DepartmentList extends Component {
     });
   }
 
+  onLevelChange = (level) => {
+    this.setState({
+      level,
+    });
+  }
+
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchDepartments();
@@ -39,6 +47,7 @@ class DepartmentList extends Component {
     });
     axios.get(DEPARTMENTS_URL, { params: {
       searchText: this.state.searchText,
+      searchLevel: this.state.level,
       start: (this.state.currentPage - 1) * this.state.pageSize,
       count: this.state.pageSize,
     } })
@@ -106,7 +115,7 @@ class DepartmentList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
+          <Col span={6}>
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
@@ -114,7 +123,10 @@ class DepartmentList extends Component {
               maxLength="50"
             />
           </Col>
-          <Col span={16}>
+          <Col span={4}>
+            <LevelSelect value={this.state.level} onChange={this.onLevelChange} />
+          </Col>
+          <Col span={8}>
             <span>
               <Button
                 shape="circle"
