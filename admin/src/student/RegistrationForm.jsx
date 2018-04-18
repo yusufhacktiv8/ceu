@@ -107,7 +107,7 @@ class RegistrationForm extends Component {
         </Row>
         <Row>
           <Col span={24}>
-            <Button type="primary" onCLick={this.onSubmit}>Save</Button>
+            <Button type="primary" onClick={this.onSubmit}>Save</Button>
           </Col>
         </Row>
       </Form>
