@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Layout, Steps, Row, Col, Button, message, Icon } from 'antd';
+import { Layout, Steps, Row, Col, Button, message, Icon, Menu, Dropdown } from 'antd';
 import RegistrationForm from './RegistrationForm';
 import CourseList from './course/CourseList';
+import AddCourseByLevelWindow from './course/AddCourseByLevelWindow';
+import AddCourseByDepartmentWindow from './course/AddCourseByDepartmentWindow';
 
 const { Header, Content } = Layout;
 const { Step } = Steps;
@@ -9,7 +11,9 @@ const stepsCount = 6;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 0,
+    current: 1,
+    addCourseByLevelWindowVisible: false,
+    addCourseByDepartmentWindowVisible: false,
   }
   next() {
     const current = this.state.current + 1;
@@ -19,8 +23,40 @@ export default class StudentDetailsPage extends Component {
     const current = this.state.current - 1;
     this.setState({ current });
   }
+  closeAddCourseByLevelWindow = () => {
+    this.setState({
+      addCourseByLevelWindowVisible: false,
+    });
+  }
+  closeAddCourseByDepartmentWindow = () => {
+    this.setState({
+      addCourseByDepartmentWindowVisible: false,
+    });
+  }
   render() {
     const { current } = this.state;
+    const menu = (
+      <Menu
+        onClick={({ key }) => {
+          switch (key) {
+            case '1':
+              this.setState({
+                addCourseByLevelWindowVisible: true,
+              });
+              break;
+            case '2':
+              this.setState({
+                addCourseByDepartmentWindowVisible: true,
+              });
+              break;
+            default:
+          }
+        }}
+      >
+        <Menu.Item key="1">By Level</Menu.Item>
+        <Menu.Item key="2">By Department</Menu.Item>
+      </Menu>
+    );
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
@@ -49,8 +85,8 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 1
               &&
-              <Row>
-                <Col span={12}>
+              <Row gutter={20}>
+                <Col span={18}>
                   <CourseList courses={[{
                       Department: {
                         code: 'ABC',
@@ -58,6 +94,16 @@ export default class StudentDetailsPage extends Component {
                       title: 'Title',
                       status: 0,
                     }]} />
+                </Col>
+                <Col span={2}>
+                  <Dropdown overlay={menu}>
+                    <Button type="primary" style={{ marginLeft: 10 }}>
+                      Add <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                </Col>
+                <Col span={2}>
+                  <Button>Chart <Icon type="layout" /></Button>
                 </Col>
               </Row>
             }
@@ -79,6 +125,20 @@ export default class StudentDetailsPage extends Component {
               <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
             }
           </div>
+          <AddCourseByLevelWindow
+            visible={this.state.addCourseByLevelWindowVisible}
+            onSaveSuccess={this.onSaveSuccess}
+            onCancel={this.closeAddCourseByLevelWindow}
+            onClose={this.closeAddCourseByLevelWindow}
+            ref={obj => (this.addCourseByLevelWindow = obj)}
+          />
+          <AddCourseByDepartmentWindow
+            visible={this.state.addCourseByDepartmentWindowVisible}
+            onSaveSuccess={this.onSaveSuccess}
+            onCancel={this.closeAddCourseByDepartmentWindow}
+            onClose={this.closeAddCourseByDepartmentWindow}
+            ref={obj => (this.addCourseByDepartmentWindow = obj)}
+          />
         </Content>
       </Layout>
     );
