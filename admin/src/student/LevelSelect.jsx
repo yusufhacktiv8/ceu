@@ -40,6 +40,7 @@ class LevelSelect extends Component {
         placeholder="Select Level"
         onChange={this.handleChange}
         value={this.state.value}
+        style={{ width: '100%' }}
       >
         <Option value={1}>Level 1</Option>
         <Option value={2}>Level 2</Option>
