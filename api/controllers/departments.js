@@ -7,7 +7,7 @@ const sendError = (err, res) => {
 exports.findAll = function findAll(req, res) {
   const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
   const searchLevel = req.query.searchLevel ? parseInt(req.query.searchLevel, 10) : 1;
-  models.Department.findAll({
+  models.Department.findAndCountAll({
     where: {
       $or: [
         { code: { $ilike: searchText } },
