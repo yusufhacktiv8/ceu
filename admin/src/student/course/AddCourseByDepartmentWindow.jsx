@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, DatePicker, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
 import showError from '../../utils/ShowError';
+import DepartmentSelect from '../../settings/department/DepartmentSelect';
 
 const ROLES_URL = `${process.env.REACT_APP_SERVER_URL}/api/roles`;
 
@@ -50,6 +51,7 @@ class AddCourseDepartmentWindow extends Component {
         visible={visible}
         title="Add Course by Department"
         okText="Save"
+        width={600}
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
           <Button key="save" type="primary" loading={saving} onClick={this.onSave}>
@@ -59,6 +61,17 @@ class AddCourseDepartmentWindow extends Component {
       >
         <Form layout="vertical">
           <Row gutter={10}>
+            <Col span={8}>
+              <FormItem label="Department">
+                {getFieldDecorator('department', {
+                  rules: [
+                    { required: true, message: 'Please input start date' },
+                  ],
+                })(
+                  <DepartmentSelect />,
+                )}
+              </FormItem>
+            </Col>
             <Col span={8}>
               <FormItem label="Start Date">
                 {getFieldDecorator('startDate', {

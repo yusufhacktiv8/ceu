@@ -31,6 +31,7 @@ class DepartmentSelect extends Component {
   fetchDepartments() {
     axios.get(DEPARTMENTS_URL, { params: {
       searchText: '',
+      searchLevel: this.props.level || 1,
       start: 0,
       count: 100,
     } })
