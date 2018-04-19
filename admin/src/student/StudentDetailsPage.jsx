@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Steps, Row, Col, Button, message, Icon, Dropdown } from 'antd';
+import { Layout, Steps, Row, Col, Button, message, Icon } from 'antd';
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
 
@@ -24,6 +24,8 @@ export default class StudentDetailsPage extends Component {
 
   render() {
     const { current } = this.state;
+    const { match } = this.props;
+    const { studentId } = match.params;
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
@@ -52,13 +54,13 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 1
               &&
-              <CoursePage level={1} />
+              <CoursePage studentId={studentId} level={1} />
             }
 
             {
               this.state.current === 2
               &&
-              <CoursePage level={2} />
+              <CoursePage studentId={studentId} level={2} />
             }
           </div>
           <div className="steps-action">

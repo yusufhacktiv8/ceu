@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { Menu, Row, Col, Button, Icon, Dropdown } from 'antd';
+import { Menu, Row, Col, Button, Icon, Dropdown, Spin } from 'antd';
+import axios from 'axios';
 import AddCourseByLevelWindow from '../course/AddCourseByLevelWindow';
 import AddCourseByDepartmentWindow from '../course/AddCourseByDepartmentWindow';
-
 import CourseList from './CourseList';
+import showError from '../../utils/ShowError';
+
+const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
+const getCourseURL = studentId => `${STUDENTS_URL}/${studentId}/courses`;
 
 export default class CoursePage extends Component {
   state = {
+    courses: [],
+    loading: false,
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
+  }
+
+  componentDidMount() {
+    this.fetchCourses();
   }
 
   closeAddCourseByLevelWindow = () => {
@@ -16,10 +26,35 @@ export default class CoursePage extends Component {
       addCourseByLevelWindowVisible: false,
     });
   }
+
   closeAddCourseByDepartmentWindow = () => {
     this.setState({
       addCourseByDepartmentWindowVisible: false,
     });
+  }
+
+  fetchCourses() {
+    const { studentId, level } = this.props;
+    this.setState({
+      loading: true,
+    });
+    axios.get(getCourseURL(studentId), { params: {
+      level,
+    } })
+      .then((response) => {
+        this.setState({
+          courses: response.data,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
   }
 
   render() {
@@ -49,13 +84,9 @@ export default class CoursePage extends Component {
     return (
       <Row gutter={20}>
         <Col span={18}>
-          <CourseList courses={[{
-              Department: {
-                code: 'ABC',
-              },
-              title: 'Title',
-              status: 0,
-            }]} />
+          <Spin spinning={this.state.loading}>
+            <CourseList courses={this.state.courses} />
+          </Spin>
         </Col>
         <Col span={2}>
           <Dropdown overlay={menu}>
