@@ -21,6 +21,16 @@ export default class CoursePage extends Component {
     this.fetchCourses();
   }
 
+  onSaveByLevelSuccess = () => {
+    this.closeAddCourseByLevelWindow();
+    this.fetchCourses();
+  }
+
+  onSaveByDepartmentSuccess = () => {
+    this.closeAddCourseByDepartmentWindow();
+    this.fetchCourses();
+  }
+
   closeAddCourseByLevelWindow = () => {
     this.setState({
       addCourseByLevelWindowVisible: false,
@@ -58,7 +68,7 @@ export default class CoursePage extends Component {
   }
 
   render() {
-    const { level } = this.props;
+    const { studentId, level } = this.props;
     const menu = (
       <Menu
         onClick={({ key }) => {
@@ -67,11 +77,13 @@ export default class CoursePage extends Component {
               this.setState({
                 addCourseByLevelWindowVisible: true,
               });
+              this.addCourseByLevelWindow.resetFields();
               break;
             case '2':
               this.setState({
                 addCourseByDepartmentWindowVisible: true,
               });
+              this.addCourseByDepartmentWindow.resetFields();
               break;
             default:
           }
@@ -100,17 +112,19 @@ export default class CoursePage extends Component {
         </Col>
 
         <AddCourseByLevelWindow
+          studentId={studentId}
           level={level}
           visible={this.state.addCourseByLevelWindowVisible}
-          onSaveSuccess={this.onSaveSuccess}
+          onSaveSuccess={this.onSaveByLevelSuccess}
           onCancel={this.closeAddCourseByLevelWindow}
           onClose={this.closeAddCourseByLevelWindow}
           ref={obj => (this.addCourseByLevelWindow = obj)}
         />
         <AddCourseByDepartmentWindow
+          studentId={studentId}
           level={level}
           visible={this.state.addCourseByDepartmentWindowVisible}
-          onSaveSuccess={this.onSaveSuccess}
+          onSaveSuccess={this.onSaveByDepartmentSuccess}
           onCancel={this.closeAddCourseByDepartmentWindow}
           onClose={this.closeAddCourseByDepartmentWindow}
           ref={obj => (this.addCourseByDepartmentWindow = obj)}
