@@ -15,6 +15,7 @@
   font-weight: bold;
   font-size: 15px;
   color: gray;
+  cursor: pointer;
 }
 
 .page-header-title {

@@ -22,6 +22,10 @@ export default class StudentDetailsPage extends Component {
     this.setState({ current });
   }
 
+  goToStudentPage = () => {
+    this.props.history.push('/students');
+  }
+
   render() {
     const { current } = this.state;
     const { match } = this.props;
@@ -29,7 +33,7 @@ export default class StudentDetailsPage extends Component {
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
-          <span>Students &gt;</span><span className="page-header-title"> Details</span>
+          <span role="link" onClick={this.goToStudentPage}>Students &gt;</span><span className="page-header-title"> Details</span>
         </Header>
         <Content className="page-content">
           <Steps current={current}>
@@ -54,7 +58,7 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 1
               &&
-              <CoursePage studentId={studentId} level={1} />
+              <CoursePage studentId={studentId} level={1} history={this.props.history} />
             }
 
             {

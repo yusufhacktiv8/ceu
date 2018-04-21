@@ -85,7 +85,7 @@ class StudentList extends Component {
   }
 
   openDetailsPage = (record) => {
-    this.props.history.push(`/studentdetails/${record.id}`);
+    this.props.history.push(`/students/${record.id}`);
   }
 
   closeEditWindow = () => {

@@ -7,6 +7,7 @@ import UserPage from '../user/UserPage';
 import StudentPage from '../student/StudentPage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
 import DepartmentPage from '../settings/department/DepartmentPage';
+import CourseDetailsPage from '../student/course/details/CourseDetailsPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -124,9 +125,10 @@ class Workspace extends Component {
           <div>
             <Route path="/roles" component={RolePage} />
             <Route path="/users" component={UserPage} />
-            <Route path="/students" component={StudentPage} />
-            <Route path="/studentdetails/:studentId" component={StudentDetailsPage} />
+            <Route exact path="/students" component={StudentPage} />
+            <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/departments" component={DepartmentPage} />
+            <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
           </div>
         </Content>
       </Layout>

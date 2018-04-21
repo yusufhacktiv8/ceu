@@ -67,6 +67,10 @@ export default class CoursePage extends Component {
       });
   }
 
+  showDetails = (course) => {
+    this.props.history.push(`/students/${this.props.studentId}/courses/${course.id}`);
+  }
+
   render() {
     const { studentId, level } = this.props;
     const menu = (
@@ -97,7 +101,7 @@ export default class CoursePage extends Component {
       <Row gutter={20}>
         <Col span={18}>
           <Spin spinning={this.state.loading}>
-            <CourseList courses={this.state.courses} />
+            <CourseList courses={this.state.courses} showDetails={this.showDetails} />
           </Spin>
         </Col>
         <Col span={2}>
