@@ -52,6 +52,8 @@ export default class CourseDetailsPage extends Component {
       });
   }
   render() {
+    const { match } = this.props;
+    const { courseId } = match.params;
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
@@ -81,7 +83,7 @@ export default class CourseDetailsPage extends Component {
           }
           <Tabs defaultActiveKey="1" style={{ marginTop: -10, height: 500 }}>
             <TabPane tab="Info" key="1">
-              <InfoForm course={this.state.course} />
+              <InfoForm courseId={courseId} />
             </TabPane>
           </Tabs>
         </Content>
