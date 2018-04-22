@@ -71,7 +71,7 @@ class InfoForm extends Component {
     let status = '';
     let text = '';
 
-    switch (course.status ? course : null) {
+    switch (course.status) {
       case 0:
         status = 'default';
         text = 'Scheduled';
@@ -225,7 +225,7 @@ class InfoForm extends Component {
             </tr>
           </tbody>
         </table>
-        <Badge status={status} text={text} />
+        <span style={{ fontWeight: 'bold', fontSize: 15, marginRight: 10 }}>Status: </span><Badge status={status} text={text} />
       </Form>
     );
   }
