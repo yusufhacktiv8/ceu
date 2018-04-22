@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Tabs, Spin, Icon, Tag } from 'antd';
 import axios from 'axios';
 import InfoForm from './InfoForm';
+import SglList from './sgl/SglList';
 import showError from '../../../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -84,6 +85,12 @@ export default class CourseDetailsPage extends Component {
           <Tabs defaultActiveKey="1" style={{ marginTop: -10, height: 500 }}>
             <TabPane tab="Info" key="1">
               <InfoForm courseId={courseId} />
+            </TabPane>
+            <TabPane tab="SGL" key="2">
+              <SglList courseId={courseId} />
+            </TabPane>
+            <TabPane tab="Schedules" key="3">
+              <SglList courseId={courseId} />
             </TabPane>
           </Tabs>
         </Content>
