@@ -3,7 +3,8 @@ import { Select } from 'antd';
 import axios from 'axios';
 import showError from '../../utils/ShowError';
 
-const Option = Select.Option;
+// const Option = Select.Option;
+const { Option, OptGroup } = Select;
 const DEPARTMENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/departments`;
 
 class DepartmentSelect extends Component {
@@ -61,15 +62,37 @@ class DepartmentSelect extends Component {
 
   render() {
     return (
-      <Select
-        placeholder="Select Department"
-        onChange={this.handleChange}
-        value={this.state.value}
-      >
-        {this.state.departments.map(department => (
-          <Option key={department.id} value={department.id}>{department.name}</Option>
-        ))}
-      </Select>
+      this.props.level === -1 ? (
+        <Select
+          placeholder="Select Department"
+          onChange={this.handleChange}
+          value={this.state.value}
+          style={{ width: '100%' }}
+        >
+          <OptGroup label="Level 1">
+            {this.state.departments.filter(department => department.level === 1).map(department => (
+              <Option key={department.id} value={String(department.id)}>{department.name}</Option>
+            ))}
+          </OptGroup>
+          <OptGroup label="Level 2">
+            {this.state.departments.filter(department => department.level === 2).map(department => (
+              <Option key={department.id} value={String(department.id)}>{department.name}</Option>
+            ))}
+          </OptGroup>
+        </Select>
+      ) : (
+        <Select
+          placeholder="Select Department"
+          onChange={this.handleChange}
+          value={this.state.value}
+          style={{ width: '100%' }}
+        >
+          {this.state.departments.map(department => (
+            <Option key={department.id} value={department.id}>{department.name}</Option>
+          ))}
+        </Select>
+      )
+
     );
   }
 }

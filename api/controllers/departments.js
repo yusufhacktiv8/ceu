@@ -7,14 +7,18 @@ const sendError = (err, res) => {
 exports.findAll = function findAll(req, res) {
   const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
   const searchLevel = req.query.searchLevel ? parseInt(req.query.searchLevel, 10) : 1;
+  const where = {
+    $or: [
+      { code: { $ilike: searchText } },
+      { name: { $ilike: searchText } },
+    ],
+  };
+
+  if (searchLevel !== -1) {
+    where.level = searchLevel;
+  }
   models.Department.findAndCountAll({
-    where: {
-      $or: [
-        { code: { $ilike: searchText } },
-        { name: { $ilike: searchText } },
-      ],
-      level: searchLevel,
-    },
+    where,
     order: ['id'],
   })
   .then((departments) => {

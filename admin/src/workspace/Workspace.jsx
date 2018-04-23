@@ -8,6 +8,7 @@ import StudentPage from '../student/StudentPage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
 import DepartmentPage from '../settings/department/DepartmentPage';
 import CourseDetailsPage from '../student/course/details/CourseDetailsPage';
+import HospitalPage from '../hospital/HospitalPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -60,6 +61,8 @@ class Workspace extends Component {
       selectedKeys = ['students'];
     } else if (location.includes('departments')) {
       selectedKeys = ['departments'];
+    } else if (location.includes('hospitals')) {
+      selectedKeys = ['hospitals'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -101,7 +104,10 @@ class Workspace extends Component {
                   ><Icon type="pie-chart" />Dashboard</Link>
                 </Menu.Item>
                 <Menu.Item key="students">
-                  <Link to="/students"><Icon type="contacts" />Students</Link>
+                  <Link to="/students"><Icon type="team" />Students</Link>
+                </Menu.Item>
+                <Menu.Item key="hospitals">
+                  <Link to="/hospitals"><Icon type="medicine-box" />Hospitals</Link>
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
@@ -129,6 +135,7 @@ class Workspace extends Component {
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/departments" component={DepartmentPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
+            <Route path="/hospitals" component={HospitalPage} />
           </div>
         </Content>
       </Layout>
