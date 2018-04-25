@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, Input, Select, Button, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
 
 const HOSPITALS_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitals`;
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 class HospitalWindow extends Component {
   state = {
@@ -76,6 +77,22 @@ class HospitalWindow extends Component {
               ],
             })(
               <Input maxLength="50" />,
+            )}
+          </FormItem>
+          <FormItem label="Type">
+            {getFieldDecorator('hospitalType', {
+              initialValue: hospital.hospitalType ? `${hospital.hospitalType}` : undefined,
+              rules: [
+                { required: true, message: 'Please input type' },
+              ],
+            })(
+              <Select
+                placeholder="Select Type"
+                style={{ width: '50%' }}
+              >
+                <Option key="1" value="1">Hospital</Option>
+                <Option key="2" value="2">Clinic</Option>
+              </Select>,
             )}
           </FormItem>
         </Form>

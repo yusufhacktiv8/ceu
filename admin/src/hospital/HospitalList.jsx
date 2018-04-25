@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Input, Row, Col, Menu, message } from 'antd';
+import { Button, Input, Row, Col, Menu, Table, Badge, Popconfirm, message } from 'antd';
 import showError from '../utils/ShowError';
 import HospitalWindow from './HospitalWindow';
-import HospitalTable from './HospitalTable';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
 
+const Column = Table.Column;
+
 const HOSPITALS_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitalselect/hospitalschedules`;
+const HOSPITAL_DELETE_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitals`;
 
 class HospitalList extends Component {
   state = {
     searchText: '',
-    hospitalType: 1,
     hospital: {},
     hospitals: [],
     loading: false,
-    count: 0,
-    currentPage: 1,
-    pageSize: 10,
     hospitalWindowVisible: false,
     activeKey: '1',
   }
@@ -47,14 +45,11 @@ class HospitalList extends Component {
     });
     axios.get(HOSPITALS_URL, { params: {
       searchText: this.state.searchText,
-      hospitalType: this.state.hospitalType,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
+      hospitalType: this.state.activeKey,
     } })
       .then((response) => {
         this.setState({
-          hospitals: response.data.rows,
-          count: response.data.count,
+          hospitals: response.data,
           loading: false,
         });
       })
@@ -76,7 +71,7 @@ class HospitalList extends Component {
 
   deleteHospital(hospital) {
     const hide = message.loading('Action in progress..', 0);
-    axios.delete(`${HOSPITALS_URL}/${hospital.id}`)
+    axios.delete(`${HOSPITAL_DELETE_URL}/${hospital.id}`)
       .then(() => {
         message.success('Delete hospital success');
         this.fetchHospitals();
@@ -104,13 +99,6 @@ class HospitalList extends Component {
     });
   }
 
-  pageChanged = (pagination) => {
-    const page = pagination.current;
-    this.setState({
-      currentPage: page,
-    }, () => { this.fetchHospitals(); });
-  }
-
   render() {
     return (
       <div>
@@ -119,7 +107,7 @@ class HospitalList extends Component {
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
-              placeholder="Name or SID"
+              placeholder="Code or Name"
               maxLength="50"
             />
           </Col>
@@ -158,16 +146,88 @@ class HospitalList extends Component {
                 Clinics
               </Menu.Item>
             </Menu>
-            <HospitalTable
-              hospitals={this.state.hospitals}
+
+            <Table
+              dataSource={this.state.hospitals.filter(hospital =>
+                String(hospital.hospitalType) === this.state.activeKey)}
+              rowKey="id"
               loading={this.state.loading}
-              count={this.state.count}
-              currentPage={this.state.currentPage}
-              pageSize={this.state.pageSize}
-              onChange={this.pageChanged}
-              openEditWindow={this.openEditWindow}
-              deleteHospital={this.deleteHospital}
-            />
+              size="small"
+            >
+              <Column
+                title="Code"
+                dataIndex="code"
+                key="code"
+              />
+              <Column
+                title="Name"
+                dataIndex="name"
+                key="name"
+              />
+              <Column
+                title="Quota"
+                render={(columnText, record) =>
+                  (
+                    <Badge
+                      count={record.departmentQuota}
+                      overflowCount={1000}
+                      style={{ backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' }}
+                      showZero
+                    />
+                  )
+                }
+              />
+              <Column
+                title="Student Count"
+                render={(columnText, record) => {
+                  const departmentQuota = parseInt(record.departmentQuota, 10);
+                  const studentsInDepartmentCount = parseInt(record.studentsInDepartmentCount, 10);
+                  let badge = (
+                    <Badge
+                      count={record.studentsInDepartmentCount}
+                      overflowCount={1000}
+                      style={{ backgroundColor: '#87d068' }}
+                      showZero
+                    />
+                  );
+                  if (studentsInDepartmentCount > departmentQuota) {
+                    badge = (
+                      <Badge
+                        count={record.studentsInDepartmentCount}
+                        overflowCount={1000}
+                        showZero
+                      />
+                    );
+                  }
+                  return badge;
+                }}
+              />
+              <Column
+                title="Action"
+                key="action"
+                render={(text, record) => (
+                  <span>
+                    <Button
+                      icon="ellipsis"
+                      size="small"
+                      onClick={() => this.openEditWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Popconfirm
+                      title={`Are you sure delete hospital / clinic ${record.name}`}
+                      onConfirm={() => this.deleteHospital(record)}
+                      okText="Yes" cancelText="No"
+                    >
+                      <Button
+                        type="danger"
+                        icon="delete"
+                        size="small"
+                      />
+                    </Popconfirm>
+                  </span>
+                )}
+              />
+            </Table>
           </Col>
         </Row>
 
