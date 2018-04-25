@@ -4,13 +4,13 @@ import HospitalList from './HospitalList';
 
 const { Header, Content } = Layout;
 
-export default () => (
+export default ({ history }) => (
   <Layout style={{ height: '100%' }}>
     <Header className="page-header">
       <span className="page-header-title">Hospitals</span>
     </Header>
     <Content className="page-content">
-      <HospitalList />
+      <HospitalList history={history} />
     </Content>
   </Layout>
 );

@@ -99,6 +99,10 @@ class HospitalList extends Component {
     });
   }
 
+  openDepartmentsPage = (record) => {
+    this.props.history.push(`/hospitals/${record.id}/departments`);
+  }
+
   render() {
     return (
       <div>
@@ -211,6 +215,12 @@ class HospitalList extends Component {
                       icon="ellipsis"
                       size="small"
                       onClick={() => this.openEditWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Button
+                      icon="profile"
+                      size="small"
+                      onClick={() => this.openDepartmentsPage(record)}
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm
