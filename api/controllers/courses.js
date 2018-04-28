@@ -10,6 +10,11 @@ exports.findOne = function(req, res) {
       { model: models.Department },
       { model: models.Score },
       { model: models.Hospital, as: 'hospital1' },
+      { model: models.Hospital, as: 'hospital2' },
+      { model: models.Hospital, as: 'clinic' },
+      { model: models.Docent, as: 'adviser' },
+      { model: models.Docent, as: 'examiner' },
+      { model: models.Docent, as: 'dpk' },
     ],
   })
   .then((course) => {

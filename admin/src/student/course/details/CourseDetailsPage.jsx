@@ -3,6 +3,7 @@ import { Layout, Tabs, Spin, Icon, Tag } from 'antd';
 import axios from 'axios';
 import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
+import ScheduleForm from './schedule/ScheduleForm';
 import showError from '../../../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -90,7 +91,7 @@ export default class CourseDetailsPage extends Component {
               <SglList courseId={courseId} />
             </TabPane>
             <TabPane tab="Schedules" key="3">
-              <SglList courseId={courseId} />
+              <ScheduleForm courseId={courseId} />
             </TabPane>
           </Tabs>
         </Content>
