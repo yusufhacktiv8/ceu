@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import HospitalSelect from './HospitalSelect';
+import DocentSelect from '../../../../settings/docent/DocentSelect';
 import showError from '../../../../utils/ShowError';
 
 const FormItem = Form.Item;
@@ -171,7 +172,10 @@ class ScheduleForm extends Component {
                         {getFieldDecorator('adviser', {
                           initialValue: '',
                         })(
-                          <Input />,
+                          <DocentSelect
+                            hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
+                            departmentId={DepartmentId}
+                          />,
                         )}
                       </FormItem>
                     </Col>
@@ -182,7 +186,10 @@ class ScheduleForm extends Component {
                         {getFieldDecorator('examiner', {
                           initialValue: '',
                         })(
-                          <Input />,
+                          <DocentSelect
+                            hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
+                            departmentId={DepartmentId}
+                          />,
                         )}
                       </FormItem>
                     </Col>
