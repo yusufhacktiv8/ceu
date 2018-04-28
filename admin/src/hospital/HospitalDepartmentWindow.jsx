@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, InputNumber, Button, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
+import DepartmentSelect from '../settings/department/DepartmentSelect';
 
-const HOSPITAL_DEPARTMENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitalDepartments`;
+const HOSPITAL_DEPARTMENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitaldepartments`;
 
 const FormItem = Form.Item;
 
@@ -13,7 +14,7 @@ class HospitalDepartmentWindow extends Component {
   }
 
   onSave = () => {
-    const { hospitalDepartment, onSaveSuccess, form } = this.props;
+    const { hospitalDepartment, hospitalId, onSaveSuccess, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -22,7 +23,8 @@ class HospitalDepartmentWindow extends Component {
         saving: true,
       }, () => {
         const hospitalDepartmentId = hospitalDepartment.id;
-        const axiosObj = hospitalDepartmentId ? axios.put(`${HOSPITAL_DEPARTMENTS_URL}/${hospitalDepartmentId}`, values) : axios.post(HOSPITAL_DEPARTMENTS_URL, values);
+        const data = { ...values, hospital: hospitalId };
+        const axiosObj = hospitalDepartmentId ? axios.put(`${HOSPITAL_DEPARTMENTS_URL}/${hospitalDepartmentId}`, data) : axios.post(HOSPITAL_DEPARTMENTS_URL, data);
         axiosObj.then(() => {
           message.success('Saving hospitalDepartment success');
           this.setState({
@@ -48,7 +50,7 @@ class HospitalDepartmentWindow extends Component {
     return (
       <Modal
         visible={visible}
-        title="HospitalDepartment"
+        title="Hospital Department"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
@@ -58,24 +60,24 @@ class HospitalDepartmentWindow extends Component {
         ]}
       >
         <Form layout="vertical">
-          <FormItem label="Code">
-            {getFieldDecorator('code', {
-              initialValue: hospitalDepartment.code,
+          <FormItem label="Department">
+            {getFieldDecorator('department', {
+              initialValue: hospitalDepartment.Department ? String(hospitalDepartment.Department.id) : undefined,
               rules: [
-                { required: true, message: 'Please input code' },
+                { required: true, message: 'Please input department' },
               ],
             })(
-              <Input maxLength="30" />,
+              <DepartmentSelect level={-1} />,
             )}
           </FormItem>
-          <FormItem label="Name">
-            {getFieldDecorator('name', {
-              initialValue: hospitalDepartment.name,
+          <FormItem label="Quota">
+            {getFieldDecorator('quota', {
+              initialValue: hospitalDepartment.quota,
               rules: [
-                { required: true, message: 'Please input name' },
+                { required: true, message: 'Please input quota' },
               ],
             })(
-              <Input maxLength="50" />,
+              <InputNumber min={1} max={1000} />,
             )}
           </FormItem>
         </Form>

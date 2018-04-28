@@ -96,6 +96,8 @@ class HospitalDepartmentList extends Component {
   }
 
   render() {
+    const { match } = this.props;
+    const { hospitalId } = match.params;
     return (
       <div>
         <Row gutter={10}>
@@ -120,36 +122,13 @@ class HospitalDepartmentList extends Component {
               size="small"
             >
               <Column
-                title="Code"
-                dataIndex="code"
-                key="code"
-                render={(columnText, record) => {
-                  const reg = new RegExp(this.state.searchText, 'gi');
-                  const match = columnText.match(reg);
-                  return (
-                    <span key={record.code}>
-                      {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
-                      ))}
-                    </span>
-                  );
-                }}
+                title="Name"
+                dataIndex="Department.name"
               />
               <Column
-                title="Name"
-                dataIndex="name"
-                key="name"
-                render={(columnText, record) => {
-                  const reg = new RegExp(this.state.searchText, 'gi');
-                  const match = columnText.match(reg);
-                  return (
-                    <span key={record.code}>
-                      {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
-                      ))}
-                    </span>
-                  );
-                }}
+                title="Quota"
+                dataIndex="quota"
+                key="quota"
               />
               <Column
                 title="Action"
@@ -163,7 +142,7 @@ class HospitalDepartmentList extends Component {
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm
-                      title={`Are you sure delete hospitalDepartment ${record.name}`}
+                      title={`Are you sure delete hospital department ${record.Department.name}`}
                       onConfirm={() => this.deleteHospitalDepartment(record)}
                       okText="Yes" cancelText="No"
                     >
@@ -186,6 +165,7 @@ class HospitalDepartmentList extends Component {
           onCancel={this.closeEditWindow}
           onClose={this.closeEditWindow}
           hospitalDepartment={this.state.hospitalDepartment}
+          hospitalId={hospitalId}
           ref={hospitalDepartmentWindow => (this.hospitalDepartmentWindow = hospitalDepartmentWindow)}
         />
       </div>

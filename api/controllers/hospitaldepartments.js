@@ -72,8 +72,9 @@ exports.create = function create(req, res) {
 
 exports.update = function update(req, res) {
   const hospitalDepartmentForm = req.body;
+  const { department, quota } = hospitalDepartmentForm;
   models.HospitalDepartment.update(
-    hospitalDepartmentForm,
+    { DepartmentId: department, quota },
     {
       where: { id: req.params.hospitalDepartmentId },
     })
