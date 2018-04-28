@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Button, Input, Row, Col, Menu, Table, Badge, Popconfirm, message } from 'antd';
+import { Button, Input, Row, Col, Menu, Table, Badge, Popconfirm, DatePicker, message } from 'antd';
 import showError from '../utils/ShowError';
 import HospitalWindow from './HospitalWindow';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
 import HospitalStudentWindow from './HospitalStudentWindow';
 
 const Column = Table.Column;
+const { RangePicker } = DatePicker;
 
 const HOSPITALS_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitalselect/hospitalschedules`;
 const HOSPITAL_DELETE_URL = `${process.env.REACT_APP_SERVER_URL}/api/hospitals`;
@@ -38,6 +39,14 @@ class HospitalList extends Component {
   onDepartmentChange = (e) => {
     this.setState({
       selectedDepartmentId: e,
+    }, () => {
+      this.fetchHospitals();
+    });
+  }
+
+  onRangeChange = (e) => {
+    this.setState({
+      hospitalDateRange: e,
     }, () => {
       this.fetchHospitals();
     });
@@ -131,15 +140,10 @@ class HospitalList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
-            <Input
-              value={this.state.searchText}
-              onChange={this.onSearchChange}
-              placeholder="Code or Name"
-              maxLength="50"
-            />
+          <Col span={6}>
+            <RangePicker onChange={this.onRangeChange} />
           </Col>
-          <Col span={8}>
+          <Col span={6}>
             <DepartmentSelect level={-1} onChange={this.onDepartmentChange} />
           </Col>
           <Col span={8}>
@@ -282,6 +286,7 @@ class HospitalList extends Component {
           onClose={this.closeHospitalStudentWindow}
           hospitalId={this.state.selectedHospitalId}
           departmentId={this.state.selectedDepartmentId}
+          hospitalDateRange={this.state.hospitalDateRange}
           ref={hospitalStudentWindow => (this.hospitalStudentWindow = hospitalStudentWindow)}
         />
       </div>
