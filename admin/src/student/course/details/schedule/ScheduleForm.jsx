@@ -3,12 +3,12 @@ import { Tabs, Form, Input, DatePicker, Button, Row, Col, Spin, Icon, Tag } from
 import axios from 'axios';
 import moment from 'moment';
 
+import HospitalSelect from './HospitalSelect';
 import showError from '../../../../utils/ShowError';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const RangePicker = DatePicker.RangePicker;
-const InputGroup = Input.Group;
 
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 
@@ -69,6 +69,8 @@ class ScheduleForm extends Component {
       adviser,
       examiner,
       dpk,
+      StudentId,
+      DepartmentId,
     } = course;
     const planDate = [moment(planStartDate), moment(planEndDate)];
     const planDate1 = planStartDate1 && planEndDate1 ? [moment(planStartDate1), moment(planEndDate1)] : [];
@@ -154,7 +156,11 @@ class ScheduleForm extends Component {
                         {getFieldDecorator('hospital1', {
                           initialValue: '',
                         })(
-                          <Input />,
+                          <HospitalSelect
+                            studentId={StudentId}
+                            departmentId={DepartmentId}
+                            hospitalType={1}
+                          />,
                         )}
                       </FormItem>
                     </Col>
