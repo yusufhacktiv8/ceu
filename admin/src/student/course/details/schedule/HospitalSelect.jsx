@@ -33,6 +33,7 @@ class HospitalSelect extends Component {
     if (onChange) {
       onChange(changedValue);
     }
+    this.closeHospitalSelectWindow();
   }
 
   showHospitalSelectWindow = () => {
@@ -54,7 +55,7 @@ class HospitalSelect extends Component {
         <Col span={20}>
           <Input
             value={this.state.value ? this.state.value.name : ''}
-            placeholder="Select Hospital"
+            placeholder="Please select"
           />
         </Col>
         <Col span={4}>
@@ -78,6 +79,7 @@ class HospitalSelect extends Component {
           studentId={studentId}
           departmentId={departmentId}
           hospitalType={hospitalType}
+          onSelect={this.handleChange}
           onCancel={this.closeHospitalSelectWindow}
           onClose={this.closeHospitalSelectWindow}
         />

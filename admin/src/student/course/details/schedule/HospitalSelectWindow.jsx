@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, DatePicker, Row, Col, Button, Table, Badge } from 'antd';
+import { Modal, Form, DatePicker, Row, Col, Button, Table, Badge, message } from 'antd';
 import axios from 'axios';
 import showError from '../../../../utils/ShowError';
 
@@ -14,15 +14,23 @@ class HospitalSelectWindow extends Component {
     loading: false,
     dateRange: [],
     hospitalSchedules: [],
+    selectedRowKeys: [],
     selectedRows: [],
   }
 
   onSave = () => {
-    this.props.onSelect();
+    const { selectedRows } = this.state;
+    if (selectedRows.length > 0) {
+      this.props.onSelect(selectedRows[0]);
+    }
   }
 
   fetchHospitalSchedules = () => {
     const dateRange = this.state.dateRange;
+    if (dateRange.length === 0) {
+      message.error('Please select date range');
+      return;
+    }
     const department = this.props.departmentId;
     const student = this.props.studentId;
     const startDate = dateRange[0];
@@ -67,9 +75,12 @@ class HospitalSelectWindow extends Component {
 
     const rowSelection = {
       type: 'radio',
-      selectedRowKeys: this.state.selectedRows,
+      selectedRowKeys: this.state.selectedRowKeys,
       onChange: (rowKeys, selectedRows) => {
-        this.setState({ selectedRows });
+        this.setState({
+          selectedRowKeys: rowKeys,
+          selectedRows,
+        });
       },
     };
     return (
@@ -78,10 +89,17 @@ class HospitalSelectWindow extends Component {
         visible={visible}
         title="Select Hospital"
         okText="Save"
+        onCancel={onCancel}
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
-          <Button key="save" type="primary" loading={saving} onClick={this.onSave}>
-            Save
+          <Button
+            key="save"
+            type="primary"
+            loading={saving}
+            onClick={this.onSave}
+            disabled={this.state.selectedRows.length === 0}
+          >
+            Select
           </Button>,
         ]}
       >

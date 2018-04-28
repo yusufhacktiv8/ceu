@@ -224,10 +224,14 @@ class ScheduleForm extends Component {
                 <Row>
                   <Col span={12}>
                     <FormItem label="Clinic">
-                      {getFieldDecorator('hospital1', {
+                      {getFieldDecorator('clinic', {
                         initialValue: '',
                       })(
-                        <Input />,
+                        <HospitalSelect
+                          studentId={StudentId}
+                          departmentId={DepartmentId}
+                          hospitalType={2}
+                        />,
                       )}
                     </FormItem>
                   </Col>
