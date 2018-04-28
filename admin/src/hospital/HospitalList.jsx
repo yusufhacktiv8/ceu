@@ -4,6 +4,7 @@ import { Button, Input, Row, Col, Menu, Table, Badge, Popconfirm, message } from
 import showError from '../utils/ShowError';
 import HospitalWindow from './HospitalWindow';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
+import HospitalStudentWindow from './HospitalStudentWindow';
 
 const Column = Table.Column;
 
@@ -32,6 +33,14 @@ class HospitalList extends Component {
   onTabsChange = (e) => {
     const activeKey = e.key;
     this.setState({ activeKey });
+  }
+
+  onDepartmentChange = (e) => {
+    this.setState({
+      selectedDepartmentId: e,
+    }, () => {
+      this.fetchHospitals();
+    });
   }
 
   onSaveSuccess = () => {
@@ -103,6 +112,21 @@ class HospitalList extends Component {
     this.props.history.push(`/hospitals/${record.id}/departments`);
   }
 
+  openHospitalStudentWindow = (record) => {
+    this.setState({
+      selectedHospitalId: record.id,
+      hospitalStudentWindowVisible: true,
+    }, () => {
+      this.hospitalStudentWindow.fetchHospitalStudents();
+    });
+  }
+
+  closeHospitalStudentWindow = () => {
+    this.setState({
+      hospitalStudentWindowVisible: false,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -116,7 +140,7 @@ class HospitalList extends Component {
             />
           </Col>
           <Col span={8}>
-            <DepartmentSelect level={-1} />
+            <DepartmentSelect level={-1} onChange={this.onDepartmentChange} />
           </Col>
           <Col span={8}>
             <span>
@@ -190,8 +214,9 @@ class HospitalList extends Component {
                     <Badge
                       count={record.studentsInDepartmentCount}
                       overflowCount={1000}
-                      style={{ backgroundColor: '#87d068' }}
+                      style={{ backgroundColor: '#87d068', cursor: 'pointer' }}
                       showZero
+                      onClick={() => { this.openHospitalStudentWindow(record); }}
                     />
                   );
                   if (studentsInDepartmentCount > departmentQuota) {
@@ -199,7 +224,9 @@ class HospitalList extends Component {
                       <Badge
                         count={record.studentsInDepartmentCount}
                         overflowCount={1000}
+                        style={{ cursor: 'pointer' }}
                         showZero
+                        onClick={() => { this.openHospitalStudentWindow(record); }}
                       />
                     );
                   }
@@ -248,6 +275,14 @@ class HospitalList extends Component {
           onClose={this.closeEditWindow}
           hospital={this.state.hospital}
           ref={hospitalWindow => (this.hospitalWindow = hospitalWindow)}
+        />
+        <HospitalStudentWindow
+          visible={this.state.hospitalStudentWindowVisible}
+          onCancel={this.closeHospitalStudentWindow}
+          onClose={this.closeHospitalStudentWindow}
+          hospitalId={this.state.selectedHospitalId}
+          departmentId={this.state.selectedDepartmentId}
+          ref={hospitalStudentWindow => (this.hospitalStudentWindow = hospitalStudentWindow)}
         />
       </div>
     );

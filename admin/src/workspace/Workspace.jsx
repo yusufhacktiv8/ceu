@@ -60,7 +60,7 @@ class Workspace extends Component {
       selectedKeys = ['users'];
     } else if (location.includes('students') || location.includes('studentdetails')) {
       selectedKeys = ['students'];
-    } else if (location.includes('departments')) {
+    } else if (location.includes('departments') && !location.includes('hospitals')) {
       selectedKeys = ['departments'];
     } else if (location.includes('hospitals')) {
       selectedKeys = ['hospitals'];

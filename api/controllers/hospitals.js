@@ -305,7 +305,7 @@ exports.hospitalSchedule = function hospitalSchedule(req, res) {
 };
 
 exports.hospitalStudents = function hospitalStudents(req, res) {
-  const departmentId = req.query.hospitalDepartment || -1;
+  const departmentId = req.params.departmentId || -1;
   const hospitalId = req.params.hospitalId || -1;
   const hospitalDateRange = req.query.hospitalDateRange;
   let startDate = null;
