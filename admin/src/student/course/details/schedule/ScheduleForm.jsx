@@ -249,7 +249,10 @@ class ScheduleForm extends Component {
                       {getFieldDecorator('dpk', {
                         initialValue: '',
                       })(
-                        <Input />,
+                        <DocentSelect
+                          hospitalId={form.getFieldValue('clinic') ? form.getFieldValue('clinic').id : undefined}
+                          departmentId={DepartmentId}
+                        />,
                       )}
                     </FormItem>
                   </Col>
