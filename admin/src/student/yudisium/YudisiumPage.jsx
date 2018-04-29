@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Checkbox, Button, Tabs, Table, Spin, Icon, message } from 'antd';
+import { Form, Input, Checkbox, Button, Tabs, Table, Spin, Icon, Row, Col, message } from 'antd';
 import axios from 'axios';
 import numeral from 'numeral';
 import showError from '../../utils/ShowError';
@@ -16,11 +16,35 @@ class YudisiumPage extends Component {
     portofolioCompletions: [],
     loading: false,
     loadingYudisium: false,
+    saving: false,
   }
 
   componentDidMount() {
     this.fetchYudisium();
     this.fetchPortofolioCompletions();
+  }
+
+  onSubmit = () => {
+    const { form } = this.props;
+    const { yudisium } = this.state;
+    this.setState({ saving: true });
+    form.validateFields((err, values) => {
+      if (!err) {
+        const axiosObj = axios.put(`${YUDISIUM_CHECKLISTS_URL}/${yudisium.id}`, values);
+        axiosObj.then(() => {
+          message.success('Saving yudisium success');
+          this.setState({
+            saving: false,
+          });
+        })
+          .catch((error) => {
+            this.setState({
+              saving: false,
+            });
+            showError(error);
+          });
+      }
+    });
   }
 
   fetchYudisium() {
@@ -106,6 +130,11 @@ class YudisiumPage extends Component {
                 )}
               </FormItem>
             </Form>
+            <Row>
+              <Col span={24}>
+                <Button type="primary" onClick={this.onSubmit}>Save</Button>
+              </Col>
+            </Row>
           </Spin>
         </TabPane>
         <TabPane tab="Portofolios" key="2">

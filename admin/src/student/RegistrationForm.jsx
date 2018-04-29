@@ -10,6 +10,16 @@ class RegistrationForm extends Component {
     this.setUploadProps(this.props.student);
   }
 
+  onSubmit = () => {
+    const { form } = this.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      console.log(values);
+    });
+  }
+
   setUploadProps = (student) => {
     const uploadProps = {
       name: 'krsFile',
@@ -40,15 +50,6 @@ class RegistrationForm extends Component {
     });
   }
 
-  onSubmit = () => {
-    const { form } = this.props;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-      console.log(values);
-    });
-  }
   render() {
     const { student, form } = this.props;
     const { getFieldDecorator } = form;
@@ -72,7 +73,7 @@ class RegistrationForm extends Component {
                 valuePropName: 'checked',
                 initialValue: student.krs,
               })(
-                <Checkbox>KRS</Checkbox>
+                <Checkbox>KRS</Checkbox>,
               )}
             </FormItem>
           </Col>
@@ -100,7 +101,7 @@ class RegistrationForm extends Component {
                 valuePropName: 'checked',
                 initialValue: student.spp,
               })(
-                <Checkbox>SPP</Checkbox>
+                <Checkbox>SPP</Checkbox>,
               )}
             </FormItem>
           </Col>
