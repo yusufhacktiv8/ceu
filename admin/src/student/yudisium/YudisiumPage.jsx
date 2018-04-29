@@ -27,9 +27,9 @@ class YudisiumPage extends Component {
   onSubmit = () => {
     const { form } = this.props;
     const { yudisium } = this.state;
-    this.setState({ saving: true });
     form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ saving: true });
         const axiosObj = axios.put(`${YUDISIUM_CHECKLISTS_URL}/${yudisium.id}`, values);
         axiosObj.then(() => {
           message.success('Saving yudisium success');
@@ -93,7 +93,7 @@ class YudisiumPage extends Component {
 
   render() {
     const { form } = this.props;
-    const { yudisium, portofolioCompletions, loadingYudisium, loading } = this.state;
+    const { yudisium, portofolioCompletions, loadingYudisium, loading, saving } = this.state;
     const { getFieldDecorator } = form;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -132,7 +132,7 @@ class YudisiumPage extends Component {
             </Form>
             <Row>
               <Col span={24}>
-                <Button type="primary" onClick={this.onSubmit}>Save</Button>
+                <Button type="primary" loading={saving} onClick={this.onSubmit}>Save</Button>
               </Col>
             </Row>
           </Spin>
