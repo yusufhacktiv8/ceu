@@ -155,7 +155,7 @@ class ScheduleForm extends Component {
                     <Col span={12}>
                       <FormItem label="Hospital 1">
                         {getFieldDecorator('hospital1', {
-                          initialValue: '',
+                          initialValue: hospital1,
                         })(
                           <HospitalSelect
                             studentId={StudentId}
@@ -170,7 +170,7 @@ class ScheduleForm extends Component {
                     <Col span={12}>
                       <FormItem label="Adviser">
                         {getFieldDecorator('adviser', {
-                          initialValue: '',
+                          initialValue: adviser,
                         })(
                           <DocentSelect
                             hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
@@ -184,7 +184,7 @@ class ScheduleForm extends Component {
                     <Col span={12}>
                       <FormItem label="Examiner">
                         {getFieldDecorator('examiner', {
-                          initialValue: '',
+                          initialValue: examiner,
                         })(
                           <DocentSelect
                             hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
@@ -232,7 +232,7 @@ class ScheduleForm extends Component {
                   <Col span={12}>
                     <FormItem label="Clinic">
                       {getFieldDecorator('clinic', {
-                        initialValue: '',
+                        initialValue: clinic,
                       })(
                         <HospitalSelect
                           studentId={StudentId}
@@ -247,7 +247,7 @@ class ScheduleForm extends Component {
                   <Col span={12}>
                     <FormItem label="DPK">
                       {getFieldDecorator('dpk', {
-                        initialValue: '',
+                        initialValue: dpk,
                       })(
                         <DocentSelect
                           hospitalId={form.getFieldValue('clinic') ? form.getFieldValue('clinic').id : undefined}

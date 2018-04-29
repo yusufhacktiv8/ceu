@@ -63,7 +63,7 @@ class HospitalSelect extends Component {
             <Button
               icon="close-circle"
               style={{ height: 32 }}
-              onClick={() => this.setState({ value: null })}
+              onClick={() => this.handleChange(null)}
             />
           </span>
           <span>

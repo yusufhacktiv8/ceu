@@ -28,6 +28,45 @@ export default class CourseDetailsPage extends Component {
     this.fetchCourse();
   }
 
+  onSave = () => {
+    const { match } = this.props;
+    const { courseId } = match.params;
+    const { infoForm, scheduleForm } = this;
+    infoForm.validateFields((err, infoFormValues) => {
+      if (!err) {
+        scheduleForm.validateFields((err2, scheduleFormValues) => {
+          if (!err2) {
+            this.setState({
+              saving: true,
+            });
+            const data = { ...infoFormValues, ...scheduleFormValues };
+            if (data.hospital1 && data.hospital1.id) {
+              data.hospital1 = data.hospital1.id;
+            }
+            if (data.clinic && data.clinic.id) {
+              data.clinic = data.clinic.id;
+            }
+            const axiosObj = axios.put(`${COURSES_URL}/${courseId}`, data);
+            axiosObj.then(() => {
+              message.success('Saving course success');
+              this.setState({
+                saving: false,
+              }, () => {
+                this.goToStudentDetailsPage();
+              });
+            })
+              .catch((error) => {
+                this.setState({
+                  saving: false,
+                });
+                showError(error);
+              });
+          }
+        });
+      }
+    });
+  }
+
   goToStudentPage = () => {
     this.props.history.push('/students');
   }
@@ -152,16 +191,15 @@ export default class CourseDetailsPage extends Component {
   render() {
     const { match } = this.props;
     const { courseId } = match.params;
-    const { saving, course } = this.state;
+    const { saving, course, pending, deleting } = this.state;
     const { title } = course;
-    console.log(course);
     const buttons = [course.status !== 4 ?
-      <Button loading={this.state.pending} key="pending" type="danger" size="small" onClick={() => this.confirmPending(title, courseId)}>Pending</Button>
+      <Button loading={pending} key="pending" type="danger" size="small" onClick={() => this.confirmPending(title, courseId)}>Pending</Button>
       :
-      <Button key="unPending" type="default" size="small" onClick={() => this.confirmUnPending(title, courseId)}>Un Pending</Button>,
+      <Button loading={pending} key="unPending" type="default" size="small" onClick={() => this.confirmUnPending(title, courseId)}>Un Pending</Button>,
 
-      <Button style={{ marginLeft: 8 }} key="delete" type="danger" size="small" onClick={() => this.confirmDelete(title, courseId)}>Delete</Button>,
-      <Button style={{ marginLeft: 8 }} key="save" type="primary" size="small" loading={saving} onClick={this.onSave}>
+      <Button loading={deleting} style={{ marginLeft: 8 }} key="delete" type="danger" size="small" onClick={() => this.confirmDelete(title, courseId)}>Delete</Button>,
+      <Button loading={saving} style={{ marginLeft: 8 }} key="save" type="primary" size="small" onClick={this.onSave}>
         Save
       </Button>,
     ]
@@ -198,13 +236,19 @@ export default class CourseDetailsPage extends Component {
             style={{ marginTop: -10, height: 500 }}
           >
             <TabPane tab="Info" key="1">
-              <InfoForm courseId={courseId} />
+              <InfoForm
+                courseId={courseId}
+                ref={(infoForm) => { this.infoForm = infoForm; }}
+              />
             </TabPane>
             <TabPane tab="SGL" key="2">
               <SglList courseId={courseId} />
             </TabPane>
-            <TabPane tab="Schedules" key="3">
-              <ScheduleForm courseId={courseId} />
+            <TabPane tab="Schedules" key="3" forceRender>
+              <ScheduleForm
+                courseId={courseId}
+                ref={(scheduleForm) => { this.scheduleForm = scheduleForm; }}
+              />
             </TabPane>
             <TabPane tab="Portofolios" key="4">
               <PortofolioList courseId={courseId} />
