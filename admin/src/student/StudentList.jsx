@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
 import StudentWindow from './StudentWindow';
+import LevelSelect from './LevelSelect';
 import showError from '../utils/ShowError';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
@@ -13,6 +14,7 @@ class StudentList extends Component {
     student: {},
     students: [],
     loading: false,
+    level: 1,
     count: 0,
     currentPage: 1,
     pageSize: 10,
@@ -32,6 +34,7 @@ class StudentList extends Component {
       loading: true,
     });
     axios.get(STUDENTS_URL, { params: {
+      level: this.state.level,
       searchText: this.state.searchText,
       start: (this.state.currentPage - 1) * this.state.pageSize,
       count: this.state.pageSize,
@@ -123,7 +126,7 @@ class StudentList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
+          <Col span={6}>
             <Input
               value={this.state.searchText}
               onChange={(e) => {
@@ -134,7 +137,17 @@ class StudentList extends Component {
               placeholder="Name or SID"
             />
           </Col>
-          <Col span={16}>
+          <Col span={4}>
+            <LevelSelect
+              value={this.state.level}
+              onChange={(e) => {
+                this.setState({
+                  level: e,
+                });
+              }}
+            />
+          </Col>
+          <Col span={14}>
             <span>
               <Button
                 shape="circle"
@@ -170,16 +183,49 @@ class StudentList extends Component {
                 title="Name"
                 dataIndex="name"
                 key="name"
+                render={(columnText, record) => {
+                  const reg = new RegExp(this.state.searchText, 'gi');
+                  const match = columnText.match(reg);
+                  return (
+                    <span key={record.name}>
+                      {columnText.split(reg).map((text, i) => (
+                        i > 0 ? [<span key={record.name} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                      ))}
+                    </span>
+                  );
+                }}
               />
               <Column
                 title="Old SID"
                 dataIndex="oldSid"
                 key="oldSid"
+                render={(columnText, record) => {
+                  const reg = new RegExp(this.state.searchText, 'gi');
+                  const match = columnText.match(reg);
+                  return (
+                    <span key={record.oldSid}>
+                      {columnText.split(reg).map((text, i) => (
+                        i > 0 ? [<span key={record.oldSid} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                      ))}
+                    </span>
+                  );
+                }}
               />
               <Column
                 title="New SID"
                 dataIndex="newSid"
                 key="newSid"
+                render={(columnText, record) => {
+                  const reg = new RegExp(this.state.searchText, 'gi');
+                  const match = columnText.match(reg);
+                  return (
+                    <span key={record.newSid}>
+                      {columnText.split(reg).map((text, i) => (
+                        i > 0 ? [<span key={record.newSid} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
+                      ))}
+                    </span>
+                  );
+                }}
               />
               <Column
                 title="Action"
