@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Layout, Steps, Row, Col, Button, Tag, message, Icon, Spin } from 'antd';
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
+import YudisiumPage from './yudisium/YudisiumPage';
 import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -115,6 +116,12 @@ export default class StudentDetailsPage extends Component {
               this.state.current === 2
               &&
               <CoursePage studentId={studentId} level={2} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 3
+              &&
+              <YudisiumPage studentId={studentId} level={2} history={this.props.history} />
             }
           </div>
           <div className="steps-action">
