@@ -4,6 +4,7 @@ import axios from 'axios';
 import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
 import ScheduleForm from './schedule/ScheduleForm';
+import PortofolioList from './portofolio/PortofolioList';
 import showError from '../../../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -92,6 +93,9 @@ export default class CourseDetailsPage extends Component {
             </TabPane>
             <TabPane tab="Schedules" key="3">
               <ScheduleForm courseId={courseId} />
+            </TabPane>
+            <TabPane tab="Portofolio" key="4">
+              <PortofolioList courseId={courseId} />
             </TabPane>
           </Tabs>
         </Content>
