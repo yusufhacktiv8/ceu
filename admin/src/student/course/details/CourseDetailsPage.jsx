@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Tabs, Spin, Icon, Tag } from 'antd';
+import { Layout, Tabs, Spin, Icon, Tag, Button, Modal, message } from 'antd';
 import axios from 'axios';
 import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
@@ -14,11 +14,14 @@ const TabPane = Tabs.TabPane;
 
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const { confirm } = Modal;
 
 export default class CourseDetailsPage extends Component {
   state = {
     course: {},
     loading: false,
+    saving: false,
+    pending: false,
   }
   componentDidMount() {
     this.fetchCourse();
@@ -56,9 +59,87 @@ export default class CourseDetailsPage extends Component {
         });
       });
   }
+
+  confirmPending = (title, courseId) => {
+    const onSaveSuccess = () => {
+      this.fetchCourse();
+    };
+
+    const onOk = () => {
+      const axiosObj = axios.put(`${COURSES_URL}/${courseId}/pending`);
+      this.setState({
+        pending: true,
+      });
+      axiosObj.then(() => {
+        message.success('Pending course success');
+        this.setState({
+          pending: false,
+        }, () => {
+          onSaveSuccess();
+        });
+      })
+        .catch((error) => {
+          this.setState({
+            pending: false,
+          });
+          showError(error);
+        });
+    };
+
+    confirm({
+      title: `Do you want to pending this course ${title}?`,
+      onOk,
+    });
+  }
+
+  confirmUnPending = (title, courseId) => {
+    const onSaveSuccess = () => {
+      this.fetchCourse();
+    };
+
+    const onOk = () => {
+      const axiosObj = axios.put(`${COURSES_URL}/${courseId}/unpending`);
+      this.setState({
+        pending: true,
+      });
+      axiosObj.then(() => {
+        message.success('Unpending course success');
+        this.setState({
+          pending: false,
+        }, () => {
+          onSaveSuccess();
+        });
+      })
+        .catch((error) => {
+          this.setState({
+            pending: false,
+          });
+          showError(error);
+        });
+    };
+
+    confirm({
+      title: `Do you want to unpending this course ${title}?`,
+      onOk,
+    });
+  }
+
   render() {
     const { match } = this.props;
     const { courseId } = match.params;
+    const { saving, course } = this.state;
+    const { title } = course;
+    console.log(course);
+    const buttons = [course.status !== 4 ?
+      <Button loading={this.state.pending} key="pending" type="danger" size="small" onClick={() => this.confirmPending(title, courseId)}>Pending</Button>
+      :
+      <Button key="unPending" type="default" size="small" onClick={() => this.confirmUnPending(title, courseId)}>Un Pending</Button>,
+
+      <Button style={{ marginLeft: 8 }} key="delete" type="danger" size="small" onClick={() => this.confirmDelete(title, courseId)}>Delete</Button>,
+      <Button style={{ marginLeft: 8 }} key="save" type="primary" size="small" loading={saving} onClick={this.onSave}>
+        Save
+      </Button>,
+    ]
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
@@ -86,7 +167,11 @@ export default class CourseDetailsPage extends Component {
                 </div>
               )
           }
-          <Tabs defaultActiveKey="1" style={{ marginTop: -10, height: 500 }}>
+          <Tabs
+            defaultActiveKey="1"
+            tabBarExtraContent={buttons}
+            style={{ marginTop: -10, height: 500 }}
+          >
             <TabPane tab="Info" key="1">
               <InfoForm courseId={courseId} />
             </TabPane>
