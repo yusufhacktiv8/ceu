@@ -5,6 +5,7 @@ import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
 import ScheduleForm from './schedule/ScheduleForm';
 import PortofolioList from './portofolio/PortofolioList';
+import SeminarList from './seminar/SeminarList';
 import showError from '../../../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -94,8 +95,11 @@ export default class CourseDetailsPage extends Component {
             <TabPane tab="Schedules" key="3">
               <ScheduleForm courseId={courseId} />
             </TabPane>
-            <TabPane tab="Portofolio" key="4">
+            <TabPane tab="Portofolios" key="4">
               <PortofolioList courseId={courseId} />
+            </TabPane>
+            <TabPane tab="Seminars" key="5">
+              <SeminarList courseId={courseId} />
             </TabPane>
           </Tabs>
         </Content>
