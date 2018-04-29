@@ -4,7 +4,8 @@ import axios from 'axios';
 import showError from '../../utils/ShowError';
 import DepartmentSelect from '../../settings/department/DepartmentSelect';
 
-const ROLES_URL = `${process.env.REACT_APP_SERVER_URL}/api/roles`;
+const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
+const getCourseURL = studentId => `${STUDENTS_URL}/${studentId}/courses`;
 
 const FormItem = Form.Item;
 
@@ -14,7 +15,7 @@ class AddCourseDepartmentWindow extends Component {
   }
 
   onSave = () => {
-    const { role, onSaveSuccess, form } = this.props;
+    const { studentId, onSaveSuccess, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -22,10 +23,10 @@ class AddCourseDepartmentWindow extends Component {
       this.setState({
         saving: true,
       }, () => {
-        const roleId = role.id;
-        const axiosObj = roleId ? axios.put(`${ROLES_URL}/${roleId}`, values) : axios.post(ROLES_URL, values);
+        const valuesWithLevel = { ...values, formType: 'DEPARTMENT' };
+        const axiosObj = axios.post(getCourseURL(studentId), valuesWithLevel);
         axiosObj.then(() => {
-          message.success('Saving role success');
+          message.success('Saving courses success');
           this.setState({
             saving: false,
           }, () => {
@@ -44,7 +45,7 @@ class AddCourseDepartmentWindow extends Component {
 
   render() {
     const { saving } = this.state;
-    const { visible, onCancel, form } = this.props;
+    const { level, visible, onCancel, form } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
@@ -68,7 +69,7 @@ class AddCourseDepartmentWindow extends Component {
                     { required: true, message: 'Please input start date' },
                   ],
                 })(
-                  <DepartmentSelect />,
+                  <DepartmentSelect level={level} />,
                 )}
               </FormItem>
             </Col>
