@@ -1,22 +1,41 @@
 import React, { Component } from 'react';
-import { Form, Checkbox, Upload, Button, Icon, Row, Col, notification } from 'antd';
+import axios from 'axios';
+import { Form, Checkbox, Upload, Button, Icon, Row, Col, Spin, notification, message } from 'antd';
+import showError from '../utils/ShowError';
 
-const API_URL = `${process.env.REACT_APP_SERVER_URL}/api`;
+const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 
 const FormItem = Form.Item;
 
 class RegistrationForm extends Component {
+  state = {
+    saving: false,
+  }
   componentWillMount() {
     this.setUploadProps(this.props.student);
   }
 
   onSubmit = () => {
-    const { form } = this.props;
+    const { form, student } = this.props;
     form.validateFields((err, values) => {
-      if (err) {
-        return;
+      if (!err) {
+        this.setState({
+          saving: true,
+        });
+        const axiosObj = axios.put(`${STUDENTS_URL}/${student.id}`, values);
+        axiosObj.then(() => {
+          message.success('Saving krs success');
+          this.setState({
+            saving: false,
+          });
+        })
+          .catch((error) => {
+            this.setState({
+              saving: false,
+            });
+            showError(error);
+          });
       }
-      console.log(values);
     });
   }
 
@@ -28,7 +47,7 @@ class RegistrationForm extends Component {
         authorization: 'authorization-text',
       },
     };
-    uploadProps.action = `${API_URL}/students/${student.id}/uploadfile/krs`;
+    uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/krs`;
     uploadProps.onChange = (info) => {
       if (info.file.status !== 'uploading') {
         // console.log(info.file, info.fileList);
@@ -51,67 +70,72 @@ class RegistrationForm extends Component {
   }
 
   render() {
-    const { student, form } = this.props;
+    const { saving } = this.state;
+    const { student, form, loading } = this.props;
     const { getFieldDecorator } = form;
+
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     let krsFileIdComponent = 'No File';
 
     if (student.krsFileId) {
       krsFileIdComponent = (
-        <a target="_blank" href={`${API_URL}/student/krs/${student.krsFileId}.jpg`}>
+        <a target="_blank" href={`${STUDENTS_URL}/krs/${student.krsFileId}.jpg`}>
           {student.krsFileId}
         </a>
       );
     }
 
     return (
-      <Form>
-        <Row>
-          <Col span={8}>
-            <FormItem>
-              {getFieldDecorator('krs', {
-                valuePropName: 'checked',
-                initialValue: student.krs,
-              })(
-                <Checkbox>KRS</Checkbox>,
-              )}
-            </FormItem>
-          </Col>
-          <Col span={8}>
-            <FormItem>
-              {krsFileIdComponent}
-            </FormItem>
-          </Col>
-          <Col span={8}>
-            <FormItem
-              colon={false}
-            >
-              <Upload {...this.state.uploadProps} disabled={!student.id} showUploadList={false}>
-                <Button disabled={!student.id}>
-                  <Icon type="upload" /> Click to Upload
-                </Button>
-              </Upload>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <FormItem>
-              {getFieldDecorator('spp', {
-                valuePropName: 'checked',
-                initialValue: student.spp,
-              })(
-                <Checkbox>SPP</Checkbox>,
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <Button type="primary" onClick={this.onSubmit}>Save</Button>
-          </Col>
-        </Row>
-      </Form>
+      <Spin indicator={antIcon} spinning={loading}>
+        <Form>
+          <Row>
+            <Col span={8}>
+              <FormItem>
+                {getFieldDecorator('krs', {
+                  valuePropName: 'checked',
+                  initialValue: student.krs,
+                })(
+                  <Checkbox>KRS</Checkbox>,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem>
+                {krsFileIdComponent}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                colon={false}
+              >
+                <Upload {...this.state.uploadProps} disabled={!student.id} showUploadList={false}>
+                  <Button disabled={!student.id}>
+                    <Icon type="upload" /> Click to Upload
+                  </Button>
+                </Upload>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <FormItem>
+                {getFieldDecorator('spp', {
+                  valuePropName: 'checked',
+                  initialValue: student.spp,
+                })(
+                  <Checkbox>SPP</Checkbox>,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Button type="primary" loading={saving} onClick={this.onSubmit}>Save</Button>
+            </Col>
+          </Row>
+        </Form>
+      </Spin>
     );
   }
 }

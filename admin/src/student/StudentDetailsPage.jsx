@@ -15,7 +15,7 @@ const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 1,
+    current: 0,
     student: {},
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
@@ -61,7 +61,7 @@ export default class StudentDetailsPage extends Component {
   }
 
   render() {
-    const { current } = this.state;
+    const { current, student, loading } = this.state;
     const { match } = this.props;
     const { studentId } = match.params;
     return (
@@ -101,7 +101,7 @@ export default class StudentDetailsPage extends Component {
               &&
               <Row>
                 <Col span={12}>
-                  <RegistrationForm student={{}} />
+                  <RegistrationForm loading={loading} student={student} />
                 </Col>
               </Row>
             }
