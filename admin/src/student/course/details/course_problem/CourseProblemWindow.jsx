@@ -114,6 +114,7 @@ class CourseProblemWindow extends Component {
           </FormItem>
           <FormItem label="">
             {getFieldDecorator('completed', {
+              initialValue: courseProblem.completed,
               valuePropName: 'checked',
             })(
               <Checkbox>Completed</Checkbox>,
