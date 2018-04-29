@@ -22,6 +22,7 @@ export default class CourseDetailsPage extends Component {
     loading: false,
     saving: false,
     pending: false,
+    deleting: false,
   }
   componentDidMount() {
     this.fetchCourse();
@@ -120,6 +121,30 @@ export default class CourseDetailsPage extends Component {
 
     confirm({
       title: `Do you want to unpending this course ${title}?`,
+      onOk,
+    });
+  }
+
+  confirmDelete = (title, courseId) => {
+    const onOk = () => {
+      const axiosObj = axios.delete(`${COURSES_URL}/${courseId}`);
+      this.setState({
+        deleting: true,
+      });
+      axiosObj.then(() => {
+        message.success('Delete course success');
+        this.goToStudentDetailsPage();
+      })
+        .catch((error) => {
+          this.setState({
+            deleting: false,
+          });
+          showError(error);
+        });
+    };
+
+    confirm({
+      title: `Do you want to delete this course ${title}?`,
       onOk,
     });
   }
