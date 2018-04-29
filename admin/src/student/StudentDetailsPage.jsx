@@ -114,7 +114,7 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 2
               &&
-              <CoursePage studentId={studentId} level={2} />
+              <CoursePage studentId={studentId} level={2} history={this.props.history} />
             }
           </div>
           <div className="steps-action">

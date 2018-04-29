@@ -341,15 +341,19 @@ exports.addCourses = function(req, res) {
 
 exports.findCourses = function(req, res) {
   const studentId = req.params.studentId;
+  const courseFilter = {};
+  if (req.query.level) {
+    courseFilter.level = parseInt(req.query.level, 10);
+  }
   models.Student.findOne({
-    where: { id: studentId }
+    where: { id: studentId },
   })
   .then((student) => {
     models.Course.findAll({
       where: {},
       include: [
         { model: models.Student, where: { id: studentId } },
-        { model: models.Department },
+        { model: models.Department, where: { ...courseFilter } },
         { model: models.Score },
         { model: models.Hospital, as: 'hospital1' },
         { model: models.Hospital, as: 'hospital2' },
