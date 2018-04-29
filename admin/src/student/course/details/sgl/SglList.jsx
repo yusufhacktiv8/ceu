@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, Popconfirm, Checkbox } from 'antd';
+import { Table, Checkbox } from 'antd';
 import moment from 'moment';
 import showError from '../../../../utils/ShowError';
 
@@ -12,10 +12,8 @@ class SglList extends Component {
   state = {
     sgls: [],
     loading: false,
-    count: 0,
-    currentPage: 1,
-    pageSize: 10,
   }
+
   componentDidMount() {
     this.fetchSgls();
   }
@@ -47,13 +45,6 @@ class SglList extends Component {
       });
   }
 
-  pageChanged = (pagination) => {
-    const page = pagination.current;
-    this.setState({
-      currentPage: page,
-    }, () => { this.fetchSgls(); });
-  }
-
   render() {
     return (
       <div style={{ marginTop: -15 }}>
@@ -62,12 +53,6 @@ class SglList extends Component {
           style={{ marginTop: 20 }}
           rowKey="id"
           loading={this.state.loading}
-          pagination={{
-            total: this.state.count,
-            current: this.state.currentPage,
-            pageSize: this.state.pageSize,
-          }}
-          onChange={this.pageChanged}
           size="small"
         >
           <Column
@@ -91,31 +76,6 @@ class SglList extends Component {
             render={(text, record) => (
               <span>
                 {moment(text).format('DD/MM/YYYY')}
-              </span>
-            )}
-          />
-          <Column
-            title="Action"
-            key="action"
-            render={(text, record) => (
-              <span>
-                <Button
-                  icon="ellipsis"
-                  size="small"
-                  onClick={() => this.openEditWindow(record)}
-                  style={{ marginRight: 5 }}
-                />
-                <Popconfirm
-                  title={`Are you sure delete sgl ${record.name}`}
-                  onConfirm={() => this.deleteSgl(record)}
-                  okText="Yes" cancelText="No"
-                >
-                  <Button
-                    type="danger"
-                    icon="delete"
-                    size="small"
-                  />
-                </Popconfirm>
               </span>
             )}
           />

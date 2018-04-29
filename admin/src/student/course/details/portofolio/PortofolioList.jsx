@@ -10,11 +10,8 @@ const getPortofoliosUrl = courseId => `${COURSES_URL}/${courseId}/portofolios`;
 
 class PortofolioList extends Component {
   state = {
-    sgls: [],
+    portofolios: [],
     loading: false,
-    count: 0,
-    currentPage: 1,
-    pageSize: 10,
   }
   componentDidMount() {
     this.fetchPortofolios();
@@ -32,7 +29,7 @@ class PortofolioList extends Component {
     } })
       .then((response) => {
         this.setState({
-          sgls: response.data.rows,
+          portofolios: response.data.rows,
           count: response.data.count,
           loading: false,
         });
@@ -47,27 +44,14 @@ class PortofolioList extends Component {
       });
   }
 
-  pageChanged = (pagination) => {
-    const page = pagination.current;
-    this.setState({
-      currentPage: page,
-    }, () => { this.fetchPortofolios(); });
-  }
-
   render() {
     return (
       <div style={{ marginTop: -15 }}>
         <Table
-          dataSource={this.state.sgls}
+          dataSource={this.state.portofolios}
           style={{ marginTop: 20 }}
           rowKey="id"
           loading={this.state.loading}
-          pagination={{
-            total: this.state.count,
-            current: this.state.currentPage,
-            pageSize: this.state.pageSize,
-          }}
-          onChange={this.pageChanged}
           size="small"
         >
           <Column
