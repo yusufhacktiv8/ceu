@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.3.3",
     "axios": "^0.18.0",
+    "dhtmlx-gantt": "^5.1.0",
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
     "numeral": "^2.0.6",

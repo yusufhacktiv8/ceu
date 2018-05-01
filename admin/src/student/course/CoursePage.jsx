@@ -3,6 +3,7 @@ import { Menu, Row, Col, Button, Icon, Dropdown, Spin } from 'antd';
 import axios from 'axios';
 import AddCourseByLevelWindow from '../course/AddCourseByLevelWindow';
 import AddCourseByDepartmentWindow from '../course/AddCourseByDepartmentWindow';
+import CourseChartWindow from './details/CourseChartWindow';
 import CourseList from './CourseList';
 import showError from '../../utils/ShowError';
 
@@ -15,6 +16,7 @@ export default class CoursePage extends Component {
     loading: false,
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
+    courseChartWindowVisible: false,
   }
 
   componentDidMount() {
@@ -40,6 +42,18 @@ export default class CoursePage extends Component {
   closeAddCourseByDepartmentWindow = () => {
     this.setState({
       addCourseByDepartmentWindowVisible: false,
+    });
+  }
+
+  openCourseChartWindow = () => {
+    this.setState({
+      courseChartWindowVisible: true,
+    });
+  }
+
+  closeCourseChartWindow = () => {
+    this.setState({
+      courseChartWindowVisible: false,
     });
   }
 
@@ -112,7 +126,7 @@ export default class CoursePage extends Component {
           </Dropdown>
         </Col>
         <Col span={2}>
-          <Button>Chart <Icon type="layout" /></Button>
+          <Button onClick={this.openCourseChartWindow}>Chart <Icon type="layout" /></Button>
         </Col>
 
         <AddCourseByLevelWindow
@@ -132,6 +146,14 @@ export default class CoursePage extends Component {
           onCancel={this.closeAddCourseByDepartmentWindow}
           onClose={this.closeAddCourseByDepartmentWindow}
           ref={obj => (this.addCourseByDepartmentWindow = obj)}
+        />
+
+        <CourseChartWindow
+          visible={this.state.courseChartWindowVisible}
+          level={level}
+          courses={this.state.courses}
+          onCancel={this.closeCourseChartWindow}
+          onClose={this.closeCourseChartWindow}
         />
       </Row>
     );
