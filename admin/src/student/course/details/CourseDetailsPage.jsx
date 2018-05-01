@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tabs, Spin, Icon, Tag, Button, Modal, message } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
 import ScheduleForm from './schedule/ScheduleForm';
@@ -15,6 +16,7 @@ const TabPane = Tabs.TabPane;
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const { confirm } = Modal;
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 export default class CourseDetailsPage extends Component {
   state = {
@@ -46,6 +48,36 @@ export default class CourseDetailsPage extends Component {
             if (data.clinic && data.clinic.id) {
               data.clinic = data.clinic.id;
             }
+
+            // Normalize dates
+            if (data.realStartDate) {
+              data.realStartDate = data.realStartDate.format(DATE_FORMAT);
+            }
+            if (data.realEndDate) {
+              data.realEndDate = data.realEndDate.format(DATE_FORMAT);
+            }
+
+            if (data.realStartDate1) {
+              data.realStartDate1 = data.realStartDate1.format(DATE_FORMAT);
+            }
+            if (data.realEndDate1) {
+              data.realEndDate1 = data.realEndDate1.format(DATE_FORMAT);
+            }
+
+            if (data.realStartDate2) {
+              data.realStartDate2 = data.realStartDate2.format(DATE_FORMAT);
+            }
+            if (data.realEndDate2) {
+              data.realEndDate2 = data.realEndDate2.format(DATE_FORMAT);
+            }
+
+            if (data.realStartDate3) {
+              data.realStartDate3 = data.realStartDate3.format(DATE_FORMAT);
+            }
+            if (data.realEndDate3) {
+              data.realEndDate3 = data.realEndDate3.format(DATE_FORMAT);
+            }
+
             const axiosObj = axios.put(`${COURSES_URL}/${courseId}`, data);
             axiosObj.then(() => {
               message.success('Saving course success');
