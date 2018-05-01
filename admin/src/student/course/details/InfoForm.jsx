@@ -86,7 +86,7 @@ class InfoForm extends Component {
         break;
       case 3:
         status = 'error';
-        text = `Problem : ${'courseForm.tempProblemDescription.value'}`;
+        text = `Problem : ${course.problemDescription}`;
         break;
       case 4:
         status = 'error';
