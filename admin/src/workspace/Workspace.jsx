@@ -10,6 +10,7 @@ import DepartmentPage from '../settings/department/DepartmentPage';
 import CourseDetailsPage from '../student/course/details/CourseDetailsPage';
 import HospitalPage from '../hospital/HospitalPage';
 import HospitalDepartmentPage from '../hospital/HospitalDepartmentPage';
+import CostUnitPage from '../report/finance/CostUnitPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -64,6 +65,8 @@ class Workspace extends Component {
       selectedKeys = ['departments'];
     } else if (location.includes('hospitals')) {
       selectedKeys = ['hospitals'];
+    } else if (location.includes('costunit')) {
+      selectedKeys = ['costunit'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -110,6 +113,26 @@ class Workspace extends Component {
                 <Menu.Item key="hospitals">
                   <Link to="/hospitals"><Icon type="medicine-box" />Hospitals</Link>
                 </Menu.Item>
+                <SubMenu title={<span><Icon type="solution" />Process</span>}>
+                  <Menu.Item key="initiate">
+                    <Link to="/initiate">Initiate</Link>
+                  </Menu.Item>
+                  <Menu.Item key="completed">
+                    <Link to="/completed">Completed</Link></Menu.Item>
+                  <Menu.Item key="preyudisium">
+                    <Link to="/preyudisium">Pre Yudisium</Link></Menu.Item>
+                  <Menu.Item key="assistance">
+                    <Link to="/assistance">Assistance</Link></Menu.Item>
+                </SubMenu>
+                <SubMenu title={<span><Icon type="file-text" />Reports</span>}>
+                  <MenuItemGroup title="Finance">
+                    <Menu.Item key="costunit">
+                      <Link to="/costunit">Cost Unit</Link>
+                    </Menu.Item>
+                    <Menu.Item key="costunitclinic">
+                      <Link to="/costunitclinic">Cost Unit Clinic</Link></Menu.Item>
+                  </MenuItemGroup>
+                </SubMenu>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
                     <Menu.Item key="users">
@@ -138,6 +161,7 @@ class Workspace extends Component {
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
             <Route exact path="/hospitals" component={HospitalPage} />
             <Route exact path="/hospitals/:hospitalId/departments" component={HospitalDepartmentPage} />
+            <Route exact path="/costunit" component={CostUnitPage} />
           </div>
         </Content>
       </Layout>
