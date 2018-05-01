@@ -66,7 +66,7 @@ class AddCourseDepartmentWindow extends Component {
               <FormItem label="Department">
                 {getFieldDecorator('department', {
                   rules: [
-                    { required: true, message: 'Please input start date' },
+                    { required: true, message: 'Please input department' },
                   ],
                 })(
                   <DepartmentSelect level={level} />,

@@ -62,7 +62,7 @@ class UserWindow extends Component {
             {getFieldDecorator('user', {
               initialValue: user.User ? user.User.id : undefined,
               rules: [
-                { required: true, message: 'Please input role' },
+                { required: true, message: 'Please input user' },
               ],
             })(
               <UserByRoleSelect roleCode="BAKORDIK" />,
@@ -72,7 +72,7 @@ class UserWindow extends Component {
             {getFieldDecorator('hospital', {
               initialValue: user.Hospital ? String(user.Hospital.id) : undefined,
               rules: [
-                { required: true, message: 'Please input role' },
+                { required: true, message: 'Please input hospital' },
               ],
             })(
               <HospitalSelect hospitalType={-1} />,
