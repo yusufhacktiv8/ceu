@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Tabs, Spin, Icon, Tag, Button, Modal, message } from 'antd';
 import axios from 'axios';
-import moment from 'moment';
 import InfoForm from './InfoForm';
 import SglList from './sgl/SglList';
 import ScheduleForm from './schedule/ScheduleForm';
@@ -17,6 +16,54 @@ const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const { confirm } = Modal;
 const DATE_FORMAT = 'YYYY-MM-DD';
+
+const fixDates = (data) => {
+  const result = { ...data };
+  if (data.planDate && data.planDate.length > 1) {
+    result.planDate = [data.planDate[0].format(DATE_FORMAT),
+      data.planDate[1].format(DATE_FORMAT)];
+  }
+  if (data.realStartDate) {
+    result.realStartDate = data.realStartDate.format(DATE_FORMAT);
+  }
+  if (data.realEndDate) {
+    result.realEndDate = data.realEndDate.format(DATE_FORMAT);
+  }
+
+  if (data.planDate1 && data.planDate1.length > 1) {
+    result.planDate1 = [data.planDate1[0].format(DATE_FORMAT),
+      data.planDate1[1].format(DATE_FORMAT)];
+  }
+  if (data.realStartDate1) {
+    result.realStartDate1 = data.realStartDate1.format(DATE_FORMAT);
+  }
+  if (data.realEndDate1) {
+    result.realEndDate1 = data.realEndDate1.format(DATE_FORMAT);
+  }
+
+  if (data.planDate2 && data.planDate2.length > 1) {
+    result.planDate2 = [data.planDate2[0].format(DATE_FORMAT),
+      data.planDate2[1].format(DATE_FORMAT)];
+  }
+  if (data.realStartDate2) {
+    result.realStartDate2 = data.realStartDate2.format(DATE_FORMAT);
+  }
+  if (data.realEndDate2) {
+    result.realEndDate2 = data.realEndDate2.format(DATE_FORMAT);
+  }
+
+  if (data.planDate3 && data.planDate3.length > 1) {
+    result.planDate3 = [data.planDate3[0].format(DATE_FORMAT),
+      data.planDate3[1].format(DATE_FORMAT)];
+  }
+  if (data.realStartDate3) {
+    result.realStartDate3 = data.realStartDate3.format(DATE_FORMAT);
+  }
+  if (data.realEndDate3) {
+    result.realEndDate3 = data.realEndDate3.format(DATE_FORMAT);
+  }
+  return result;
+};
 
 export default class CourseDetailsPage extends Component {
   state = {
@@ -49,36 +96,9 @@ export default class CourseDetailsPage extends Component {
               data.clinic = data.clinic.id;
             }
 
-            // Normalize dates
-            if (data.realStartDate) {
-              data.realStartDate = data.realStartDate.format(DATE_FORMAT);
-            }
-            if (data.realEndDate) {
-              data.realEndDate = data.realEndDate.format(DATE_FORMAT);
-            }
+            const normalizedDatesData = fixDates(data);
 
-            if (data.realStartDate1) {
-              data.realStartDate1 = data.realStartDate1.format(DATE_FORMAT);
-            }
-            if (data.realEndDate1) {
-              data.realEndDate1 = data.realEndDate1.format(DATE_FORMAT);
-            }
-
-            if (data.realStartDate2) {
-              data.realStartDate2 = data.realStartDate2.format(DATE_FORMAT);
-            }
-            if (data.realEndDate2) {
-              data.realEndDate2 = data.realEndDate2.format(DATE_FORMAT);
-            }
-
-            if (data.realStartDate3) {
-              data.realStartDate3 = data.realStartDate3.format(DATE_FORMAT);
-            }
-            if (data.realEndDate3) {
-              data.realEndDate3 = data.realEndDate3.format(DATE_FORMAT);
-            }
-
-            const axiosObj = axios.put(`${COURSES_URL}/${courseId}`, data);
+            const axiosObj = axios.put(`${COURSES_URL}/${courseId}`, normalizedDatesData);
             axiosObj.then(() => {
               message.success('Saving course success');
               this.setState({
