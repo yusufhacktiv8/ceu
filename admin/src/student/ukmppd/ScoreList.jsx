@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Row, Col, Button, Menu } from 'antd';
+import { Table, Checkbox, Row, Col, Button, Menu, message, Popconfirm } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
+import ScoreWindow from './ScoreWindow';
 
 const Column = Table.Column;
-const STUDENT_ASSISTANCES_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistanceparticipants`;
-const getScoresUrl = studentId => `${STUDENT_ASSISTANCES_URL}/bystudent/${studentId}`;
+const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
+const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
 
 class ScoreList extends Component {
   state = {
     scores: [],
+    score: {},
     loading: false,
     activeKey: 'K001',
+    scoreWindowVisible: false,
   }
   componentDidMount() {
+    this.fetchScores();
+  }
+
+  onSaveSuccess = () => {
+    this.closeEditWindow();
     this.fetchScores();
   }
 
@@ -45,7 +54,38 @@ class ScoreList extends Component {
       });
   }
 
+  deleteScore(score) {
+    const hide = message.loading('Action in progress..', 0);
+    axios.delete(`${SCORES_URL}/${score.id}`)
+      .then(() => {
+        message.success('Delete score success');
+        this.fetchScores();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        hide();
+      });
+  }
+
+  openEditWindow = (record) => {
+    this.setState({
+      score: record,
+      scoreWindowVisible: true,
+    }, () => {
+      this.scoreWindow.resetFields();
+    });
+  }
+
+  closeEditWindow = () => {
+    this.setState({
+      scoreWindowVisible: false,
+    });
+  }
+
   render() {
+    const { studentId } = this.props;
     return (
       <div style={{ marginTop: -15 }}>
         <Row gutter={10} style={{ marginTop: 10 }}>
@@ -98,14 +138,26 @@ class ScoreList extends Component {
           size="small"
         >
           <Column
-            title="Title"
-            dataIndex="name"
-            key="name"
+            title="Selected"
+            dataIndex="selected"
+            render={(text, record) => (
+              <span>
+                <Checkbox checked={record.selected} />
+              </span>
+            )}
+          />
+          <Column
+            title="Score"
+            dataIndex="score"
+          />
+          <Column
+            title="Type"
+            dataIndex="KompreType.name"
           />
           <Column
             title="Date"
-            dataIndex="eventDate"
-            key="eventDate"
+            dataIndex="kompreDate"
+            key="kompreDate"
             render={text => (
               <span>
                 {moment(text).format('DD/MM/YYYY')}
@@ -113,16 +165,40 @@ class ScoreList extends Component {
             )}
           />
           <Column
-            title="Time"
-            dataIndex="eventTime"
-            key="eventTime"
-            render={text => (
+            title="Action"
+            key="action"
+            render={(text, record) => (
               <span>
-                {moment(text).format('HH:mm:ss')}
+                <Button
+                  icon="ellipsis"
+                  size="small"
+                  onClick={() => this.openEditWindow(record)}
+                  style={{ marginRight: 5 }}
+                />
+                <Popconfirm
+                  title={'Are you sure delete score?'}
+                  onConfirm={() => this.deleteScore(record)}
+                  okText="Yes" cancelText="No"
+                >
+                  <Button
+                    type="danger"
+                    icon="delete"
+                    size="small"
+                  />
+                </Popconfirm>
               </span>
             )}
           />
         </Table>
+        <ScoreWindow
+          studentId={studentId}
+          visible={this.state.scoreWindowVisible}
+          onSaveSuccess={this.onSaveSuccess}
+          onCancel={this.closeEditWindow}
+          onClose={this.closeEditWindow}
+          score={this.state.score}
+          ref={scoreWindow => (this.scoreWindow = scoreWindow)}
+        />
       </div>
     );
   }
