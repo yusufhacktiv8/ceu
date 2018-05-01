@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import AssistanceList from './AssistanceList';
+import ScoreList from './ScoreList';
 
 const { TabPane } = Tabs;
 
@@ -13,7 +14,7 @@ export default ({ studentId }) => (
       <AssistanceList studentId={studentId} />
     </TabPane>
     <TabPane tab="Scores" key="2">
-
+      <ScoreList studentId={studentId} />
     </TabPane>
   </Tabs>
 );

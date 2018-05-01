@@ -4,7 +4,7 @@ import { Layout, Steps, Row, Col, Button, Tag, message, Icon, Spin } from 'antd'
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
 import YudisiumPage from './yudisium/YudisiumPage';
-import AssistancePage from './ukmppd/AssistancePage';
+import UkmppdPage from './ukmppd/UkmppdPage';
 import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -128,7 +128,7 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 4
               &&
-              <AssistancePage studentId={studentId} history={this.props.history} />
+              <UkmppdPage studentId={studentId} history={this.props.history} />
             }
           </div>
           <div className="steps-action">

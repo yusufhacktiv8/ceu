@@ -1,31 +1,37 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Row, Col, Button } from 'antd';
+import { Table, Row, Col, Button, Menu } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 
 const Column = Table.Column;
 const STUDENT_ASSISTANCES_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistanceparticipants`;
-const getAssistancesUrl = studentId => `${STUDENT_ASSISTANCES_URL}/bystudent/${studentId}`;
+const getScoresUrl = studentId => `${STUDENT_ASSISTANCES_URL}/bystudent/${studentId}`;
 
-class AssistanceList extends Component {
+class ScoreList extends Component {
   state = {
-    assistances: [],
+    scores: [],
     loading: false,
+    activeKey: 'K001',
   }
   componentDidMount() {
-    this.fetchAssistances();
+    this.fetchScores();
   }
 
-  fetchAssistances = () => {
+  onTabsChange = (e) => {
+    const activeKey = e.key;
+    this.setState({ activeKey });
+  }
+
+  fetchScores = () => {
     const { studentId } = this.props;
     this.setState({
       loading: true,
     });
-    axios.get(getAssistancesUrl(studentId), { params: {} })
+    axios.get(getScoresUrl(studentId), { params: {} })
       .then((response) => {
         this.setState({
-          assistances: response.data,
+          scores: response.data,
           loading: false,
         });
       })
@@ -48,14 +54,45 @@ class AssistanceList extends Component {
               <Button
                 shape="circle"
                 icon="retweet"
-                onClick={this.fetchAssistances}
+                onClick={this.fetchScores}
+              />
+              <Button
+                type="primary"
+                shape="circle"
+                icon="plus"
+                onClick={() => this.openEditWindow({})}
+                style={{ marginLeft: 10 }}
               />
             </span>
           </Col>
         </Row>
+        <Row>
+          <Col span={16}>
+            <Menu
+              mode="horizontal"
+              selectedKeys={[this.state.activeKey]}
+              onClick={this.onTabsChange}
+              style={{ marginBottom: 10, backgroundColor: '#FAFAFA' }}
+            >
+              <Menu.Item key="K001">
+                Pre Kompre
+              </Menu.Item>
+              <Menu.Item key="K002">
+                Mid Kompre
+              </Menu.Item>
+              <Menu.Item key="K003">
+                Final Kompre
+              </Menu.Item>
+              <Menu.Item key="K004">
+                Try Out
+              </Menu.Item>
+            </Menu>
+          </Col>
+        </Row>
         <Table
-          dataSource={this.state.assistances}
-          style={{ marginTop: 10 }}
+          dataSource={this.state.scores.filter(score =>
+            String(score.KompreType.code) === this.state.activeKey)}
+          style={{ marginTop: 5 }}
           rowKey="id"
           loading={this.state.loading}
           size="small"
@@ -91,4 +128,4 @@ class AssistanceList extends Component {
   }
 }
 
-export default AssistanceList;
+export default ScoreList;
