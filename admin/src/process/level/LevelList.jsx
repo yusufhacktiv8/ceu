@@ -170,9 +170,9 @@ class LevelList extends Component {
                 key="title"
               />
               <Column
-                title="Plan Start Date"
-                dataIndex="planStartDate"
-                key="planStartDate"
+                title="End Date"
+                dataIndex="realEndDate"
+                key="realEndDate"
                 render={text => (
                   <span>
                     {moment(text).format('DD/MM/YYYY')}
