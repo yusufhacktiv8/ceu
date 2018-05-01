@@ -8,6 +8,7 @@ import PortofolioList from './portofolio/PortofolioList';
 import SeminarList from './seminar/SeminarList';
 import CourseProblemList from './course_problem/CourseProblemList';
 import showError from '../../../utils/ShowError';
+import { dateFormat } from '../../../constant';
 
 const { Header, Content } = Layout;
 const TabPane = Tabs.TabPane;
@@ -15,52 +16,51 @@ const TabPane = Tabs.TabPane;
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const { confirm } = Modal;
-const DATE_FORMAT = 'YYYY-MM-DD';
 
 const fixDates = (data) => {
   const result = { ...data };
   if (data.planDate && data.planDate.length > 1) {
-    result.planDate = [data.planDate[0].format(DATE_FORMAT),
-      data.planDate[1].format(DATE_FORMAT)];
+    result.planDate = [data.planDate[0].format(dateFormat),
+      data.planDate[1].format(dateFormat)];
   }
   if (data.realStartDate) {
-    result.realStartDate = data.realStartDate.format(DATE_FORMAT);
+    result.realStartDate = data.realStartDate.format(dateFormat);
   }
   if (data.realEndDate) {
-    result.realEndDate = data.realEndDate.format(DATE_FORMAT);
+    result.realEndDate = data.realEndDate.format(dateFormat);
   }
 
   if (data.planDate1 && data.planDate1.length > 1) {
-    result.planDate1 = [data.planDate1[0].format(DATE_FORMAT),
-      data.planDate1[1].format(DATE_FORMAT)];
+    result.planDate1 = [data.planDate1[0].format(dateFormat),
+      data.planDate1[1].format(dateFormat)];
   }
   if (data.realStartDate1) {
-    result.realStartDate1 = data.realStartDate1.format(DATE_FORMAT);
+    result.realStartDate1 = data.realStartDate1.format(dateFormat);
   }
   if (data.realEndDate1) {
-    result.realEndDate1 = data.realEndDate1.format(DATE_FORMAT);
+    result.realEndDate1 = data.realEndDate1.format(dateFormat);
   }
 
   if (data.planDate2 && data.planDate2.length > 1) {
-    result.planDate2 = [data.planDate2[0].format(DATE_FORMAT),
-      data.planDate2[1].format(DATE_FORMAT)];
+    result.planDate2 = [data.planDate2[0].format(dateFormat),
+      data.planDate2[1].format(dateFormat)];
   }
   if (data.realStartDate2) {
-    result.realStartDate2 = data.realStartDate2.format(DATE_FORMAT);
+    result.realStartDate2 = data.realStartDate2.format(dateFormat);
   }
   if (data.realEndDate2) {
-    result.realEndDate2 = data.realEndDate2.format(DATE_FORMAT);
+    result.realEndDate2 = data.realEndDate2.format(dateFormat);
   }
 
   if (data.planDate3 && data.planDate3.length > 1) {
-    result.planDate3 = [data.planDate3[0].format(DATE_FORMAT),
-      data.planDate3[1].format(DATE_FORMAT)];
+    result.planDate3 = [data.planDate3[0].format(dateFormat),
+      data.planDate3[1].format(dateFormat)];
   }
   if (data.realStartDate3) {
-    result.realStartDate3 = data.realStartDate3.format(DATE_FORMAT);
+    result.realStartDate3 = data.realStartDate3.format(dateFormat);
   }
   if (data.realEndDate3) {
-    result.realEndDate3 = data.realEndDate3.format(DATE_FORMAT);
+    result.realEndDate3 = data.realEndDate3.format(dateFormat);
   }
   return result;
 };
