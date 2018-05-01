@@ -12,7 +12,7 @@ import HospitalPage from '../hospital/HospitalPage';
 import HospitalDepartmentPage from '../hospital/HospitalDepartmentPage';
 import CostUnitPage from '../report/finance/CostUnitPage';
 import CostUnitClinicPage from '../report/finance/CostUnitClinicPage';
-import InitiatePage from '../process/InitiatePage';
+import InitiatePage from '../process/initiate/InitiatePage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;

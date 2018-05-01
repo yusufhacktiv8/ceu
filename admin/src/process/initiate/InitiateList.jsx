@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { Input, Table, Button, DatePicker, Row, Col } from 'antd';
-import showError from '../utils/ShowError';
+import showError from '../../utils/ShowError';
 import InitiateExportWindow from './InitiateExportWindow';
 
 const { RangePicker } = DatePicker;
@@ -91,6 +91,8 @@ class InitiateList extends Component {
   openExportWindow = () => {
     this.setState({
       exportWindowVisible: true,
+    }, () => {
+      this.exportWindow.resetFields();
     });
   }
 

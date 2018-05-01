@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Form, DatePicker, Button, message } from 'antd';
 import axios from 'axios';
-import showError from '../utils/ShowError';
-import { dateFormat } from '../constant';
+import showError from '../../utils/ShowError';
+import { dateFormat } from '../../constant';
 
 const EXPORT_TO_PRE_TESTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/exporttopretest`;
 
