@@ -13,6 +13,7 @@ import HospitalDepartmentPage from '../hospital/HospitalDepartmentPage';
 import CostUnitPage from '../report/finance/CostUnitPage';
 import CostUnitClinicPage from '../report/finance/CostUnitClinicPage';
 import InitiatePage from '../process/initiate/InitiatePage';
+import CompletedPage from '../process/completed/CompletedPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -73,6 +74,8 @@ class Workspace extends Component {
       selectedKeys = ['costunitclinic'];
     } else if (location.includes('initiate')) {
       selectedKeys = ['initiate'];
+    } else if (location.includes('completed')) {
+      selectedKeys = ['completed'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -170,6 +173,7 @@ class Workspace extends Component {
             <Route exact path="/costunit" component={CostUnitPage} />
             <Route exact path="/costunitclinic" component={CostUnitClinicPage} />
             <Route exact path="/initiate" component={InitiatePage} />
+            <Route exact path="/completed" component={CompletedPage} />
           </div>
         </Content>
       </Layout>
