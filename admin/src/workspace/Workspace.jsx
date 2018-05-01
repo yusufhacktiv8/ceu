@@ -18,6 +18,7 @@ import CompletedPage from '../process/completed/CompletedPage';
 import LevelPage from '../process/level/LevelPage';
 import AssistancePage from '../process/assistance/AssistancePage';
 import PreTestPage from '../report/schedule/PreTestPage';
+import DashboardPage from '../dashboard/DashboardPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -182,6 +183,7 @@ class Workspace extends Component {
         </Header>
         <Content style={{ backgroundColor: '#FFF' }}>
           <div>
+            <Route exact path="/" component={DashboardPage} />
             <Route path="/roles" component={RolePage} />
             <Route path="/users" component={UserPage} />
             <Route path="/bakordik" component={HospitalUserPage} />
