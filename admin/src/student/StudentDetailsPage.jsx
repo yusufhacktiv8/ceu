@@ -4,6 +4,7 @@ import { Layout, Steps, Row, Col, Button, Tag, message, Icon, Spin } from 'antd'
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
 import YudisiumPage from './yudisium/YudisiumPage';
+import AssistancePage from './ukmppd/AssistancePage';
 import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -15,7 +16,7 @@ const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 0,
+    current: 4,
     student: {},
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
@@ -122,6 +123,12 @@ export default class StudentDetailsPage extends Component {
               this.state.current === 3
               &&
               <YudisiumPage studentId={studentId} level={2} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 4
+              &&
+              <AssistancePage studentId={studentId} history={this.props.history} />
             }
           </div>
           <div className="steps-action">
