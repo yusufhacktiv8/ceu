@@ -4,13 +4,13 @@ import moment from 'moment';
 import axios from 'axios';
 import showError from '../../utils/ShowError';
 import KompreTypeSelect from './KompreTypeSelect';
+import { dateFormat } from '../../constant';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
 const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
 
 const FormItem = Form.Item;
-const DATE_FORMAT = 'YYYY-MM-DD';
 
 class ScoreWindow extends Component {
   state = {
@@ -27,7 +27,7 @@ class ScoreWindow extends Component {
         saving: true,
       }, () => {
         const scoreId = score.id;
-        values.kompreDate = values.kompreDate.format(DATE_FORMAT);
+        values.kompreDate = values.kompreDate.format(dateFormat);
         const axiosObj = scoreId ? axios.put(`${SCORES_URL}/${scoreId}`, values) : axios.post(getScoresUrl(studentId), values);
         axiosObj.then(() => {
           message.success('Saving score success');
