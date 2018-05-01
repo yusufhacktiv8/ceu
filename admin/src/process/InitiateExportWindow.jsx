@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, DatePicker, Button, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
+import { dateFormat } from '../constant';
 
 const EXPORT_TO_PRE_TESTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/exporttopretest`;
 
@@ -25,7 +26,7 @@ class InitiateExportWindow extends Component {
       this.setState({
         saving: true,
       }, () => {
-        const data = { courseIds, ...values };
+        const data = { courseIds, preTestDate: values.preTestDate.format(dateFormat) };
         const axiosObj = axios.post(EXPORT_TO_PRE_TESTS_URL, data);
         axiosObj.then(() => {
           message.success('Export to pretest success');
