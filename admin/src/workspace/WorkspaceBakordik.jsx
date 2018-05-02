@@ -47,15 +47,10 @@ class Workspace extends Component {
   }
 
   render() {
-    console.log(this.props.location.pathname);
     const location = this.props.location.pathname;
     let selectedKeys = 'dashboard';
-    if (location.includes('roles')) {
-      selectedKeys = ['roles'];
-    } else if (location.includes('users')) {
-      selectedKeys = ['users'];
-    } else if (location.includes('students') || location.includes('studentdetails')) {
-      selectedKeys = ['students'];
+    if (location.includes('courses')) {
+      selectedKeys = ['courses'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -96,7 +91,7 @@ class Workspace extends Component {
                     }}
                   ><Icon type="pie-chart" />Dashboard</Link>
                 </Menu.Item>
-                <Menu.Item key="students">
+                <Menu.Item key="courses">
                   <Link to="/courses"><Icon type="team" />Courses</Link>
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>

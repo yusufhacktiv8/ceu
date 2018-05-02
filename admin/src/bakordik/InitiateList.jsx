@@ -13,13 +13,12 @@ class InitiateList extends Component {
   state = {
     searchText: '',
     courses: [],
-    selectedRowKeys: [],
     loading: false,
     count: 0,
     currentPage: 1,
     pageSize: 10,
-    exportWindowVisible: false,
   }
+
   componentDidMount() {
     this.fetchCourses();
   }
@@ -68,23 +67,11 @@ class InitiateList extends Component {
       });
   }
 
-  filterCostUnits = () => {
-    this.setState({
-      currentPage: 1,
-    }, () => { this.fetchCourses(); });
-  }
-
   pageChanged = (pagination) => {
     const page = pagination.current;
     this.setState({
       currentPage: page,
     }, () => { this.fetchCourses(); });
-  }
-
-  rowKeysChanged = (rowKeys) => {
-    this.setState({
-      selectedRowKeys: rowKeys,
-    });
   }
 
   showDetails = (record) => {
@@ -94,15 +81,6 @@ class InitiateList extends Component {
   }
 
   render() {
-    const { selectedRowKeys } = this.state;
-    const { rowKeysChanged } = this;
-    const rowSelection = {
-      type: 'checkbox',
-      selectedRowKeys,
-      onChange: (rowKeys, selectedRows) => {
-        rowKeysChanged(rowKeys, selectedRows);
-      },
-    };
     return (
       <div>
         <Row gutter={10}>
@@ -130,12 +108,6 @@ class InitiateList extends Component {
                 onClick={() => this.fetchCourses()}
                 style={{ marginRight: 5 }}
               />
-              <Button
-                shape="circle"
-                icon="export"
-                onClick={() => this.openExportWindow()}
-                style={{ backgroundColor: '#50C14E', color: '#fff' }}
-              />
             </span>
           </Col>
         </Row>
@@ -152,7 +124,6 @@ class InitiateList extends Component {
                 pageSize: this.state.pageSize,
               }}
               onChange={this.pageChanged}
-              rowSelection={rowSelection}
               size="small"
             >
               <Column

@@ -101,7 +101,7 @@ export default class CourseDetailsPage extends Component {
               this.setState({
                 saving: false,
               }, () => {
-                this.goToStudentDetailsPage();
+                this.goToCoursePage();
               });
             })
               .catch((error) => {
@@ -116,14 +116,8 @@ export default class CourseDetailsPage extends Component {
     });
   }
 
-  goToStudentPage = () => {
-    this.props.history.push('/students');
-  }
-
-  goToStudentDetailsPage = () => {
-    const { match } = this.props;
-    const { studentId } = match.params;
-    this.props.history.push(`/students/${studentId}`);
+  goToCoursePage = () => {
+    this.props.history.push('/courses');
   }
 
   fetchCourse = () => {
@@ -149,105 +143,12 @@ export default class CourseDetailsPage extends Component {
       });
   }
 
-  confirmPending = (title, courseId) => {
-    const onSaveSuccess = () => {
-      this.fetchCourse();
-    };
-
-    const onOk = () => {
-      const axiosObj = axios.put(`${COURSES_URL}/${courseId}/pending`);
-      this.setState({
-        pending: true,
-      });
-      axiosObj.then(() => {
-        message.success('Pending course success');
-        this.setState({
-          pending: false,
-        }, () => {
-          onSaveSuccess();
-        });
-      })
-        .catch((error) => {
-          this.setState({
-            pending: false,
-          });
-          showError(error);
-        });
-    };
-
-    confirm({
-      title: `Do you want to pending this course ${title}?`,
-      onOk,
-    });
-  }
-
-  confirmUnPending = (title, courseId) => {
-    const onSaveSuccess = () => {
-      this.fetchCourse();
-    };
-
-    const onOk = () => {
-      const axiosObj = axios.put(`${COURSES_URL}/${courseId}/unpending`);
-      this.setState({
-        pending: true,
-      });
-      axiosObj.then(() => {
-        message.success('Unpending course success');
-        this.setState({
-          pending: false,
-        }, () => {
-          onSaveSuccess();
-        });
-      })
-        .catch((error) => {
-          this.setState({
-            pending: false,
-          });
-          showError(error);
-        });
-    };
-
-    confirm({
-      title: `Do you want to unpending this course ${title}?`,
-      onOk,
-    });
-  }
-
-  confirmDelete = (title, courseId) => {
-    const onOk = () => {
-      const axiosObj = axios.delete(`${COURSES_URL}/${courseId}`);
-      this.setState({
-        deleting: true,
-      });
-      axiosObj.then(() => {
-        message.success('Delete course success');
-        this.goToStudentDetailsPage();
-      })
-        .catch((error) => {
-          this.setState({
-            deleting: false,
-          });
-          showError(error);
-        });
-    };
-
-    confirm({
-      title: `Do you want to delete this course ${title}?`,
-      onOk,
-    });
-  }
-
   render() {
     const { match } = this.props;
     const { courseId } = match.params;
     const { saving, course, pending, deleting } = this.state;
     const { title } = course;
-    const buttons = [course.status !== 4 ?
-      <Button loading={pending} key="pending" type="danger" size="small" onClick={() => this.confirmPending(title, courseId)}>Pending</Button>
-      :
-      <Button loading={pending} key="unPending" type="default" size="small" onClick={() => this.confirmUnPending(title, courseId)}>Un Pending</Button>,
-
-      <Button loading={deleting} style={{ marginLeft: 8 }} key="delete" type="danger" size="small" onClick={() => this.confirmDelete(title, courseId)}>Delete</Button>,
+    const buttons = [
       <Button loading={saving} style={{ marginLeft: 8 }} key="save" type="primary" size="small" onClick={this.onSave}>
         Save
       </Button>,
