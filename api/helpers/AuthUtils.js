@@ -54,8 +54,27 @@ const isAuthorizedAs = role => (
   }
 );
 
+const isAuthorizedAsIn = roles => (
+  (req, res, next) => {
+    const authorizationHeader = req.headers.authorization;
+    if (authorizationHeader) {
+      const token = authorizationHeader.replace('Bearer ', '');
+      jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, (err, decoded) => {
+        if (decoded && roles.includes(decoded.role)) {
+          next();
+        } else {
+          res.send('Unauthorized', 403);
+        }
+      });
+    } else {
+      res.send('Unauthorized', 403);
+    }
+  }
+);
+
 module.exports = {
   isAuthorizedAs,
+  isAuthorizedAsIn,
   isAuthorizedAsAdmin,
   isAuthenticated,
 };

@@ -6,6 +6,7 @@ import InitiatePage from '../bakordik/InitiatePage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
 import CourseDetailsPage from '../bakordik/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
+import DocentPage from '../settings/docent/DocentPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -51,6 +52,8 @@ class Workspace extends Component {
     let selectedKeys = 'dashboard';
     if (location.includes('courses')) {
       selectedKeys = ['courses'];
+    } else if (location.includes('docents')) {
+      selectedKeys = ['docents'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -95,19 +98,9 @@ class Workspace extends Component {
                   <Link to="/courses"><Icon type="team" />Courses</Link>
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
-                  <MenuItemGroup title="Security">
-                    <Menu.Item key="users">
-                      <Link to="/users">Users</Link>
-                    </Menu.Item>
-                    <Menu.Item key="bakordik">
-                      <Link to="/bakordik">Hospital Users</Link>
-                    </Menu.Item>
-                    <Menu.Item key="roles">
-                      <Link to="/roles">Roles</Link></Menu.Item>
-                  </MenuItemGroup>
                   <MenuItemGroup title="Application">
-                    <Menu.Item key="departments">
-                      <Link to="/departments">Departments</Link>
+                    <Menu.Item key="docents">
+                      <Link to="/docents">Docents</Link>
                     </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
@@ -121,6 +114,7 @@ class Workspace extends Component {
             <Route exact path="/courses" component={InitiatePage} />
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
+            <Route exact path="/docents" component={DocentPage} />
           </div>
         </Content>
       </Layout>

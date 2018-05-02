@@ -67,7 +67,7 @@ class DocentSelect extends Component {
         value={this.state.value}
         style={{ width: '100%' }}
       >
-        {this.state.docents.filter(docent => docent.level === 1).map(docent => (
+        {this.state.docents.map(docent => (
           <Option key={docent.id} value={String(docent.id)}>{docent.name}</Option>
         ))}
       </Select>
