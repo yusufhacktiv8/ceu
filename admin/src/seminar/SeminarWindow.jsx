@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, Row, Col, message } from 'antd';
+import { Modal, Form, Input, InputNumber, DatePicker, TimePicker, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import showError from '../utils/ShowError';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
 import SeminarTypeSelect from '../settings/seminar_type/SeminarTypeSelect';
@@ -49,6 +50,7 @@ class SeminarWindow extends Component {
     const { getFieldDecorator } = form;
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         visible={visible}
         title="Seminar"
         okText="Save"
@@ -102,6 +104,42 @@ class SeminarWindow extends Component {
                   ],
                 })(
                   <SeminarTypeSelect department={form.getFieldValue('department')} />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <FormItem label="Duration (Minutes)">
+            {getFieldDecorator('duration', {
+              initialValue: seminar.duration,
+              rules: [
+                { required: true, message: 'Please input duration' },
+              ],
+            })(
+              <InputNumber min={1} max={600} />,
+            )}
+          </FormItem>
+          <Row gutter={10}>
+            <Col span={12}>
+              <FormItem label="Date">
+                {getFieldDecorator('eventDate', {
+                  initialValue: seminar.eventDate ? moment(seminar.eventDate) : undefined,
+                  rules: [
+                    { required: true, message: 'Please input date' },
+                  ],
+                })(
+                  <DatePicker />,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="Time">
+                {getFieldDecorator('eventTime', {
+                  initialValue: seminar.eventTime ? moment(seminar.eventTime) : undefined,
+                  rules: [
+                    { required: true, message: 'Please input time' },
+                  ],
+                })(
+                  <TimePicker />,
                 )}
               </FormItem>
             </Col>

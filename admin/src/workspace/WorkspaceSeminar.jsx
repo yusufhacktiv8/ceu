@@ -7,6 +7,7 @@ import StudentDetailsPage from '../student/StudentDetailsPage';
 import CourseDetailsPage from '../bakordik/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import SeminarTypePage from '../settings/seminar_type/SeminarTypePage';
+import SupervisorPage from '../settings/supervisor/SupervisorPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -56,6 +57,8 @@ class Workspace extends Component {
       selectedKeys = ['seminars'];
     } else if (location.includes('seminartypes')) {
       selectedKeys = ['seminarTypes'];
+    } else if (location.includes('supervisors')) {
+      selectedKeys = ['supervisors'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -104,6 +107,9 @@ class Workspace extends Component {
                     <Menu.Item key="seminarTypes">
                       <Link to="/seminartypes">Seminar Types</Link>
                     </Menu.Item>
+                    <Menu.Item key="supervisors">
+                      <Link to="/supervisors">Supervisors</Link>
+                    </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
               </Menu>
@@ -117,6 +123,7 @@ class Workspace extends Component {
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
             <Route exact path="/seminartypes" component={SeminarTypePage} />
+            <Route exact path="/supervisors" component={SupervisorPage} />
           </div>
         </Content>
       </Layout>
