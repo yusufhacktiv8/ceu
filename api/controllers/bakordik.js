@@ -11,7 +11,7 @@ const getHospitalIdFromJwt = token => new Promise((resolve, reject) => {
   jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, (err, decoded) => {
     console.log(decoded);
     if (decoded) {
-      const userId = decoded.user_id;
+      const { userId } = decoded;
       models.HospitalUser.findOne({
         where: { UserId: userId },
       })

@@ -23,6 +23,7 @@ exports.signIn = function (req, res) {
       bcrypt.compare(password, user.password, (err, bcryptResult) => {
         if (bcryptResult) {
           const token = jwt.sign({
+            userId: user.id,
             name: user.name,
             role: user.Role.code,
           }, process.env.REACT_APP_TOKEN_PASSWORD, { expiresIn: 60 * 60 });
