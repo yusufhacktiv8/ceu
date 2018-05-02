@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
+import SeminarTypeSelect from '../settings/seminar_type/SeminarTypeSelect';
 
 const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
 
@@ -89,6 +90,18 @@ class SeminarWindow extends Component {
                   ],
                 })(
                   <DepartmentSelect level={-1} />,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="Seminar Type">
+                {getFieldDecorator('seminarType', {
+                  initialValue: seminar.SeminarType ? String(seminar.SeminarType.id) : undefined,
+                  rules: [
+                    { required: true, message: 'Please input seminar type' },
+                  ],
+                })(
+                  <SeminarTypeSelect department={form.getFieldValue('department')} />,
                 )}
               </FormItem>
             </Col>
