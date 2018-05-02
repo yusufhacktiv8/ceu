@@ -34,6 +34,7 @@ const userMenu = (
 class Workspace extends Component {
   state = {
     name: 'Anonymous',
+    role: '',
   }
 
   componentWillMount() {
@@ -41,9 +42,10 @@ class Workspace extends Component {
     axios.defaults.headers.common = {
       Authorization: `Bearer ${token}`,
     };
-    const name = parseJwt(token).name;
+    const { name, role } = parseJwt(token);
     this.setState({
       name,
+      role,
     });
   }
 
@@ -71,7 +73,7 @@ class Workspace extends Component {
               <div style={{ paddingTop: 18, paddingRight: 25, textAlign: 'right' }}>
                 <Dropdown overlay={userMenu} style={{ width: 200 }}>
                   <a className="ant-dropdown-link" href="#">
-                    {this.state.name} <Icon type="down" />
+                    {this.state.name} ({this.state.role}) <Icon type="down" />
                   </a>
                 </Dropdown>
               </div>
@@ -95,7 +97,7 @@ class Workspace extends Component {
                   ><Icon type="pie-chart" />Dashboard</Link>
                 </Menu.Item>
                 <Menu.Item key="courses">
-                  <Link to="/courses"><Icon type="team" />Courses</Link>
+                  <Link to="/courses"><Icon type="file" />Courses</Link>
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Application">

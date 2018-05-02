@@ -4,6 +4,7 @@ import axios from 'axios';
 import InfoForm from '../student/course/details/InfoForm';
 import ScheduleForm from '../student/course/details/schedule/ScheduleForm';
 import CourseProblemList from '../student/course/details/course_problem/CourseProblemList';
+import ScoreList from '../student/course/details/score/ScoreList';
 import showError from '../utils/ShowError';
 import { dateFormat } from '../constant';
 
@@ -195,6 +196,12 @@ export default class CourseDetailsPage extends Component {
               <ScheduleForm
                 courseId={courseId}
                 ref={(scheduleForm) => { this.scheduleForm = scheduleForm; }}
+              />
+            </TabPane>
+            <TabPane tab="Scores" key="4" forceRender>
+              <ScoreList
+                courseId={courseId}
+                ref={(scoreListForm) => { this.scoreListForm = scoreListForm; }}
               />
             </TabPane>
             <TabPane tab="Problems" key="6">
