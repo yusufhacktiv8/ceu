@@ -62,8 +62,8 @@ class HospitalList extends Component {
       loading: true,
     });
     axios.get(HOSPITALS_URL, { params: {
-      searchText: this.state.searchText,
-      hospitalType: this.state.activeKey,
+      hospitalDepartment: this.state.selectedDepartmentId,
+      hospitalDateRange: this.state.hospitalDateRange,
     } })
       .then((response) => {
         this.setState({

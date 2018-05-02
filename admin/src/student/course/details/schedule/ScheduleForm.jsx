@@ -170,7 +170,7 @@ class ScheduleForm extends Component {
                     <Col span={12}>
                       <FormItem label="Adviser">
                         {getFieldDecorator('adviser', {
-                          initialValue: adviser,
+                          initialValue: adviser ? String(adviser.id) : undefined,
                         })(
                           <DocentSelect
                             hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
@@ -184,7 +184,7 @@ class ScheduleForm extends Component {
                     <Col span={12}>
                       <FormItem label="Examiner">
                         {getFieldDecorator('examiner', {
-                          initialValue: examiner,
+                          initialValue: examiner ? String(examiner.id) : undefined,
                         })(
                           <DocentSelect
                             hospitalId={form.getFieldValue('hospital1') ? form.getFieldValue('hospital1').id : undefined}
@@ -247,7 +247,7 @@ class ScheduleForm extends Component {
                   <Col span={12}>
                     <FormItem label="DPK">
                       {getFieldDecorator('dpk', {
-                        initialValue: dpk,
+                        initialValue: dpk ? String(dpk.id) : undefined,
                       })(
                         <DocentSelect
                           hospitalId={form.getFieldValue('clinic') ? form.getFieldValue('clinic').id : undefined}
