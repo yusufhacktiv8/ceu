@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import './App.css';
 import Workspace from './workspace/Workspace';
 import WorkspaceBakordik from './workspace/WorkspaceBakordik';
+import WorkspaceSeminar from './workspace/WorkspaceSeminar';
 import LoginForm from './login/LoginForm';
 
 const parseJwt = (token) => {
@@ -27,6 +28,12 @@ const App = () => {
       return (
         <div className="App">
           <Route path="/" component={WorkspaceBakordik} />
+        </div>
+      );
+    } else if (role === 'SEMINAR') {
+      return (
+        <div className="App">
+          <Route path="/" component={WorkspaceSeminar} />
         </div>
       );
     }
