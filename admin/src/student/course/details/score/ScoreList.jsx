@@ -163,7 +163,7 @@ class ScoreList extends Component {
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm
-                      title={`Are you sure delete score ${record.name}`}
+                      title={`Are you sure delete score ${record.ScoreType.name}`}
                       onConfirm={() => this.deleteScore(record)}
                       okText="Yes" cancelText="No"
                     >
