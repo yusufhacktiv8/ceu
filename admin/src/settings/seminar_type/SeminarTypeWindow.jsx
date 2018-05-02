@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, Row, Col, message } from 'antd';
+import { Modal, Form, Input, Checkbox, Button, message } from 'antd';
 import axios from 'axios';
-import showError from '../utils/ShowError';
-import DepartmentSelect from '../settings/department/DepartmentSelect';
+import showError from '../../utils/ShowError';
+import DepartmentSelect from '../../settings/department/DepartmentSelect';
 
-const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
+const SEMINAR_TYPES_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminartypes`;
 
 const FormItem = Form.Item;
 
-class SeminarWindow extends Component {
+class SeminarTypeWindow extends Component {
   state = {
     saving: false,
   }
 
   onSave = () => {
-    const { seminar, onSaveSuccess, form } = this.props;
+    const { seminarType, onSaveSuccess, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -22,10 +22,10 @@ class SeminarWindow extends Component {
       this.setState({
         saving: true,
       }, () => {
-        const seminarId = seminar.id;
-        const axiosObj = seminarId ? axios.put(`${SEMINARS_URL}/${seminarId}`, values) : axios.post(SEMINARS_URL, values);
+        const seminarTypeId = seminarType.id;
+        const axiosObj = seminarTypeId ? axios.put(`${SEMINAR_TYPES_URL}/${seminarTypeId}`, values) : axios.post(SEMINAR_TYPES_URL, values);
         axiosObj.then(() => {
-          message.success('Saving seminar success');
+          message.success('Saving seminarType success');
           this.setState({
             saving: false,
           }, () => {
@@ -44,12 +44,12 @@ class SeminarWindow extends Component {
 
   render() {
     const { saving } = this.state;
-    const { visible, onCancel, form, seminar } = this.props;
+    const { visible, onCancel, form, seminarType } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
         visible={visible}
-        title="Seminar"
+        title="Seminar Type"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
@@ -61,7 +61,7 @@ class SeminarWindow extends Component {
         <Form layout="vertical">
           <FormItem label="Code">
             {getFieldDecorator('code', {
-              initialValue: seminar.code,
+              initialValue: seminarType.code,
               rules: [
                 { required: true, message: 'Please input code' },
               ],
@@ -71,7 +71,7 @@ class SeminarWindow extends Component {
           </FormItem>
           <FormItem label="Name">
             {getFieldDecorator('name', {
-              initialValue: seminar.name,
+              initialValue: seminarType.name,
               rules: [
                 { required: true, message: 'Please input name' },
               ],
@@ -79,24 +79,28 @@ class SeminarWindow extends Component {
               <Input maxLength="50" />,
             )}
           </FormItem>
-          <Row gutter={10}>
-            <Col span={12}>
-              <FormItem label="Department">
-                {getFieldDecorator('department', {
-                  initialValue: seminar.Department ? String(seminar.Department.id) : undefined,
-                  rules: [
-                    { required: true, message: 'Please input department' },
-                  ],
-                })(
-                  <DepartmentSelect level={-1} />,
-                )}
-              </FormItem>
-            </Col>
-          </Row>
+          <FormItem label="Department">
+            {getFieldDecorator('department', {
+              initialValue: seminarType.Department ? String(seminarType.Department.id) : undefined,
+              rules: [
+                { required: true, message: 'Please input department' },
+              ],
+            })(
+              <DepartmentSelect level={-1} />,
+            )}
+          </FormItem>
+          <FormItem label="">
+            {getFieldDecorator('active', {
+              initialValue: seminarType.active,
+              valuePropName: 'checked',
+            })(
+              <Checkbox>Active</Checkbox>,
+            )}
+          </FormItem>
         </Form>
       </Modal>
     );
   }
 }
 
-export default Form.create()(SeminarWindow);
+export default Form.create()(SeminarTypeWindow);

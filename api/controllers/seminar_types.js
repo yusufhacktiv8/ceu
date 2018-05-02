@@ -19,7 +19,7 @@ exports.findAll = function findAll(req, res) {
     where.DepartmentId = departmentId;
   }
 
-  models.SeminarType.findAll({
+  models.SeminarType.findAndCountAll({
     where,
     include: [
       {

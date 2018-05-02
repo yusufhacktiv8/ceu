@@ -6,7 +6,7 @@ import SeminarPage from '../seminar/SeminarPage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
 import CourseDetailsPage from '../bakordik/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
-import DocentPage from '../settings/docent/DocentPage';
+import SeminarTypePage from '../settings/seminar_type/SeminarTypePage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -52,10 +52,10 @@ class Workspace extends Component {
   render() {
     const location = this.props.location.pathname;
     let selectedKeys = 'dashboard';
-    if (location.includes('seminars')) {
+    if (location.includes('seminars') && !location.includes('seminartypes')) {
       selectedKeys = ['seminars'];
-    } else if (location.includes('docents')) {
-      selectedKeys = ['docents'];
+    } else if (location.includes('seminartypes')) {
+      selectedKeys = ['seminarTypes'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -101,8 +101,8 @@ class Workspace extends Component {
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Application">
-                    <Menu.Item key="docents">
-                      <Link to="/docents">Docents</Link>
+                    <Menu.Item key="seminarTypes">
+                      <Link to="/seminartypes">Seminar Types</Link>
                     </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
@@ -116,7 +116,7 @@ class Workspace extends Component {
             <Route exact path="/seminars" component={SeminarPage} />
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
-            <Route exact path="/docents" component={DocentPage} />
+            <Route exact path="/seminartypes" component={SeminarTypePage} />
           </div>
         </Content>
       </Layout>
