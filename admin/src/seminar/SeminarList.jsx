@@ -111,6 +111,10 @@ class SeminarList extends Component {
     }, () => { this.fetchSeminars(); });
   }
 
+  openDetailsPage = (record) => {
+    this.props.history.push(`/seminars/${record.id}/participants`);
+  }
+
   render() {
     return (
       <div>
@@ -187,6 +191,12 @@ class SeminarList extends Component {
                       icon="ellipsis"
                       size="small"
                       onClick={() => this.openEditWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Button
+                      icon="bars"
+                      size="small"
+                      onClick={() => this.openDetailsPage(record)}
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm

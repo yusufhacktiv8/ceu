@@ -4,13 +4,13 @@ import SeminarList from './SeminarList';
 
 const { Header, Content } = Layout;
 
-export default () => (
+export default ({ history }) => (
   <Layout style={{ height: '100%' }}>
     <Header className="page-header">
       <span className="page-header-title"> Seminars</span>
     </Header>
     <Content className="page-content">
-      <SeminarList />
+      <SeminarList history={history} />
     </Content>
   </Layout>
 );

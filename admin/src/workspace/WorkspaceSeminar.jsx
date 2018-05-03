@@ -3,6 +3,7 @@ import { Layout, Menu, Dropdown, Icon, Affix, Row, Col } from 'antd';
 import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import SeminarPage from '../seminar/SeminarPage';
+import ParticipantPage from '../seminar/ParticipantPage';
 import StudentDetailsPage from '../student/StudentDetailsPage';
 import CourseDetailsPage from '../bakordik/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
@@ -53,7 +54,7 @@ class Workspace extends Component {
   render() {
     const location = this.props.location.pathname;
     let selectedKeys = 'dashboard';
-    if (location.includes('seminars') && !location.includes('seminartypes')) {
+    if ((location.includes('seminars') || location.includes('participants')) && !location.includes('seminartypes')) {
       selectedKeys = ['seminars'];
     } else if (location.includes('seminartypes')) {
       selectedKeys = ['seminarTypes'];
@@ -120,6 +121,7 @@ class Workspace extends Component {
           <div>
             <Route exact path="/" component={DashboardPage} />
             <Route exact path="/seminars" component={SeminarPage} />
+            <Route exact path="/seminars/:seminarId/participants" component={ParticipantPage} />
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
             <Route exact path="/seminartypes" component={SeminarTypePage} />
