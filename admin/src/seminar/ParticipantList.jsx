@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Upload, Row, Col, notification } from 'antd';
+import { Table, Button, Input, Upload, Row, Col, Tag, Icon, Spin, notification } from 'antd';
 import showError from '../utils/ShowError';
 
 const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
@@ -19,6 +19,7 @@ const uploadProps = {
 class ParticipantList extends Component {
   state = {
     searchText: '',
+    seminar: {},
     participants: [],
     loading: false,
     count: 0,
@@ -28,6 +29,7 @@ class ParticipantList extends Component {
   }
   componentDidMount() {
     this.fetchParticipants();
+    this.fetchSeminar();
   }
 
   onSearchChange = (e) => {
@@ -56,6 +58,29 @@ class ParticipantList extends Component {
         this.setState({
           participants: response.data.rows,
           count: response.data.count,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
+  fetchSeminar() {
+    const { match } = this.props;
+    const { seminarId } = match.params;
+    this.setState({
+      loading: true,
+    });
+    axios.get(`${SEMINARS_URL}/${seminarId}`, { params: {} })
+      .then((response) => {
+        this.setState({
+          seminar: response.data,
           loading: false,
         });
       })
@@ -104,8 +129,24 @@ class ParticipantList extends Component {
         });
       }
     };
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
     return (
       <div>
+        <Row style={{ marginTop: -8, marginBottom: 12 }}>
+          <Col span={8}>
+            {
+              this.state.seminar.code ? (
+                <span>
+                  <Tag style={{ height: 26, fontSize: 15 }} color="#2db7f5">{ this.state.seminar.name}</Tag>
+                  <Tag style={{ height: 26, fontSize: 15 }}>{ this.state.seminar.code}</Tag>
+                </span>
+              ) : (
+                <Spin indicator={antIcon} />
+              )
+            }
+          </Col>
+        </Row>
         <Row gutter={10}>
           <Col span={8}>
             <Input
@@ -115,7 +156,7 @@ class ParticipantList extends Component {
               maxLength="50"
             />
           </Col>
-          <Col span={16}>
+          <Col span={8}>
             <span>
               <Button
                 shape="circle"

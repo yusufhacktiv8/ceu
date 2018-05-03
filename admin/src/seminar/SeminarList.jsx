@@ -9,11 +9,22 @@ const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
 const Column = Table.Column;
 const { RangePicker } = DatePicker;
 
+const getInitialDateRange = () => {
+  const date = new Date();
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const firstDay = new Date(y, m, 1);
+  const lastDay = new Date(y, m + 1, 0);
+
+  return [moment(firstDay), moment(lastDay)];
+};
+
 class SeminarList extends Component {
   state = {
     searchText: '',
     seminar: {},
     seminars: [],
+    hospitalDateRange: getInitialDateRange(),
     loading: false,
     count: 0,
     currentPage: 1,
@@ -120,7 +131,7 @@ class SeminarList extends Component {
       <div>
         <Row gutter={10}>
           <Col span={6}>
-            <RangePicker onChange={this.onRangeChange} />
+            <RangePicker value={this.state.hospitalDateRange} onChange={this.onRangeChange} />
           </Col>
           <Col span={6}>
             <Input
