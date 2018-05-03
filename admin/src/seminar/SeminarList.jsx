@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Input, DatePicker, Row, Col, message, Popconfirm } from 'antd';
 import moment from 'moment';
 import showError from '../utils/ShowError';
 import SeminarWindow from './SeminarWindow';
 
 const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
 const Column = Table.Column;
+const { RangePicker } = DatePicker;
 
 class SeminarList extends Component {
   state = {
@@ -29,6 +30,12 @@ class SeminarList extends Component {
     });
   }
 
+  onRangeChange = (e) => {
+    this.setState({
+      hospitalDateRange: e,
+    });
+  }
+
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchSeminars();
@@ -40,6 +47,7 @@ class SeminarList extends Component {
     });
     axios.get(SEMINARS_URL, { params: {
       searchText: this.state.searchText,
+      dateRange: this.state.hospitalDateRange,
       start: (this.state.currentPage - 1) * this.state.pageSize,
       count: this.state.pageSize,
     } })
@@ -107,7 +115,10 @@ class SeminarList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
+          <Col span={6}>
+            <RangePicker onChange={this.onRangeChange} />
+          </Col>
+          <Col span={6}>
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
@@ -115,7 +126,7 @@ class SeminarList extends Component {
               maxLength="50"
             />
           </Col>
-          <Col span={16}>
+          <Col span={12}>
             <span>
               <Button
                 shape="circle"

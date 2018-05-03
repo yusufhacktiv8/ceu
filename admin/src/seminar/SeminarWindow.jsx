@@ -3,8 +3,10 @@ import { Modal, Form, Input, InputNumber, DatePicker, TimePicker, Button, Row, C
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../utils/ShowError';
+import { dateFormat } from '../constant';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
 import SeminarTypeSelect from '../settings/seminar_type/SeminarTypeSelect';
+import SupervisorSelect from '../settings/supervisor/SupervisorSelect';
 
 const SEMINARS_URL = `${process.env.REACT_APP_SERVER_URL}/api/seminars`;
 
@@ -25,7 +27,8 @@ class SeminarWindow extends Component {
         saving: true,
       }, () => {
         const seminarId = seminar.id;
-        const axiosObj = seminarId ? axios.put(`${SEMINARS_URL}/${seminarId}`, values) : axios.post(SEMINARS_URL, values);
+        const data = { ...values, eventDate: values.eventDate.format(dateFormat) };
+        const axiosObj = seminarId ? axios.put(`${SEMINARS_URL}/${seminarId}`, data) : axios.post(SEMINARS_URL, data);
         axiosObj.then(() => {
           message.success('Saving seminar success');
           this.setState({
@@ -86,7 +89,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Department">
                 {getFieldDecorator('department', {
-                  initialValue: seminar.Department ? String(seminar.Department.id) : undefined,
+                  initialValue: seminar.SeminarType ? String(seminar.SeminarType.DepartmentId) : undefined,
                   rules: [
                     { required: true, message: 'Please input department' },
                   ],
@@ -98,7 +101,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Seminar Type">
                 {getFieldDecorator('seminarType', {
-                  initialValue: seminar.SeminarType ? String(seminar.SeminarType.id) : undefined,
+                  initialValue: seminar.SeminarType ? seminar.SeminarType.id : undefined,
                   rules: [
                     { required: true, message: 'Please input seminar type' },
                   ],
@@ -134,12 +137,32 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Time">
                 {getFieldDecorator('eventTime', {
-                  initialValue: seminar.eventTime ? moment(seminar.eventTime) : undefined,
+                  initialValue: seminar.eventTime ? moment(seminar.eventTime, 'hh:mm:ss a') : undefined,
                   rules: [
                     { required: true, message: 'Please input time' },
                   ],
                 })(
                   <TimePicker />,
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={10}>
+            <Col span={12}>
+              <FormItem label="Speaker">
+                {getFieldDecorator('speaker', {
+                  initialValue: seminar.speakerId,
+                })(
+                  <SupervisorSelect />,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="Moderator">
+                {getFieldDecorator('moderator', {
+                  initialValue: seminar.moderatorId,
+                })(
+                  <SupervisorSelect />,
                 )}
               </FormItem>
             </Col>

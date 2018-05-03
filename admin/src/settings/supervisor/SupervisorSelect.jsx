@@ -36,7 +36,7 @@ class SupervisorSelect extends Component {
     } })
       .then((response) => {
         this.setState({
-          supervisors: response.data.rows,
+          supervisors: response.data,
         });
       })
       .catch((error) => {
