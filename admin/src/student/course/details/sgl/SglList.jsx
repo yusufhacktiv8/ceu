@@ -23,15 +23,10 @@ class SglList extends Component {
     this.setState({
       loading: true,
     });
-    axios.get(getSglsUrl(courseId), { params: {
-      searchText: this.state.searchText,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
-    } })
+    axios.get(getSglsUrl(courseId), { params: {} })
       .then((response) => {
         this.setState({
-          sgls: response.data.rows,
-          count: response.data.count,
+          sgls: response.data,
           loading: false,
         });
       })
@@ -47,7 +42,7 @@ class SglList extends Component {
 
   render() {
     return (
-      <div style={{ marginTop: -15 }}>
+      <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
         <Table
           dataSource={this.state.sgls}
           style={{ marginTop: 20 }}
