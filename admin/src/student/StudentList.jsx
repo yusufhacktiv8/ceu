@@ -36,8 +36,8 @@ class StudentList extends Component {
     axios.get(STUDENTS_URL, { params: {
       level: this.state.level,
       searchText: this.state.searchText,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({
