@@ -122,7 +122,7 @@ class SeminarList extends Component {
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
-              placeholder="Name or SID"
+              placeholder="Code or Name"
               maxLength="50"
             />
           </Col>
