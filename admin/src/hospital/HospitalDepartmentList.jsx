@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Row, Col, Tag, Icon, Spin, message, Popconfirm } from 'antd';
 import showError from '../utils/ShowError';
 import HospitalDepartmentWindow from './HospitalDepartmentWindow';
 
@@ -12,6 +12,7 @@ const Column = Table.Column;
 class HospitalDepartmentList extends Component {
   state = {
     searchText: '',
+    hospital: {},
     hospitalDepartment: {},
     hospitalDepartments: [],
     loading: false,
@@ -19,6 +20,7 @@ class HospitalDepartmentList extends Component {
   }
   componentDidMount() {
     this.fetchHospitalDepartments();
+    this.fetchHospital();
   }
 
   onSearchChange = (e) => {
@@ -46,6 +48,29 @@ class HospitalDepartmentList extends Component {
       .then((response) => {
         this.setState({
           hospitalDepartments: response.data,
+          loading: false,
+        });
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
+  fetchHospital() {
+    const { match } = this.props;
+    const { hospitalId } = match.params;
+    this.setState({
+      loading: true,
+    });
+    axios.get(`${HOSPITALS_URL}/${hospitalId}`, { params: {} })
+      .then((response) => {
+        this.setState({
+          hospital: response.data,
           loading: false,
         });
       })
@@ -98,8 +123,21 @@ class HospitalDepartmentList extends Component {
   render() {
     const { match } = this.props;
     const { hospitalId } = match.params;
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
     return (
       <div>
+        <Col span={8}>
+          {
+            this.state.hospital.code ? (
+              <span>
+                <Tag style={{ height: 26, fontSize: 15 }} color="#2db7f5">{ this.state.hospital.name}</Tag>
+                <Tag style={{ height: 26, fontSize: 15 }}>{ this.state.hospital.code}</Tag>
+              </span>
+            ) : (
+              <Spin indicator={antIcon} />
+            )
+          }
+        </Col>
         <Row gutter={10}>
           <Col span={8}>
             <span>
