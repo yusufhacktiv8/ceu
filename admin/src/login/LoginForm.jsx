@@ -3,11 +3,9 @@ import { Redirect } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import axios from 'axios';
 
-import constant from '../constant';
-
 const FormItem = Form.Item;
 
-const LOGIN_URL = `${constant.serverUrl}/api/security/signin`;
+const LOGIN_URL = `${process.env.REACT_APP_SERVER_URL}/api/security/signin`;
 
 class NormalLoginForm extends React.Component {
   state = {
