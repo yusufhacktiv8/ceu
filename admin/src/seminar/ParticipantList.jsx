@@ -133,7 +133,7 @@ class ParticipantList extends Component {
 
     return (
       <div>
-        <Row style={{ marginTop: -8, marginBottom: 12 }}>
+        <Row style={{ marginTop: -5, marginBottom: 12 }}>
           <Col span={8}>
             {
               this.state.seminar.code ? (
