@@ -130,10 +130,16 @@ exports.update = function update(req, res) {
   seminarForm.eventTime = moment(seminarForm.eventTime).format('hh:mm:ss a');
   if (seminarForm.speaker) {
     seminarForm.speakerId = parseInt(seminarForm.speaker, 10);
+  } else {
+    seminarForm.speakerId = null;
   }
+
   if (seminarForm.moderator) {
     seminarForm.moderatorId = parseInt(seminarForm.moderator, 10);
+  } else {
+    seminarForm.moderatorId = null;
   }
+
   if (seminarForm.seminarType) {
     seminarForm.SeminarTypeId = parseInt(seminarForm.seminarType, 10);
   }

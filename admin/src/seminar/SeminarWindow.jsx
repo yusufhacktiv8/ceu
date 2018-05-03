@@ -151,7 +151,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Speaker">
                 {getFieldDecorator('speaker', {
-                  initialValue: seminar.speakerId,
+                  initialValue: seminar.speakerId || undefined,
                 })(
                   <SupervisorSelect />,
                 )}
@@ -160,7 +160,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Moderator">
                 {getFieldDecorator('moderator', {
-                  initialValue: seminar.moderatorId,
+                  initialValue: seminar.moderatorId || undefined,
                 })(
                   <SupervisorSelect />,
                 )}

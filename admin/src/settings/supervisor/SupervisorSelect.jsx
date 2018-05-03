@@ -61,6 +61,7 @@ class SupervisorSelect extends Component {
   render() {
     return (
       <Select
+        allowClear
         placeholder="Select Supervisor"
         onChange={this.handleChange}
         value={this.state.value}
