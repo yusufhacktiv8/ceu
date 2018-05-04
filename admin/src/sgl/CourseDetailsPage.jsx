@@ -56,6 +56,7 @@ export default class CourseDetailsPage extends Component {
   render() {
     const { match } = this.props;
     const { courseId } = match.params;
+    console.log('================> ', ((this.state.course && this.state.course.Department) ? this.state.course.Department.id : undefined));
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
@@ -96,6 +97,7 @@ export default class CourseDetailsPage extends Component {
             <TabPane tab="SGL" key="2" forceRender>
               <SglList
                 courseId={courseId}
+                departmentId={(this.state.course && this.state.course.Department) ? this.state.course.Department.id : undefined}
                 ref={(scheduleList) => { this.scheduleList = scheduleList; }}
               />
             </TabPane>

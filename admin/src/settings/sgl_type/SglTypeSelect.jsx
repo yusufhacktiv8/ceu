@@ -10,11 +10,10 @@ class SglTypeSelect extends Component {
   constructor(props) {
     super(props);
 
-    const { value, department } = this.props;
+    const { value } = this.props;
     this.state = {
       value,
       sglTypes: [],
-      department,
     };
   }
 
@@ -24,23 +23,14 @@ class SglTypeSelect extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const value = nextProps.value;
-      this.setState({ value }, () => {
-        if (this.state.department !== nextProps.department) {
-          this.setState({ value: undefined, department: nextProps.department }, () => {
-            this.fetchSglTypes();
-          });
-        }
-      });
-    } else if (this.state.department !== nextProps.department) {
-      this.setState({ value: undefined, department: nextProps.department }, () => {
-        this.fetchSglTypes();
-      });
+      const { value } = nextProps;
+      this.setState({ value });
     }
   }
 
   fetchSglTypes() {
-    const { department } = this.state;
+    const { department } = this.props;
+    console.log('department ---> ', department);
     axios.get(SGL_TYPES_URL, { params: {
       department,
     } })

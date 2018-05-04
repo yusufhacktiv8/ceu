@@ -132,6 +132,7 @@ class SglList extends Component {
 
         <SglWindow
           visible={this.state.sglWindowVisible}
+          departmentId={this.props.departmentId}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}
           onClose={this.closeEditWindow}

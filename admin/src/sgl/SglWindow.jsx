@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Button, Tabs, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
+import SglTypeSelect from '../settings/sgl_type/SglTypeSelect';
 
 const SGLS_URL = `${process.env.REACT_APP_SERVER_URL}/api/sgls`;
 
@@ -44,7 +45,7 @@ class SglWindow extends Component {
 
   render() {
     const { saving } = this.state;
-    const { visible, onCancel, form, sgl } = this.props;
+    const { visible, onCancel, form, sgl, departmentId } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
@@ -64,14 +65,14 @@ class SglWindow extends Component {
         >
           <TabPane tab="Main" key="1">
             <Form layout="vertical">
-              <FormItem label="Code">
-                {getFieldDecorator('code', {
-                  initialValue: sgl.code,
+              <FormItem label="Type">
+                {getFieldDecorator('sglType', {
+                  initialValue: sgl.SglType ? sgl.SglType.id : undefined,
                   rules: [
-                    { required: true, message: 'Please input code' },
+                    { required: true, message: 'Please input sgl type' },
                   ],
                 })(
-                  <Input maxLength="30" />,
+                  <SglTypeSelect department={departmentId} />,
                 )}
               </FormItem>
               <FormItem label="Name">
