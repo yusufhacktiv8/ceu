@@ -6,6 +6,7 @@ import './App.css';
 import Workspace from './workspace/Workspace';
 import WorkspaceBakordik from './workspace/WorkspaceBakordik';
 import WorkspaceSeminar from './workspace/WorkspaceSeminar';
+import WorkspaceSgl from './workspace/WorkspaceSgl';
 import LoginForm from './login/LoginForm';
 
 const parseJwt = (token) => {
@@ -34,6 +35,12 @@ const App = () => {
       return (
         <div className="App">
           <Route path="/" component={WorkspaceSeminar} />
+        </div>
+      );
+    } else if (role === 'SGL') {
+      return (
+        <div className="App">
+          <Route path="/" component={WorkspaceSgl} />
         </div>
       );
     }
