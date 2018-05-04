@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, Input, Button, Tabs, message } from 'antd';
 import axios from 'axios';
 import showError from '../utils/ShowError';
 
 const SGLS_URL = `${process.env.REACT_APP_SERVER_URL}/api/sgls`;
 
 const FormItem = Form.Item;
+const { TabPane } = Tabs;
 
 class SglWindow extends Component {
   state = {
@@ -57,28 +58,37 @@ class SglWindow extends Component {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <FormItem label="Code">
-            {getFieldDecorator('code', {
-              initialValue: sgl.code,
-              rules: [
-                { required: true, message: 'Please input code' },
-              ],
-            })(
-              <Input maxLength="30" />,
-            )}
-          </FormItem>
-          <FormItem label="Name">
-            {getFieldDecorator('name', {
-              initialValue: sgl.name,
-              rules: [
-                { required: true, message: 'Please input name' },
-              ],
-            })(
-              <Input maxLength="50" />,
-            )}
-          </FormItem>
-        </Form>
+        <Tabs
+          defaultActiveKey="1"
+          style={{ marginTop: -15 }}
+        >
+          <TabPane tab="Main" key="1">
+            <Form layout="vertical">
+              <FormItem label="Code">
+                {getFieldDecorator('code', {
+                  initialValue: sgl.code,
+                  rules: [
+                    { required: true, message: 'Please input code' },
+                  ],
+                })(
+                  <Input maxLength="30" />,
+                )}
+              </FormItem>
+              <FormItem label="Name">
+                {getFieldDecorator('name', {
+                  initialValue: sgl.name,
+                  rules: [
+                    { required: true, message: 'Please input name' },
+                  ],
+                })(
+                  <Input maxLength="50" />,
+                )}
+              </FormItem>
+            </Form>
+          </TabPane>
+          <TabPane tab="Tutors" key="2">
+          </TabPane>
+        </Tabs>
       </Modal>
     );
   }

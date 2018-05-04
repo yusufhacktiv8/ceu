@@ -6,7 +6,7 @@ import StudentPage from '../sgl/StudentPage';
 import CoursePage from '../sgl/CoursePage';
 import CourseDetailsPage from '../sgl/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
-import DocentPage from '../settings/docent/DocentPage';
+import SglTypePage from '../settings/sgl_type/SglTypePage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -54,8 +54,8 @@ class Workspace extends Component {
     let selectedKeys = 'dashboard';
     if (location.includes('students')) {
       selectedKeys = ['students'];
-    } else if (location.includes('docents')) {
-      selectedKeys = ['docents'];
+    } else if (location.includes('sgltypes')) {
+      selectedKeys = ['sglTypes'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -101,8 +101,8 @@ class Workspace extends Component {
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Application">
-                    <Menu.Item key="docents">
-                      <Link to="/docents">Docents</Link>
+                    <Menu.Item key="sglTypes">
+                      <Link to="/sgltypes">SGL Types</Link>
                     </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
@@ -116,7 +116,7 @@ class Workspace extends Component {
             <Route exact path="/students" component={StudentPage} />
             <Route exact path="/students/:studentId/courses" component={CoursePage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
-            <Route exact path="/docents" component={DocentPage} />
+            <Route exact path="/sgltypes" component={SglTypePage} />
           </div>
         </Content>
       </Layout>
