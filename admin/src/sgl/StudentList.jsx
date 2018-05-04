@@ -61,31 +61,6 @@ class StudentList extends Component {
     }, () => { this.fetchStudents(); });
   }
 
-  deleteStudent(student) {
-    const hide = message.loading('Action in progress..', 0);
-    axios.delete(`${STUDENTS_URL}/${student.id}`)
-      .then(() => {
-        hide();
-        this.fetchStudents();
-        message.success('Delete student success');
-      })
-      .catch((error) => {
-        showError(error);
-      })
-      .finally(() => {
-        hide();
-      });
-  }
-
-  openEditWindow(record) {
-    this.setState({
-      student: record,
-      studentWindowVisible: true,
-    }, () => {
-      this.studentWindow.resetFields();
-    });
-  }
-
   openDetailsPage = (record) => {
     this.props.history.push(`/students/${record.id}/courses`);
   }
@@ -93,25 +68,6 @@ class StudentList extends Component {
   closeEditWindow = () => {
     this.setState({
       studentWindowVisible: false,
-    });
-  }
-
-  handleCancel() {
-    this.setState({
-      studentWindowVisible: false,
-    });
-    this.studentWindow.resetFields();
-  }
-
-  handleCreate() {
-    this.studentWindow.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      this.saveStudent(values);
-      this.studentWindow.resetFields();
-      this.setState({ studentWindowVisible: false });
     });
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Tag, Input, Row, Col, Icon, message, Popconfirm } from 'antd';
+import { Table, Button, Tag, Spin, Row, Col, Icon, message, Popconfirm } from 'antd';
 import showError from '../utils/ShowError';
 import LevelSelect from '../student/LevelSelect';
 
@@ -19,6 +19,7 @@ class CourseList extends Component {
   }
   componentDidMount() {
     this.fetchCourses();
+    this.fetchStudent();
   }
 
   onSearchChange = (e) => {
@@ -66,13 +67,13 @@ class CourseList extends Component {
     const { match } = this.props;
     const { studentId } = match.params;
     this.setState({
-      loading: true,
+      studentLoading: true,
     });
     axios.get(`${STUDENTS_URL}/${studentId}`, {})
       .then((response) => {
         this.setState({
           student: response.data,
-          loading: false,
+          studentLoading: false,
         });
       })
       .catch((error) => {
@@ -80,7 +81,7 @@ class CourseList extends Component {
       })
       .finally(() => {
         this.setState({
-          loading: false,
+          studentLoading: false,
         });
       });
   }
@@ -91,9 +92,29 @@ class CourseList extends Component {
     this.props.history.push(`/students/${studentId}/courses/${courseId}`);
   }
 
+  goToStudentsPage = () => {
+    this.props.history.push('/students');
+  }
+
   render() {
     return (
       <div>
+        {
+          this.state.studentLoading ?
+            (
+              <Spin indicator={spinIcon} style={{ marginBottom: 15 }} />
+            ) :
+            (
+              <div>
+                <Tag color="#F50" style={{ height: 26, marginBottom: 15, fontSize: 15 }}>
+                  {this.state.student ? this.state.student.name : ''}
+                </Tag>
+                <Tag style={{ height: 26, marginBottom: 15, fontSize: 15 }}>
+                  {this.state.student ? `${this.state.student.oldSid} - ${this.state.student.newSid}` : ''}
+                </Tag>
+              </div>
+            )
+        }
         <Row gutter={10}>
           <Col span={8}>
             <LevelSelect

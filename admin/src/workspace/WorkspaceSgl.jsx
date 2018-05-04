@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import StudentPage from '../sgl/StudentPage';
 import CoursePage from '../sgl/CoursePage';
-import CourseDetailsPage from '../bakordik/CourseDetailsPage';
+import CourseDetailsPage from '../sgl/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import DocentPage from '../settings/docent/DocentPage';
 

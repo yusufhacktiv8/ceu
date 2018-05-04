@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Checkbox } from 'antd';
+import { Table, Checkbox, Button, Row, Col, Popconfirm } from 'antd';
 import moment from 'moment';
-import showError from '../../../../utils/ShowError';
+import SglWindow from './SglWindow';
+import showError from '../utils/ShowError';
 
 const Column = Table.Column;
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
@@ -10,6 +11,7 @@ const getSglsUrl = courseId => `${COURSES_URL}/${courseId}/sgls`;
 
 class SglList extends Component {
   state = {
+    sgl: {},
     sgls: [],
     loading: false,
   }
@@ -40,12 +42,39 @@ class SglList extends Component {
       });
   }
 
+  openEditWindow = (record) => {
+    this.setState({
+      sgl: record,
+      sglWindowVisible: true,
+    }, () => {
+      this.sglWindow.resetFields();
+    });
+  }
+
+  closeEditWindow = () => {
+    this.setState({
+      sglWindowVisible: false,
+    });
+  }
+
   render() {
     return (
       <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
+        <Row gutter={10} style={{ marginTop: 10 }}>
+          <Col span={16}>
+            <span>
+              <Button
+                type="primary"
+                shape="circle"
+                icon="plus"
+                onClick={() => this.openEditWindow({})}
+              />
+            </span>
+          </Col>
+        </Row>
         <Table
           dataSource={this.state.sgls}
-          style={{ marginTop: 15 }}
+          style={{ marginTop: 10 }}
           rowKey="id"
           loading={this.state.loading}
           size="small"
@@ -74,7 +103,41 @@ class SglList extends Component {
               </span>
             )}
           />
+          <Column
+            title="Action"
+            key="action"
+            render={(text, record) => (
+              <span>
+                <Button
+                  icon="ellipsis"
+                  size="small"
+                  onClick={() => this.openEditWindow(record)}
+                  style={{ marginRight: 5 }}
+                />
+                <Popconfirm
+                  title={`Are you sure delete sgl ${record.name}`}
+                  onConfirm={() => this.deleteSgl(record)}
+                  okText="Yes" cancelText="No"
+                >
+                  <Button
+                    type="danger"
+                    icon="delete"
+                    size="small"
+                  />
+                </Popconfirm>
+              </span>
+            )}
+          />
         </Table>
+
+        <SglWindow
+          visible={this.state.sglWindowVisible}
+          onSaveSuccess={this.onSaveSuccess}
+          onCancel={this.closeEditWindow}
+          onClose={this.closeEditWindow}
+          sgl={this.state.sgl}
+          ref={sglWindow => (this.sglWindow = sglWindow)}
+        />
       </div>
     );
   }
