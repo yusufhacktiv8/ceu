@@ -59,8 +59,8 @@ class SeminarList extends Component {
     axios.get(SEMINARS_URL, { params: {
       searchText: this.state.searchText,
       dateRange: this.state.hospitalDateRange,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({

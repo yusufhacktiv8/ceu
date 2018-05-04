@@ -46,8 +46,8 @@ class UserList extends Component {
     });
     axios.get(USERS_URL, { params: {
       searchText: this.state.searchText,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({
