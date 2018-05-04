@@ -24,8 +24,6 @@ class SeminarList extends Component {
     });
     axios.get(getSeminarsUrl(courseId), { params: {
       searchText: this.state.searchText,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({

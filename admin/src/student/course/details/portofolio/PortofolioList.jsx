@@ -24,13 +24,10 @@ class PortofolioList extends Component {
     });
     axios.get(getPortofoliosUrl(courseId), { params: {
       searchText: this.state.searchText,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({
-          portofolios: response.data.rows,
-          count: response.data.count,
+          portofolios: response.data,
           loading: false,
         });
       })

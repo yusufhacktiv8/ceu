@@ -38,13 +38,10 @@ class CostUnitList extends Component {
     axios.get(COST_UNITS_URL, { params: {
       hospital: this.state.hospital,
       dateRange: this.state.dateRange,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({
-          costUnits: response.data.rows,
-          count: response.data.count,
+          costUnits: response.data,
           loading: false,
         });
       })
