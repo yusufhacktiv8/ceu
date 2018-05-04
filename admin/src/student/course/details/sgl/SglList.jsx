@@ -45,7 +45,7 @@ class SglList extends Component {
       <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
         <Table
           dataSource={this.state.sgls}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 15 }}
           rowKey="id"
           loading={this.state.loading}
           size="small"
