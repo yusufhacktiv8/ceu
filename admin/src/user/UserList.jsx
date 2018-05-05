@@ -201,6 +201,10 @@ class UserList extends Component {
                 }}
               />
               <Column
+                title="Role"
+                dataIndex="Role.code"
+              />
+              <Column
                 title="Action"
                 key="action"
                 render={(text, record) => (
