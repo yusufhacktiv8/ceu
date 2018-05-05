@@ -43,7 +43,7 @@ class SeminarList extends Component {
 
   render() {
     return (
-      <div style={{ marginTop: -15 }}>
+      <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
         <Table
           dataSource={this.state.seminars}
           style={{ marginTop: 20 }}

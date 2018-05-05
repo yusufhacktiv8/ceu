@@ -81,7 +81,7 @@ class CourseProblemList extends Component {
   render() {
     const { courseId } = this.props;
     return (
-      <div style={{ marginTop: -5 }}>
+      <div style={{ marginTop: -5, overflow: 'scroll', height: 400 }}>
         <Row gutter={10}>
           <Col span={16}>
             <span>

@@ -43,7 +43,7 @@ class PortofolioList extends Component {
 
   render() {
     return (
-      <div style={{ marginTop: -15 }}>
+      <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
         <Table
           dataSource={this.state.portofolios}
           style={{ marginTop: 20 }}
