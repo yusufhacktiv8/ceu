@@ -426,7 +426,7 @@ exports.hospitalStudents = function hospitalStudents(req, res) {
     },
   };
 
-  if (departmentId !== -1) {
+  if (parseInt(departmentId, 10) !== -1) {
     where.DepartmentId = departmentId;
   }
 
