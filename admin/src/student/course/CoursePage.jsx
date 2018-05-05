@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Menu, Row, Col, Button, Icon, Dropdown, Spin } from 'antd';
+import { Menu, Row, Col, Button, Tag, Icon, Dropdown, Spin } from 'antd';
+import { PieChart, Pie, Cell } from 'recharts';
 import axios from 'axios';
 import AddCourseByLevelWindow from '../course/AddCourseByLevelWindow';
 import AddCourseByDepartmentWindow from '../course/AddCourseByDepartmentWindow';
@@ -9,6 +10,8 @@ import showError from '../../utils/ShowError';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const getCourseURL = studentId => `${STUDENTS_URL}/${studentId}/courses`;
+
+const COLORS = ['#5093E1', '#50C14E', '#F65177', '#9DA5BE', '#000'];
 
 export default class CoursePage extends Component {
   state = {
@@ -111,22 +114,96 @@ export default class CoursePage extends Component {
         <Menu.Item key="2">By Department</Menu.Item>
       </Menu>
     );
+
+    const { courses } = this.state;
+    const onGoingCount = courses.filter(course => course.status === 1).length;
+    const completedCount = courses.filter(course => course.status === 2).length;
+    const scheduledCount = courses.filter(course => course.status === 0).length;
+    const problemCount = courses.filter(course => course.status === 3).length;
+    const pendingCount = courses.filter(course => course.status === 4).length;
+    const data = [
+      {
+        name: 'On Going',
+        value: onGoingCount,
+      },
+      {
+        name: 'Completed',
+        value: completedCount,
+      },
+      {
+        name: 'Problem',
+        value: problemCount,
+      },
+      {
+        name: 'Scheduled',
+        value: scheduledCount,
+      },
+      {
+        name: 'Pending',
+        value: pendingCount,
+      },
+    ];
     return (
       <Row gutter={20}>
-        <Col span={18}>
+        <Col span={16}>
           <Spin spinning={this.state.loading}>
             <CourseList courses={this.state.courses} showDetails={this.showDetails} />
           </Spin>
         </Col>
-        <Col span={2}>
-          <Dropdown overlay={menu}>
-            <Button type="primary" style={{ marginLeft: 10 }}>
-              Add <Icon type="down" />
-            </Button>
-          </Dropdown>
-        </Col>
-        <Col span={2}>
-          <Button onClick={this.openCourseChartWindow}>Chart <Icon type="layout" /></Button>
+        <Col span={8}>
+          <Row>
+            <Col span={6}>
+              <Dropdown overlay={menu}>
+                <Button type="primary" style={{ marginLeft: 10 }}>
+                  Add <Icon type="down" />
+                </Button>
+              </Dropdown>
+            </Col>
+            <Col span={6}>
+              <Button onClick={this.openCourseChartWindow}>Chart <Icon type="layout" /></Button>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={12}>
+              <div style={{ position: 'relative', top: 72, left: 56, textAlign: 'center', width: 100 }}>
+                <span style={{ fontSize: 30, fontWeight: 'bold', color: 'gray' }}>
+                  {courses.length}
+                </span><br />
+                <span style={{ fontWeight: 'bold' }}>Courses</span>
+              </div>
+              <div>
+                <PieChart style={{ top: -40 }} width={200} height={170}>
+                  <Pie
+                    data={data}
+                    cx={100}
+                    cy={80}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={0}
+                    label={false}
+                    dataKey="value"
+                  >
+                    {
+                      data.map((entry, index) => (
+                        <Cell
+                          key={COLORS[index % COLORS.length]}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))
+                    }
+                  </Pie>
+                </PieChart>
+              </div>
+            </Col>
+            <Col span={12} style={{ paddingLeft: 20 }}>
+              <div style={{ marginTop: 60 }}><Tag color="#9DA5BE">{scheduledCount}</Tag> Scheduled </div>
+              <div style={{ marginTop: 5 }}><Tag color="#5093E1">{onGoingCount}</Tag> On Going </div>
+              <div style={{ marginTop: 5 }}><Tag color="#50C14E">{completedCount}</Tag> Completed </div>
+              <div style={{ marginTop: 5 }}><Tag color="#F65177">{problemCount}</Tag> Problem </div>
+              <div style={{ marginTop: 5 }}><Tag color="#000">{pendingCount}</Tag> Pending </div>
+            </Col>
+          </Row>
         </Col>
 
         <AddCourseByLevelWindow
