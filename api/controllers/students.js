@@ -93,14 +93,20 @@ exports.update = function updateStudent(req, res) {
 };
 
 exports.delete = function deleteStudent(req, res) {
-  models.Student.destroy(
-    {
-      where: { id: req.params.studentId },
+  models.YudisiumChecklist.destroy({
+    where: {
+      StudentId: req.params.studentId,
+    },
+  }).then(() => {
+    models.Student.destroy(
+      {
+        where: { id: req.params.studentId },
+      })
+    .then((result) => {
+      res.json(result);
     })
-  .then((result) => {
-    res.json(result);
-  })
-  .catch(err => res.status(500).send(err.message));
+    .catch(err => res.status(500).send(err.message));
+  });
 };
 
 const createPortofolios = (courseId, departmentId) => {
