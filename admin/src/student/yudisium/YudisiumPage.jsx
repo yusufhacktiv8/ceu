@@ -138,46 +138,48 @@ class YudisiumPage extends Component {
           </Spin>
         </TabPane>
         <TabPane tab="Portofolios" key="2">
-          <Table dataSource={portofolioCompletions} style={{ marginTop: 20 }} rowKey="id" loading={loading} size="middle">
-            <Column
-              title="Title"
-              dataIndex="course.title"
-            />
-            <Column
-              title="Department"
-              dataIndex="course.Department.name"
-            />
-            <Column
-              title="Total"
-              key="total"
-              render={(text, record) => (
-                record.portofolios.length
-              )}
-            />
-            <Column
-              title="Competed"
-              key="completed"
-              render={(text, record) => (
-                record.portofolios.length > 0 ?
-                  record.portofolios.filter(portofolio => (portofolio.completed)).length :
-                  '-'
-              )}
-            />
-            <Column
-              title="Completion"
-              key="cmpletions"
-              render={(text, record) => {
-                if (record.portofolios.length > 0) {
-                  const percentage =
-                  (record.portofolios.filter(portofolio => (portofolio.completed)).length
-                  / record.portofolios.length) * 100;
-                  return `${numeral(percentage).format('0,0')}%`;
-                }
+          <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
+            <Table dataSource={portofolioCompletions} style={{ marginTop: 0 }} rowKey="id" loading={loading} size="middle">
+              <Column
+                title="Title"
+                dataIndex="course.title"
+              />
+              <Column
+                title="Department"
+                dataIndex="course.Department.name"
+              />
+              <Column
+                title="Total"
+                key="total"
+                render={(text, record) => (
+                  record.portofolios.length
+                )}
+              />
+              <Column
+                title="Competed"
+                key="completed"
+                render={(text, record) => (
+                  record.portofolios.length > 0 ?
+                    record.portofolios.filter(portofolio => (portofolio.completed)).length :
+                    '-'
+                )}
+              />
+              <Column
+                title="Completion"
+                key="cmpletions"
+                render={(text, record) => {
+                  if (record.portofolios.length > 0) {
+                    const percentage =
+                    (record.portofolios.filter(portofolio => (portofolio.completed)).length
+                    / record.portofolios.length) * 100;
+                    return `${numeral(percentage).format('0,0')}%`;
+                  }
 
-                return '-';
-              }}
-            />
-          </Table>
+                  return '-';
+                }}
+              />
+            </Table>
+          </div>
         </TabPane>
       </Tabs>
     );
