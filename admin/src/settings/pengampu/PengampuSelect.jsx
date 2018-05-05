@@ -61,6 +61,7 @@ class PengampuSelect extends Component {
   render() {
     return (
       <Select
+        allowClear
         placeholder="Select Pengampu"
         onChange={this.handleChange}
         value={this.state.value}

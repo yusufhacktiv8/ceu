@@ -20,6 +20,11 @@ class SglList extends Component {
     this.fetchSgls();
   }
 
+  onSaveSuccess = () => {
+    this.closeEditWindow();
+    this.fetchSgls();
+  }
+
   fetchSgls() {
     const { courseId } = this.props;
     this.setState({
@@ -95,8 +100,8 @@ class SglList extends Component {
           />
           <Column
             title="Date"
-            dataIndex="problemDate"
-            key="problemDate"
+            dataIndex="sglDate"
+            key="sglDate"
             render={(text, record) => (
               <span>
                 {moment(text).format('DD/MM/YYYY')}
@@ -132,6 +137,7 @@ class SglList extends Component {
 
         <SglWindow
           visible={this.state.sglWindowVisible}
+          courseId={this.props.courseId}
           departmentId={this.props.departmentId}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}

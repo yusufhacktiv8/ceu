@@ -3,10 +3,13 @@ import { Modal, Form, Checkbox, DatePicker, Button, Row, Col, Tabs, message } fr
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../utils/ShowError';
+import { dateFormat } from '../constant';
 import SglTypeSelect from '../settings/sgl_type/SglTypeSelect';
 import PengampuSelect from '../settings/pengampu/PengampuSelect';
 
 const SGLS_URL = `${process.env.REACT_APP_SERVER_URL}/api/sgls`;
+const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
+const getSglsUrl = courseId => `${COURSES_URL}/${courseId}/sgls`;
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
@@ -17,7 +20,7 @@ class SglWindow extends Component {
   }
 
   onSave = () => {
-    const { sgl, onSaveSuccess, form } = this.props;
+    const { courseId, sgl, onSaveSuccess, form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -26,7 +29,8 @@ class SglWindow extends Component {
         saving: true,
       }, () => {
         const sglId = sgl.id;
-        const axiosObj = sglId ? axios.put(`${SGLS_URL}/${sglId}`, values) : axios.post(SGLS_URL, values);
+        const data = { ...values, sglDate: values.sglDate.format(dateFormat) }
+        const axiosObj = sglId ? axios.put(`${SGLS_URL}/${sglId}`, data) : axios.post(getSglsUrl(courseId), data);
         axiosObj.then(() => {
           message.success('Saving sgl success');
           this.setState({
@@ -92,7 +96,7 @@ class SglWindow extends Component {
                   initialValue: sgl.completed,
                   valuePropName: 'checked',
                 })(
-                  <Checkbox>Active</Checkbox>,
+                  <Checkbox>Completed</Checkbox>,
                 )}
               </FormItem>
             </Form>
@@ -102,10 +106,7 @@ class SglWindow extends Component {
               <Col span={16}>
                 <FormItem label="Utama">
                   {getFieldDecorator('mainTutor', {
-                    initialValue: sgl.mainTutor ? sgl.mainTutor.id : undefined,
-                    rules: [
-                      { required: true, message: 'Please input main tutor' },
-                    ],
+                    initialValue: sgl.mainTutorId ? String(sgl.mainTutorId) : undefined,
                   })(
                     <PengampuSelect department={departmentId} />,
                   )}
@@ -117,7 +118,7 @@ class SglWindow extends Component {
                     initialValue: sgl.mainTutorPresent,
                     valuePropName: 'checked',
                   })(
-                    <Checkbox>Active</Checkbox>,
+                    <Checkbox>Present</Checkbox>,
                   )}
                 </FormItem>
               </Col>
@@ -125,11 +126,8 @@ class SglWindow extends Component {
             <Row>
               <Col span={16}>
                 <FormItem label="Cadangan">
-                  {getFieldDecorator('thirdTutor', {
-                    initialValue: sgl.thirdTutor ? sgl.thirdTutor.id : undefined,
-                    rules: [
-                      { required: true, message: 'Please input third tutor' },
-                    ],
+                  {getFieldDecorator('secondTutor', {
+                    initialValue: sgl.secondTutorId ? String(sgl.secondTutorId) : undefined,
                   })(
                     <PengampuSelect department={departmentId} />,
                   )}
@@ -137,11 +135,11 @@ class SglWindow extends Component {
               </Col>
               <Col span={8}>
                 <FormItem label="">
-                  {getFieldDecorator('thirdTutorPresent', {
-                    initialValue: sgl.thirdTutorPresent,
+                  {getFieldDecorator('secondTutorPresent', {
+                    initialValue: sgl.secondTutorPresent,
                     valuePropName: 'checked',
                   })(
-                    <Checkbox>Active</Checkbox>,
+                    <Checkbox>Present</Checkbox>,
                   )}
                 </FormItem>
               </Col>
@@ -150,10 +148,7 @@ class SglWindow extends Component {
               <Col span={16}>
                 <FormItem label="Siaga">
                   {getFieldDecorator('thirdTutor', {
-                    initialValue: sgl.thirdTutor ? sgl.thirdTutor.id : undefined,
-                    rules: [
-                      { required: true, message: 'Please input third tutor' },
-                    ],
+                    initialValue: sgl.thirdTutorId ? String(sgl.thirdTutorId) : undefined,
                   })(
                     <PengampuSelect department={departmentId} />,
                   )}
@@ -165,7 +160,7 @@ class SglWindow extends Component {
                     initialValue: sgl.thirdTutorPresent,
                     valuePropName: 'checked',
                   })(
-                    <Checkbox>Active</Checkbox>,
+                    <Checkbox>Present</Checkbox>,
                   )}
                 </FormItem>
               </Col>
