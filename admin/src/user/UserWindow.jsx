@@ -75,7 +75,7 @@ class UserWindow extends Component {
               initialValue: user.username,
               rules: [
                 { required: true, message: 'Please input username' },
-                { min: 5, message: 'Username minimum length is 5 characters' },
+                { min: 3, message: 'Username minimum length is 3 characters' },
               ],
             })(
               <Input maxLength="50" />,
