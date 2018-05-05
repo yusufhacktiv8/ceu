@@ -10,6 +10,7 @@ const getSeminarsUrl = courseId => `${COURSES_URL}/${courseId}/courseseminars`;
 
 class SeminarList extends Component {
   state = {
+    course: {},
     seminars: [],
     loading: false,
   }
@@ -17,13 +18,42 @@ class SeminarList extends Component {
     this.fetchSeminars();
   }
 
+  fetchCourse = () => {
+    const { courseId } = this.props;
+    this.setState({
+      loading: true,
+    });
+    axios.get(`${COURSES_URL}/${courseId}`, {})
+      .then((response) => {
+        this.setState({
+          course: response.data,
+          loading: false,
+        }, () => {
+          this.fetchSeminars();
+        });
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
   fetchSeminars() {
     const { courseId } = this.props;
     this.setState({
       loading: true,
     });
+    const realStartDate = this.state.course.realStartDate;
+    const realEndDate = this.state.course.realEndDate;
+    const startDate = realStartDate ? realStartDate.value : null;
+    const endDate = realEndDate ? realEndDate.value : null;
     axios.get(getSeminarsUrl(courseId), { params: {
-      searchText: this.state.searchText,
+      startDate,
+      endDate,
     } })
       .then((response) => {
         this.setState({
