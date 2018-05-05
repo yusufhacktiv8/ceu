@@ -412,21 +412,27 @@ exports.hospitalStudents = function hospitalStudents(req, res) {
   }
   console.log('----->>>>', startDate);
   console.log('----->>>>', endDate);
+
+  const where = {
+    $or: [
+      { hospital1Id: hospitalId },
+      { clinicId: hospitalId },
+    ],
+    planStartDate1: {
+      $gte: startDate.toDate(),
+    },
+    planEndDate1: {
+      $gte: endDate.toDate(),
+    },
+  };
+
+  if (departmentId !== -1) {
+    where.DepartmentId = departmentId;
+  }
+
   if (startDate && endDate) {
     models.Course.findAll({
-      where: {
-        DepartmentId: departmentId,
-        $or: [
-          { hospital1Id: hospitalId },
-          { clinicId: hospitalId },
-        ],
-        planStartDate1: {
-          $gte: startDate.toDate(),
-        },
-        planEndDate1: {
-          $gte: endDate.toDate(),
-        },
-      },
+      where,
       include: [
         {
           model: models.Student,

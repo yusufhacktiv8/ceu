@@ -26,16 +26,19 @@ class HospitalStudentList extends Component {
 
   fetchHospitalStudents() {
     const { hospitalId, departmentId, hospitalDateRange } = this.props;
-    if (hospitalId === undefined || departmentId === undefined) return;
+
+    if (hospitalId === undefined) return;
+
+    const tempDepartmentId = departmentId || -1;
     this.setState({
       loading: true,
     });
-    axios.get(`${HOSPITAL_STUDENTS_URL}/${hospitalId}/${departmentId}`, { params: {
+    axios.get(`${HOSPITAL_STUDENTS_URL}/${hospitalId}/${tempDepartmentId}`, { params: {
       hospitalDateRange,
     } })
       .then((response) => {
         this.setState({
-          hospitals: response.data,
+          hospitalStudents: response.data,
           loading: false,
         });
       })
