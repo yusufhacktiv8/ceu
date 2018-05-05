@@ -52,3 +52,18 @@ exports.mppdCountByLevel = function mppdCountByLevel(req, res) {
     sendError(err, res);
   });
 };
+
+exports.studentCountByLevel = function studentCountByLevel(req, res) {
+  models.Student.findAll({
+    attributes: [
+      'level',
+      [Sequelize.fn('count', Sequelize.col('id')), 'studentCount']],
+    group: ['level'],
+  })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};

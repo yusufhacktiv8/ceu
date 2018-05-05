@@ -6,5 +6,6 @@ const router = express.Router();
 
 // router.get('/mppdcount', isAuthorizedAs('ADMIN'), DashboardController.mppdCountByLevel);
 router.get('/mppdcount', DashboardController.mppdCountByLevel);
+router.get('/studentcount', DashboardController.studentCountByLevel);
 
 module.exports = router;

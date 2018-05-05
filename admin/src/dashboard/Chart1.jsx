@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import showError from '../utils/ShowError';
 
 const DEPARTMENT_DASHBOARD_URL = `${process.env.REACT_APP_SERVER_URL}/api/dashboard/mppdcount`;
@@ -38,19 +38,20 @@ export default class Chart1 extends Component {
 
   render() {
     return (
-      <BarChart
-        width={600}
-        height={300}
-        data={this.state.departments}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <XAxis dataKey="name" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="count" fill="#8884d8" />
-      </BarChart>
+      <ResponsiveContainer width="100%" aspect={2}>
+        <BarChart
+          width={600}
+          height={300}
+          data={this.state.departments}
+          margin={{ top: 5, left: -40, bottom: 5 }}
+        >
+          <XAxis dataKey="code" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Bar dataKey="count" fill="#8884d8" />
+        </BarChart>
+      </ResponsiveContainer>
     );
   }
 }
