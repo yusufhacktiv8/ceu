@@ -424,7 +424,7 @@ exports.hospitalStudents = function hospitalStudents(req, res) {
           $gte: startDate.toDate(),
         },
         planEndDate1: {
-          $lte: endDate.toDate(),
+          $gte: endDate.toDate(),
         },
       },
       include: [
