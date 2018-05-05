@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Checkbox, Button, Row, Col, Popconfirm } from 'antd';
+import { Table, Checkbox, Button, Row, Col, Popconfirm, message } from 'antd';
 import moment from 'moment';
 import SglWindow from './SglWindow';
 import showError from '../utils/ShowError';
 
 const Column = Table.Column;
+const SGLS_URL = `${process.env.REACT_APP_SERVER_URL}/api/sgls`;
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
 const getSglsUrl = courseId => `${COURSES_URL}/${courseId}/sgls`;
 
@@ -60,6 +61,21 @@ class SglList extends Component {
     this.setState({
       sglWindowVisible: false,
     });
+  }
+
+  deleteSgl(sgl) {
+    const hide = message.loading('Action in progress..', 0);
+    axios.delete(`${SGLS_URL}/${sgl.id}`)
+      .then(() => {
+        message.success('Delete sgl success');
+        this.fetchSgls();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        hide();
+      });
   }
 
   render() {
@@ -120,7 +136,7 @@ class SglList extends Component {
                   style={{ marginRight: 5 }}
                 />
                 <Popconfirm
-                  title={`Are you sure delete sgl ${record.name}`}
+                  title={`Are you sure delete sgl ${record.SglType.name}`}
                   onConfirm={() => this.deleteSgl(record)}
                   okText="Yes" cancelText="No"
                 >
