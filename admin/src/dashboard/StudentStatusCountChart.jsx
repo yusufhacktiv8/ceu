@@ -3,10 +3,10 @@ import axios from 'axios';
 import { PieChart, Pie, Label, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import showError from '../utils/ShowError';
 
-const DEPARTMENT_DASHBOARD_URL = `${process.env.REACT_APP_SERVER_URL}/api/dashboard/studentcount`;
+const DEPARTMENT_DASHBOARD_URL = `${process.env.REACT_APP_SERVER_URL}/api/dashboard/studentstatuscount`;
 const COLORS = ['#5093E1', '#50C14E', '#F65177', '#9DA5BE', '#000'];
 
-export default class StudentCountChart extends Component {
+export default class StudentStatusCountChart extends Component {
   state = {
     students: [],
   }
@@ -37,7 +37,7 @@ export default class StudentCountChart extends Component {
   }
 
   render() {
-    const data = this.state.students.map(obj => ({ name: `Level ${obj.level}`, value: parseInt(obj.studentCount, 10) }));
+    const data = this.state.students.map(obj => ({ name: obj.status, value: parseInt(obj.statusCount, 10) }));
     return (
       <ResponsiveContainer width="100%" aspect={2}>
         <PieChart width={200} height={250}>

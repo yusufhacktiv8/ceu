@@ -67,3 +67,18 @@ exports.studentCountByLevel = function studentCountByLevel(req, res) {
     sendError(err, res);
   });
 };
+
+exports.studentStatusCountByLevel = function studentStatusCountByLevel(req, res) {
+  models.Student.findAll({
+    attributes: [
+      'status',
+      [Sequelize.fn('count', Sequelize.col('id')), 'statusCount']],
+    group: ['status'],
+  })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};

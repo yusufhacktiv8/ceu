@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Row, Col, Card } from 'antd';
 import Chart1 from './Chart1';
 import StudentCountChart from './StudentCountChart';
+import StudentStatusCountChart from './StudentStatusCountChart';
 
 const { Header, Content } = Layout;
 
@@ -20,6 +21,11 @@ export default ({ history }) => (
           </Card>
         </Col>
         <Col span={12}>
+          <Card title="Student by Status" type="inner">
+            <div style={{ width: '100%', textAlign: 'center' }}>
+              <StudentStatusCountChart />
+            </div>
+          </Card>
         </Col>
       </Row>
       <Row gutter={20} style={{ marginTop: 20 }}>
