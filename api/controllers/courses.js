@@ -404,11 +404,23 @@ exports.unPending = function(req, res, next) {
 
 exports.delete = function(req, res) {
   const courseId = req.params.courseId;
-  models.Course.destroy({
-    where: { id: courseId },
-  })
-  .then((result) => {
-    res.json(result);
+  models.Sgl.destroy({
+    where: {
+      CourseId: courseId,
+    },
+  }).then(() => {
+    models.Portofolio.destroy({
+      where: {
+        CourseId: courseId,
+      },
+    }).then(() => {
+      models.Course.destroy({
+        where: { id: courseId },
+      })
+      .then((result) => {
+        res.json(result);
+      });
+    });
   });
 };
 
