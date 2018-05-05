@@ -49,8 +49,8 @@ class SeminarList extends Component {
     });
     const realStartDate = this.state.course.realStartDate;
     const realEndDate = this.state.course.realEndDate;
-    const startDate = realStartDate ? realStartDate.value : null;
-    const endDate = realEndDate ? realEndDate.value : null;
+    const startDate = realStartDate;
+    const endDate = realEndDate;
     axios.get(getSeminarsUrl(courseId), { params: {
       startDate,
       endDate,
