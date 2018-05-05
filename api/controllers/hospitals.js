@@ -189,6 +189,102 @@ exports.hospitalSchedule = function hospitalSchedule(req, res) {
   console.log('----->>>>', endDate);
   console.log('----->>>>', departmentId);
 
+  if (departmentId === -1) {
+    models.Hospital.findAll({
+      where: {},
+      include: [
+        {
+          model: models.HospitalDepartment,
+          include: [
+            {
+              model: models.Department,
+            },
+          ],
+        },
+      ],
+    })
+    .then((foundHospitals) => {
+      const hospitals = [];
+      for (let i = 0; i < foundHospitals.length; i += 1) {
+        const hospital = foundHospitals[i].dataValues;
+
+        hospital.studentsInDepartmentCount = 0;
+        hospital.departmentQuota = 0;
+        if (hospital.HospitalDepartments) {
+          for (let x = 0; x < hospital.HospitalDepartments.length; x += 1) {
+            hospital.departmentQuota += hospital.HospitalDepartments[x].quota;
+          }
+        }
+
+        hospitals.push(hospital);
+      }
+
+      if (startDate && endDate) {
+        models.Course.findAll({
+          where: {
+            planStartDate1: {
+              $gte: startDate.toDate(),
+            },
+            planEndDate1: {
+              $gte: endDate.toDate(),
+            },
+          },
+          group: ['hospital1Id'],
+          attributes: ['hospital1Id', [sequelize.fn('COUNT', 'hospital1Id'), 'hospitalCount']],
+        }).then((courseGroups) => {
+          console.log('>>>>>>>>>>>>', JSON.stringify(courseGroups));
+          for (let i = 0; i < courseGroups.length; i += 1) {
+            const courseGroup = courseGroups[i].dataValues;
+            for (let j = 0; j < hospitals.length; j += 1) {
+              const hospital = hospitals[j];
+
+              // For hospitals
+              if (hospital.id === parseInt(courseGroup.hospital1Id, 10)
+              && hospital.hospitalType === 1) {
+                hospital.studentsInDepartmentCount = courseGroup.hospitalCount;
+              }
+            }
+          }
+
+          //-------------
+          models.Course.findAll({
+            where: {
+              planStartDate1: {
+                $gte: startDate.toDate(),
+              },
+              planEndDate1: {
+                $gte: endDate.toDate(),
+              },
+            },
+            group: ['clinicId'],
+            attributes: ['clinicId', [sequelize.fn('COUNT', 'clinicId'), 'hospitalCount']],
+          }).then((courseGroupsX) => {
+            console.log(JSON.stringify(courseGroupsX));
+            for (let x = 0; x < courseGroupsX.length; x += 1) {
+              const courseGroup2 = courseGroupsX[x].dataValues;
+              for (let y = 0; y < hospitals.length; y += 1) {
+                const hospitalX = hospitals[y];
+
+                // For clinics
+                if (hospitalX.id === parseInt(courseGroup2.clinicId, 10)
+                && hospitalX.hospitalType === 2) {
+                  hospitalX.studentsInDepartmentCount = courseGroup2.hospitalCount;
+                }
+              }
+            }
+            res.json(hospitals);
+          });
+          //-------------
+        });
+      } else {
+        res.json(hospitals);
+      }
+    });
+    return;
+  }
+
+  // =============================================================
+
   models.Hospital.findAll({
     where: {},
     include: [
