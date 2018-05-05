@@ -64,6 +64,7 @@ class DepartmentSelect extends Component {
     return (
       this.props.level === -1 ? (
         <Select
+          allowClear
           placeholder="Select Department"
           onChange={this.handleChange}
           value={this.state.value}
@@ -82,6 +83,7 @@ class DepartmentSelect extends Component {
         </Select>
       ) : (
         <Select
+          allowClear
           placeholder="Select Department"
           onChange={this.handleChange}
           value={this.state.value}
