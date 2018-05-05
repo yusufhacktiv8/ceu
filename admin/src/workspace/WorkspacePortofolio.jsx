@@ -7,7 +7,6 @@ import CoursePage from '../portofolio/CoursePage';
 import CourseDetailsPage from '../portofolio/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import PortofolioTypePage from '../settings/portofolio_type/PortofolioTypePage';
-import PengampuPage from '../settings/pengampu/PengampuPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -57,8 +56,6 @@ class Workspace extends Component {
       selectedKeys = ['students'];
     } else if (location.includes('portofoliotypes')) {
       selectedKeys = ['portofolioTypes'];
-    } else if (location.includes('pengampu')) {
-      selectedKeys = ['pengampu'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -107,9 +104,6 @@ class Workspace extends Component {
                     <Menu.Item key="portofolioTypes">
                       <Link to="/portofoliotypes">Portofolio Types</Link>
                     </Menu.Item>
-                    <Menu.Item key="pengampu">
-                      <Link to="/pengampu">Pengampu</Link>
-                    </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
               </Menu>
@@ -123,7 +117,6 @@ class Workspace extends Component {
             <Route exact path="/students/:studentId/courses" component={CoursePage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
             <Route exact path="/portofoliotypes" component={PortofolioTypePage} />
-            <Route exact path="/pengampu" component={PengampuPage} />
           </div>
         </Content>
       </Layout>
