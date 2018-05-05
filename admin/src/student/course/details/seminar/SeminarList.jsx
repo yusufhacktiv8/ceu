@@ -15,7 +15,7 @@ class SeminarList extends Component {
     loading: false,
   }
   componentDidMount() {
-    this.fetchSeminars();
+    this.fetchCourse();
   }
 
   fetchCourse = () => {
