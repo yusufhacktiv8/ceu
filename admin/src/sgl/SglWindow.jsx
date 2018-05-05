@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, Tabs, message } from 'antd';
+import { Modal, Form, Checkbox, DatePicker, Button, Row, Col, Tabs, message } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import showError from '../utils/ShowError';
 import SglTypeSelect from '../settings/sgl_type/SglTypeSelect';
+import PengampuSelect from '../settings/pengampu/PengampuSelect';
 
 const SGLS_URL = `${process.env.REACT_APP_SERVER_URL}/api/sgls`;
 
@@ -75,19 +77,99 @@ class SglWindow extends Component {
                   <SglTypeSelect department={departmentId} />,
                 )}
               </FormItem>
-              <FormItem label="Name">
-                {getFieldDecorator('name', {
-                  initialValue: sgl.name,
+              <FormItem label="Date">
+                {getFieldDecorator('sglDate', {
+                  initialValue: sgl.sglDate ? moment(sgl.sglDate) : undefined,
                   rules: [
-                    { required: true, message: 'Please input name' },
+                    { required: true, message: 'Please input date' },
                   ],
                 })(
-                  <Input maxLength="50" />,
+                  <DatePicker />,
+                )}
+              </FormItem>
+              <FormItem label="">
+                {getFieldDecorator('completed', {
+                  initialValue: sgl.completed,
+                  valuePropName: 'checked',
+                })(
+                  <Checkbox>Active</Checkbox>,
                 )}
               </FormItem>
             </Form>
           </TabPane>
           <TabPane tab="Tutors" key="2">
+            <Row>
+              <Col span={16}>
+                <FormItem label="Utama">
+                  {getFieldDecorator('mainTutor', {
+                    initialValue: sgl.mainTutor ? sgl.mainTutor.id : undefined,
+                    rules: [
+                      { required: true, message: 'Please input main tutor' },
+                    ],
+                  })(
+                    <PengampuSelect department={departmentId} />,
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem label="">
+                  {getFieldDecorator('mainTutorPresent', {
+                    initialValue: sgl.mainTutorPresent,
+                    valuePropName: 'checked',
+                  })(
+                    <Checkbox>Active</Checkbox>,
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={16}>
+                <FormItem label="Cadangan">
+                  {getFieldDecorator('thirdTutor', {
+                    initialValue: sgl.thirdTutor ? sgl.thirdTutor.id : undefined,
+                    rules: [
+                      { required: true, message: 'Please input third tutor' },
+                    ],
+                  })(
+                    <PengampuSelect department={departmentId} />,
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem label="">
+                  {getFieldDecorator('thirdTutorPresent', {
+                    initialValue: sgl.thirdTutorPresent,
+                    valuePropName: 'checked',
+                  })(
+                    <Checkbox>Active</Checkbox>,
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={16}>
+                <FormItem label="Siaga">
+                  {getFieldDecorator('thirdTutor', {
+                    initialValue: sgl.thirdTutor ? sgl.thirdTutor.id : undefined,
+                    rules: [
+                      { required: true, message: 'Please input third tutor' },
+                    ],
+                  })(
+                    <PengampuSelect department={departmentId} />,
+                  )}
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem label="">
+                  {getFieldDecorator('thirdTutorPresent', {
+                    initialValue: sgl.thirdTutorPresent,
+                    valuePropName: 'checked',
+                  })(
+                    <Checkbox>Active</Checkbox>,
+                  )}
+                </FormItem>
+              </Col>
+            </Row>
           </TabPane>
         </Tabs>
       </Modal>

@@ -30,9 +30,9 @@ class PengampuSelect extends Component {
   }
 
   fetchPengampus() {
-    const { departmentId } = this.props;
+    const { department } = this.props;
     axios.get(PENGAMPUS_URL, { params: {
-      department: departmentId,
+      department,
     } })
       .then((response) => {
         this.setState({

@@ -30,7 +30,6 @@ class SglTypeSelect extends Component {
 
   fetchSglTypes() {
     const { department } = this.props;
-    console.log('department ---> ', department);
     axios.get(SGL_TYPES_URL, { params: {
       department,
     } })
