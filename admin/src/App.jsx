@@ -9,6 +9,7 @@ import WorkspaceSeminar from './workspace/WorkspaceSeminar';
 import WorkspaceSgl from './workspace/WorkspaceSgl';
 import WorkspacePortofolio from './workspace/WorkspacePortofolio';
 import WorkspaceKomkordik from './workspace/WorkspaceKomkordik';
+import WorkspaceAssistance from './workspace/WorkspaceAssistance';
 import LoginForm from './login/LoginForm';
 
 const parseJwt = (token) => {
@@ -55,6 +56,12 @@ const App = () => {
       return (
         <div className="App">
           <Route path="/" component={WorkspaceKomkordik} />
+        </div>
+      );
+    } else if (role === 'ASSISTANCE') {
+      return (
+        <div className="App">
+          <Route path="/" component={WorkspaceAssistance} />
         </div>
       );
     }

@@ -205,7 +205,7 @@ exports.fileUpload = (req, res) => {
   stream._read = function noop() {};
   stream.push(assistanceFile.data);
   stream.push(null);
-  workbook.xlsx.readFile(stream)
+  workbook.xlsx.read(stream)
       .then(() => {
         models.AssistanceParticipant.destroy(
           {
