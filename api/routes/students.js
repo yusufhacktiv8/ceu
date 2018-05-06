@@ -5,13 +5,13 @@ const StudentController = require('../controllers/students');
 const { isAuthorizedAs, isAuthorizedAsIn } = require('../helpers/AuthUtils');
 
 /* GET users listing. */
-router.get('/', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO']), StudentController.findAll);
-router.get('/:studentId', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO']), StudentController.findOne);
+router.get('/', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO', 'KOMKORDIK']), StudentController.findAll);
+router.get('/:studentId', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO', 'KOMKORDIK']), StudentController.findOne);
 router.post('/', isAuthorizedAs('ADMIN'), StudentController.create);
 router.put('/:studentId', isAuthorizedAs('ADMIN'), StudentController.update);
 router.delete('/:studentId', isAuthorizedAs('ADMIN'), StudentController.delete);
 router.post('/:studentId/courses', isAuthorizedAs('ADMIN'), StudentController.addCourses);
-router.get('/:studentId/courses', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO']), StudentController.findCourses);
+router.get('/:studentId/courses', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO', 'KOMKORDIK']), StudentController.findCourses);
 router.delete('/:studentId/courses/:courseId', isAuthorizedAs('ADMIN'), StudentController.deleteCourse);
 router.get('/:studentId/scores', isAuthorizedAs('ADMIN'), StudentController.findScores);
 router.post('/:studentId/kompres', isAuthorizedAs('ADMIN'), StudentController.addKompre);

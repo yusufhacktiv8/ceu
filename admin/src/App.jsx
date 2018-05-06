@@ -8,6 +8,7 @@ import WorkspaceBakordik from './workspace/WorkspaceBakordik';
 import WorkspaceSeminar from './workspace/WorkspaceSeminar';
 import WorkspaceSgl from './workspace/WorkspaceSgl';
 import WorkspacePortofolio from './workspace/WorkspacePortofolio';
+import WorkspaceKomkordik from './workspace/WorkspaceKomkordik';
 import LoginForm from './login/LoginForm';
 
 const parseJwt = (token) => {
@@ -48,6 +49,12 @@ const App = () => {
       return (
         <div className="App">
           <Route path="/" component={WorkspacePortofolio} />
+        </div>
+      );
+    } else if (role === 'KOMKORDIK') {
+      return (
+        <div className="App">
+          <Route path="/" component={WorkspaceKomkordik} />
         </div>
       );
     }
