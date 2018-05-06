@@ -56,6 +56,7 @@ class HospitalStudentList extends Component {
     const { visible, onCancel } = this.props;
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         width={700}
         visible={visible}
         title="Hospital Students"

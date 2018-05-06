@@ -85,6 +85,7 @@ class HospitalSelectWindow extends Component {
     };
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         width={800}
         visible={visible}
         title="Select Hospital"
