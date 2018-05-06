@@ -46,7 +46,7 @@ class ScheduleForm extends Component {
   }
   render() {
     const { course } = this.state;
-    const { form } = this.props;
+    const { form, disabledFields = [] } = this.props;
     const { getFieldDecorator } = form;
     const {
       planStartDate,
@@ -92,7 +92,7 @@ class ScheduleForm extends Component {
                       {getFieldDecorator('planDate', {
                         initialValue: planDate,
                       })(
-                        <RangePicker style={{ width: '100%' }} />,
+                        <RangePicker style={{ width: '100%' }} disabled={disabledFields.includes('planDate')} />,
                       )}
                     </FormItem>
                   </Col>
@@ -126,7 +126,7 @@ class ScheduleForm extends Component {
                         {getFieldDecorator('planDate1', {
                           initialValue: planDate1,
                         })(
-                          <RangePicker style={{ width: '100%' }} />,
+                          <RangePicker style={{ width: '100%' }} disabled={disabledFields.includes('planDate1')} />,
                         )}
                       </FormItem>
                     </Col>
@@ -161,6 +161,7 @@ class ScheduleForm extends Component {
                             studentId={StudentId}
                             departmentId={DepartmentId}
                             hospitalType={1}
+                            disabled={disabledFields.includes('hospital1')}
                           />,
                         )}
                       </FormItem>
@@ -203,7 +204,7 @@ class ScheduleForm extends Component {
                       {getFieldDecorator('planDate2', {
                         initialValue: planDate2,
                       })(
-                        <RangePicker style={{ width: '100%' }} />,
+                        <RangePicker style={{ width: '100%' }} disabled={disabledFields.includes('planDate2')} />,
                       )}
                     </FormItem>
                   </Col>
@@ -238,6 +239,7 @@ class ScheduleForm extends Component {
                           studentId={StudentId}
                           departmentId={DepartmentId}
                           hospitalType={2}
+                          disabled={disabledFields.includes('clinic')}
                         />,
                       )}
                     </FormItem>
@@ -265,7 +267,7 @@ class ScheduleForm extends Component {
                       {getFieldDecorator('planDate3', {
                         initialValue: planDate3,
                       })(
-                        <RangePicker style={{ width: '100%' }} />,
+                        <RangePicker style={{ width: '100%' }} disabled={disabledFields.includes('planDate3')} />,
                       )}
                     </FormItem>
                   </Col>

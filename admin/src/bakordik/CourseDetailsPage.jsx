@@ -102,7 +102,7 @@ export default class CourseDetailsPage extends Component {
               this.setState({
                 saving: false,
               }, () => {
-                this.goToCoursePage();
+                this.goToCoursesPage();
               });
             })
               .catch((error) => {
@@ -117,7 +117,7 @@ export default class CourseDetailsPage extends Component {
     });
   }
 
-  goToCoursePage = () => {
+  goToCoursesPage = () => {
     this.props.history.push('/courses');
   }
 
@@ -157,9 +157,8 @@ export default class CourseDetailsPage extends Component {
     return (
       <Layout style={{ height: '100%' }}>
         <Header className="page-header">
-          <span role="link" onClick={this.goToStudentPage}>Students &gt;</span>
-          <span role="link" onClick={this.goToStudentDetailsPage}> Details &gt;</span>
-          <span className="page-header-title"> Course</span>
+          <span role="link" onClick={this.goToCoursesPage}>Course &gt;</span>
+          <span className="page-header-title"> Details</span>
         </Header>
         <Content className="page-content">
           {
@@ -194,6 +193,7 @@ export default class CourseDetailsPage extends Component {
             </TabPane>
             <TabPane tab="Schedules" key="3" forceRender>
               <ScheduleForm
+                disabledFields={['planDate', 'planDate1', 'planDate2', 'planDate3', 'hospital1', 'clinic']}
                 courseId={courseId}
                 ref={(scheduleForm) => { this.scheduleForm = scheduleForm; }}
               />

@@ -49,7 +49,7 @@ class HospitalSelect extends Component {
   }
 
   render() {
-    const { studentId, departmentId, hospitalType } = this.props;
+    const { studentId, departmentId, hospitalType, disabled } = this.props;
     return (
       <InputGroup size="medium">
         <Col span={20}>
@@ -64,6 +64,7 @@ class HospitalSelect extends Component {
               icon="close-circle"
               style={{ height: 32 }}
               onClick={() => this.handleChange(null)}
+              disabled={disabled}
             />
           </span>
           <span>
@@ -71,6 +72,7 @@ class HospitalSelect extends Component {
               icon="select"
               style={{ height: 32, marginLeft: 5 }}
               onClick={this.showHospitalSelectWindow}
+              disabled={disabled}
             />
           </span>
         </Col>

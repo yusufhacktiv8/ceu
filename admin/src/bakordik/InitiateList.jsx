@@ -47,8 +47,8 @@ class InitiateList extends Component {
     axios.get(INITIATES_URL, { params: {
       searchText: this.state.searchText,
       dateRange: this.state.dateRange,
-      start: (this.state.currentPage - 1) * this.state.pageSize,
-      count: this.state.pageSize,
+      currentPage: this.state.currentPage,
+      pageSize: this.state.pageSize,
     } })
       .then((response) => {
         this.setState({
