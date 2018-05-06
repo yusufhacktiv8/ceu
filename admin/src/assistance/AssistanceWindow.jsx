@@ -3,7 +3,7 @@ import { Modal, Form, Input, Checkbox, DatePicker, TimePicker, Button, Row, Col,
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../utils/ShowError';
-import { dateFormat } from '../constant';
+import { dateFormat, timeFormat } from '../constant';
 import TutorSelect from '../settings/tutor/TutorSelect';
 
 const ASSISTANCES_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistances`;
@@ -26,7 +26,11 @@ class AssistanceWindow extends Component {
         saving: true,
       }, () => {
         const assistanceId = assistance.id;
-        const data = { ...values, eventDate: values.eventDate.format(dateFormat) };
+        const data = {
+          ...values,
+          eventDate: values.eventDate.format(dateFormat),
+          eventTime: values.eventTime.format(timeFormat),
+        };
         const axiosObj = assistanceId ? axios.put(`${ASSISTANCES_URL}/${assistanceId}`, data) : axios.post(ASSISTANCES_URL, data);
         axiosObj.then(() => {
           message.success('Saving assistance success');
@@ -103,8 +107,8 @@ class AssistanceWindow extends Component {
                 </Col>
                 <Col span={12}>
                   <FormItem label="Time">
-                    {getFieldDecorator('assistanceTime', {
-                      initialValue: assistance.eventTime ? moment(assistance.eventTime, 'hh:mm:ss a') : undefined,
+                    {getFieldDecorator('eventTime', {
+                      initialValue: assistance.eventTime ? moment(assistance.eventTime, timeFormat) : undefined,
                       rules: [
                         { required: true, message: 'Please input time' },
                       ],

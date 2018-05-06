@@ -98,7 +98,7 @@ exports.findOne = function findOne(req, res) {
 
 exports.create = function create(req, res) {
   const assistanceForm = req.body;
-  assistanceForm.eventTime = moment(assistanceForm.eventTime).format('hh:mm:ss a');
+  assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
   if (assistanceForm.mainTutor) {
     assistanceForm.mainTutorId = parseInt(assistanceForm.mainTutor, 10);
   }
@@ -122,7 +122,7 @@ exports.create = function create(req, res) {
 
 exports.update = function update(req, res) {
   const assistanceForm = req.body;
-  assistanceForm.eventTime = moment(assistanceForm.eventTime).format('hh:mm:ss a');
+  assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
   if (assistanceForm.mainTutor) {
     assistanceForm.mainTutorId = parseInt(assistanceForm.mainTutor, 10);
   } else {

@@ -3,7 +3,7 @@ import { Modal, Form, Input, InputNumber, DatePicker, TimePicker, Button, Row, C
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../utils/ShowError';
-import { dateFormat } from '../constant';
+import { dateFormat, timeFormat } from '../constant';
 import DepartmentSelect from '../settings/department/DepartmentSelect';
 import SeminarTypeSelect from '../settings/seminar_type/SeminarTypeSelect';
 import SupervisorSelect from '../settings/supervisor/SupervisorSelect';
@@ -27,7 +27,11 @@ class SeminarWindow extends Component {
         saving: true,
       }, () => {
         const seminarId = seminar.id;
-        const data = { ...values, eventDate: values.eventDate.format(dateFormat) };
+        const data = {
+          ...values,
+          eventDate: values.eventDate.format(dateFormat),
+          eventTime: values.eventTime.format(timeFormat),
+        };
         const axiosObj = seminarId ? axios.put(`${SEMINARS_URL}/${seminarId}`, data) : axios.post(SEMINARS_URL, data);
         axiosObj.then(() => {
           message.success('Saving seminar success');
@@ -137,7 +141,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Time">
                 {getFieldDecorator('eventTime', {
-                  initialValue: seminar.eventTime ? moment(seminar.eventTime, 'hh:mm:ss a') : undefined,
+                  initialValue: seminar.eventTime ? moment(seminar.eventTime, timeFormat) : undefined,
                   rules: [
                     { required: true, message: 'Please input time' },
                   ],

@@ -106,7 +106,7 @@ exports.findOne = function findOne(req, res) {
 
 exports.create = function create(req, res) {
   const seminarForm = req.body;
-  seminarForm.eventTime = moment(seminarForm.eventTime).format('hh:mm:ss a');
+  seminarForm.eventTime = moment(seminarForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
   if (seminarForm.speaker) {
     seminarForm.speakerId = parseInt(seminarForm.speaker, 10);
   }
@@ -127,7 +127,7 @@ exports.create = function create(req, res) {
 
 exports.update = function update(req, res) {
   const seminarForm = req.body;
-  seminarForm.eventTime = moment(seminarForm.eventTime).format('hh:mm:ss a');
+  seminarForm.eventTime = moment(seminarForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
   if (seminarForm.speaker) {
     seminarForm.speakerId = parseInt(seminarForm.speaker, 10);
   } else {

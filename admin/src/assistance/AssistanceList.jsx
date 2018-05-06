@@ -194,6 +194,11 @@ class AssistanceList extends Component {
                 )}
               />
               <Column
+                title="Time"
+                dataIndex="eventTime"
+                key="eventTime"
+              />
+              <Column
                 title="Action"
                 key="action"
                 render={(text, record) => (
