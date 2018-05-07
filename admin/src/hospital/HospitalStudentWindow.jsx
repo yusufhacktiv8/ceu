@@ -87,6 +87,11 @@ class HospitalStudentList extends Component {
             dataIndex="name"
             key="name"
           />
+          <Column
+            title="Department"
+            dataIndex="departmentName"
+            key="departmentName"
+          />
         </Table>
       </Modal>
     );

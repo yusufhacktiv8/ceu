@@ -437,10 +437,24 @@ exports.hospitalStudents = function hospitalStudents(req, res) {
         {
           model: models.Student,
         },
+        {
+          model: models.Department,
+        },
       ],
     }).then((courses) => {
       console.log(JSON.stringify(courses));
-      const students = courses.map(course => (course.Student));
+      const students = courses.map((course) => {
+        const newSid = course.Student.newSid;
+        const oldSid = course.Student.oldSid;
+        const name = course.Student.name;
+        const departmentName = course.Department.name;
+        return ({
+          newSid,
+          oldSid,
+          name,
+          departmentName,
+        });
+      });
       res.json(students);
     });
   } else {
