@@ -100,7 +100,7 @@ class YudisiumPage extends Component {
     return (
       <Tabs
         defaultActiveKey="1"
-        style={{ marginTop: -10, height: 300 }}
+        style={{ marginTop: -10, height: 300, overflow: 'scroll' }}
       >
         <TabPane tab="Checklist" key="1">
           <Spin indicator={antIcon} spinning={loadingYudisium}>
@@ -138,7 +138,7 @@ class YudisiumPage extends Component {
           </Spin>
         </TabPane>
         <TabPane tab="Portofolios" key="2">
-          <div style={{ marginTop: -15, overflow: 'scroll', height: 400 }}>
+          <div style={{ marginTop: -15, height: 400 }}>
             <Table dataSource={portofolioCompletions} style={{ marginTop: 0 }} rowKey="id" loading={loading} size="middle">
               <Column
                 title="Title"
