@@ -54,18 +54,78 @@ class RegistrationForm extends Component {
       }
       if (info.file.status === 'done') {
         notification.success({
-          message: 'Upload file success',
+          message: 'Upload KRS success',
           description: info.file.response,
         });
       } else if (info.file.status === 'error') {
         notification.error({
-          message: 'Upload file error',
+          message: 'Upload KRS error',
           description: `${info.file.name} file upload failed.`,
         });
       }
     };
     this.setState({
       uploadProps,
+    });
+  }
+
+  setUploadProps2 = (student) => {
+    const uploadProps = {
+      name: 'sppFile',
+      action: '',
+      headers: {
+        authorization: 'authorization-text',
+      },
+    };
+    uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/spp`;
+    uploadProps.onChange = (info) => {
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        notification.success({
+          message: 'Upload SPP success',
+          description: info.file.response,
+        });
+      } else if (info.file.status === 'error') {
+        notification.error({
+          message: 'Upload SPP error',
+          description: `${info.file.name} file upload failed.`,
+        });
+      }
+    };
+    this.setState({
+      uploadProps2: uploadProps,
+    });
+  }
+
+  setUploadProps3 = (student) => {
+    const uploadProps = {
+      name: 'ijazahFile',
+      action: '',
+      headers: {
+        authorization: 'authorization-text',
+      },
+    };
+    uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/ijazah`;
+    uploadProps.onChange = (info) => {
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        notification.success({
+          message: 'Upload Ijazah success',
+          description: info.file.response,
+        });
+      } else if (info.file.status === 'error') {
+        notification.error({
+          message: 'Upload Ijazah error',
+          description: `${info.file.name} file upload failed.`,
+        });
+      }
+    };
+    this.setState({
+      uploadProps3: uploadProps,
     });
   }
 
@@ -77,11 +137,28 @@ class RegistrationForm extends Component {
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     let krsFileIdComponent = 'No File';
-
     if (student.krsFileId) {
       krsFileIdComponent = (
         <a target="_blank" href={`${STUDENTS_URL}/krs/${student.krsFileId}.jpg`}>
           {student.krsFileId}
+        </a>
+      );
+    }
+
+    let sppFileIdComponent = 'No File';
+    if (student.sppFileId) {
+      sppFileIdComponent = (
+        <a target="_blank" href={`${STUDENTS_URL}/spp/${student.sppFileId}.jpg`}>
+          {student.sppFileId}
+        </a>
+      );
+    }
+
+    let ijazahFileIdComponent = 'No File';
+    if (student.ijazahFileId) {
+      ijazahFileIdComponent = (
+        <a target="_blank" href={`${STUDENTS_URL}/ijazah/${student.ijazahFileId}.jpg`}>
+          {student.ijazahFileId}
         </a>
       );
     }
@@ -118,7 +195,7 @@ class RegistrationForm extends Component {
             </Col>
           </Row>
           <Row>
-            <Col span={24}>
+            <Col span={8}>
               <FormItem>
                 {getFieldDecorator('spp', {
                   valuePropName: 'checked',
@@ -126,6 +203,50 @@ class RegistrationForm extends Component {
                 })(
                   <Checkbox>SPP</Checkbox>,
                 )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem>
+                {sppFileIdComponent}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                colon={false}
+              >
+                <Upload {...this.state.uploadProps2} disabled={!student.id} showUploadList={false}>
+                  <Button disabled={!student.id}>
+                    <Icon type="upload" /> Click to Upload
+                  </Button>
+                </Upload>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8}>
+              <FormItem>
+                {getFieldDecorator('ijazah', {
+                  valuePropName: 'checked',
+                  initialValue: student.ijazah,
+                })(
+                  <Checkbox>Ijazah</Checkbox>,
+                )}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem>
+                {ijazahFileIdComponent}
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                colon={false}
+              >
+                <Upload {...this.state.uploadProps3} disabled={!student.id} showUploadList={false}>
+                  <Button disabled={!student.id}>
+                    <Icon type="upload" /> Click to Upload
+                  </Button>
+                </Upload>
               </FormItem>
             </Col>
           </Row>

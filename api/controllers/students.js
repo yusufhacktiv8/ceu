@@ -468,3 +468,71 @@ exports.krsUpload = function krsUpload(req, res) {
     });
   });
 };
+
+exports.sppUpload = function sppUpload(req, res) {
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
+  const sppFile = req.files.sppFile;
+  const studentId = req.params.studentId;
+
+  const base64data = new Buffer(sppFile.data, 'binary');
+  const s3 = new AWS.S3();
+
+  models.Student.findOne({
+    where: { id: studentId },
+  })
+  .then((student) => {
+    const fileId = shortid.generate();
+    const fileKey = `student/spp/${fileId}.jpg`;
+    s3.putObject({
+      Bucket: 'ceufkumifiles',
+      Key: fileKey,
+      Body: base64data,
+      ACL: 'public-read',
+    }, () => {
+      console.log('Successfully uploaded spp.');
+      student.sppFileId = fileId;
+      student.save()
+      .then(() => {
+        res.send(fileId);
+      });
+    });
+  });
+};
+
+exports.ijazahUpload = function ijazahUpload(req, res) {
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
+  const ijazahFile = req.files.ijazahFile;
+  const studentId = req.params.studentId;
+
+  const base64data = new Buffer(ijazahFile.data, 'binary');
+  const s3 = new AWS.S3();
+
+  models.Student.findOne({
+    where: { id: studentId },
+  })
+  .then((student) => {
+    const fileId = shortid.generate();
+    const fileKey = `student/ijazah/${fileId}.jpg`;
+    s3.putObject({
+      Bucket: 'ceufkumifiles',
+      Key: fileKey,
+      Body: base64data,
+      ACL: 'public-read',
+    }, () => {
+      console.log('Successfully uploaded ijazah.');
+      student.ijazahFileId = fileId;
+      student.save()
+      .then(() => {
+        res.send(fileId);
+      });
+    });
+  });
+};
