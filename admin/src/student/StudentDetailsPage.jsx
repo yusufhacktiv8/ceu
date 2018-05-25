@@ -9,7 +9,7 @@ import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
 const { Step } = Steps;
-const stepsCount = 6;
+const stepsCount = 7;
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -91,8 +91,9 @@ export default class StudentDetailsPage extends Component {
           <Steps current={current}>
             <Step title="Registration" />
             <Step title="Level 1" />
+            <Step title="Yudisium 1" />
             <Step title="Level 2" />
-            <Step title="Yudisium" />
+            <Step title="Yudisium 2" />
             <Step title="UKMPPD" />
             <Step title="Graduate" />
           </Steps>
@@ -116,17 +117,17 @@ export default class StudentDetailsPage extends Component {
             {
               this.state.current === 2
               &&
-              <CoursePage studentId={studentId} level={2} history={this.props.history} />
+              <YudisiumPage studentId={studentId} level={1} history={this.props.history} />
             }
 
             {
               this.state.current === 3
               &&
-              <YudisiumPage studentId={studentId} level={2} history={this.props.history} />
+              <CoursePage studentId={studentId} level={2} history={this.props.history} />
             }
 
             {
-              this.state.current === 4
+              this.state.current === 5
               &&
               <UkmppdPage studentId={studentId} history={this.props.history} />
             }
