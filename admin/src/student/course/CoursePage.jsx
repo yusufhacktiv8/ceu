@@ -151,16 +151,19 @@ export default class CoursePage extends Component {
           </Spin>
         </Col>
         <Col span={8}>
-          <Row>
+          <Row gutter={10}>
             <Col span={6}>
               <Dropdown overlay={menu}>
-                <Button type="primary" style={{ marginLeft: 10 }}>
+                <Button type="primary" style={{ marginLeft: 12 }}>
                   Add <Icon type="down" />
                 </Button>
               </Dropdown>
             </Col>
             <Col span={6}>
               <Button onClick={this.openCourseChartWindow}>Chart <Icon type="layout" /></Button>
+            </Col>
+            <Col span={6}>
+              <Button onClick={this.openCourseChartWindow}>Pre-Requisite <Icon type="file-text" /></Button>
             </Col>
           </Row>
           <Row gutter={20}>
