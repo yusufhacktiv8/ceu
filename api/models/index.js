@@ -34,7 +34,10 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// --- WARNING!!! THIS WILL ERASE ALL DATA
 // sequelize.sync({force: true});
+// --- WARNING!!! THIS WILL ERASE ALL DATA
+
 sequelize.sync({alter: false});
 
 module.exports = db;
