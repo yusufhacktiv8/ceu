@@ -350,7 +350,7 @@ class YudisiumPage extends Component {
                 if (record.portofolios.length > 0) {
                   const totalCompleted =
                   record.portofolios.filter(portofolio => (portofolio.completed)).length;
-                  return totalCompleted === 0;
+                  return totalCompleted < record.portofolios.length;
                 }
                 return true;
               })}
