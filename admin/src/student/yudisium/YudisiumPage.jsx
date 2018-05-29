@@ -288,14 +288,7 @@ class YudisiumPage extends Component {
         <TabPane tab="Portofolios" key="3">
           <div style={{ marginTop: -15, height: 400 }}>
             <Table
-              dataSource={portofolioCompletions.filter((record) => {
-                if (record.portofolios.length > 0) {
-                  const totalCompleted =
-                  record.portofolios.filter(portofolio => (portofolio.completed)).length;
-                  return totalCompleted > 0;
-                }
-                return false;
-              })}
+              dataSource={portofolioCompletions}
               style={{ marginTop: 0 }}
               rowKey="id"
               loading={loading}
