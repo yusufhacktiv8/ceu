@@ -397,6 +397,19 @@ exports.findScores = function(req, res) {
   });
 };
 
+exports.findSpps = function(req, res) {
+  const { studentId } = req.params;
+  models.Spp.findAll({
+    where: {},
+    include: [
+      { model: models.Student, where: { id: studentId } },
+    ],
+  })
+  .then((spps) => {
+    res.json(spps);
+  });
+};
+
 exports.deleteCourse = function(req, res) {
   const courseId = req.params.courseId;
   models.Course.destroy({

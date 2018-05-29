@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Menu, Row, Col, Button, Tag, Icon, Dropdown, Spin } from 'antd';
 import { PieChart, Pie, Cell } from 'recharts';
 import axios from 'axios';
-import AddCourseByLevelWindow from '../course/AddCourseByLevelWindow';
-import AddCourseByDepartmentWindow from '../course/AddCourseByDepartmentWindow';
+import AddCourseByLevelWindow from './AddCourseByLevelWindow';
+import AddCourseByDepartmentWindow from './AddCourseByDepartmentWindow';
 import CourseChartWindow from './details/CourseChartWindow';
+import PreRequisiteWindow from './PreRequisiteWindow';
 import CourseList from './CourseList';
 import showError from '../../utils/ShowError';
 
@@ -19,6 +20,7 @@ export default class CoursePage extends Component {
     loading: false,
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
+    preRequisiteWindowVisible: false,
     courseChartWindowVisible: false,
   }
 
@@ -45,6 +47,18 @@ export default class CoursePage extends Component {
   closeAddCourseByDepartmentWindow = () => {
     this.setState({
       addCourseByDepartmentWindowVisible: false,
+    });
+  }
+
+  closePreRequisiteWindow = () => {
+    this.setState({
+      preRequisiteWindowVisible: false,
+    });
+  }
+
+  openPreRequisiteWindow = () => {
+    this.setState({
+      preRequisiteWindowVisible: true,
     });
   }
 
@@ -163,7 +177,7 @@ export default class CoursePage extends Component {
               <Button onClick={this.openCourseChartWindow}>Chart <Icon type="layout" /></Button>
             </Col>
             <Col span={6}>
-              <Button onClick={this.openCourseChartWindow}>Pre-Requisite <Icon type="file-text" /></Button>
+              <Button onClick={this.openPreRequisiteWindow}>Pre-Requisite <Icon type="file-text" /></Button>
             </Col>
           </Row>
           <Row gutter={20}>
@@ -226,6 +240,16 @@ export default class CoursePage extends Component {
           onCancel={this.closeAddCourseByDepartmentWindow}
           onClose={this.closeAddCourseByDepartmentWindow}
           ref={obj => (this.addCourseByDepartmentWindow = obj)}
+        />
+
+        <PreRequisiteWindow
+          studentId={studentId}
+          level={level}
+          visible={this.state.preRequisiteWindowVisible}
+          onSaveSuccess={this.closePreRequisiteWindow}
+          onCancel={this.closePreRequisiteWindow}
+          onClose={this.closePreRequisiteWindow}
+          ref={obj => (this.preRequisiteWindow = obj)}
         />
 
         <CourseChartWindow
