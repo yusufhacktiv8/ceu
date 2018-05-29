@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
+import { Modal, Form, Input, DatePicker, Checkbox, Button, message } from 'antd';
+import moment from 'moment';
 import axios from 'axios';
+
+import { dateFormat } from '../../constant';
 import showError from '../../utils/ShowError';
 
+const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SPPS_URL = `${process.env.REACT_APP_SERVER_URL}/api/spps`;
+const getSppsUrl = studentId => `${STUDENTS_URL}/${studentId}/spps`;
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 class SppWindow extends Component {
   state = {
@@ -13,18 +19,21 @@ class SppWindow extends Component {
   }
 
   onSave = () => {
-    const { spp, onSaveSuccess, form } = this.props;
+    const { spp, onSaveSuccess, form, studentId, level } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
+
+      const paymentDate = values.paymentDate.format(dateFormat);
+      const data = { ...values, paymentDate, level };
       this.setState({
         saving: true,
       }, () => {
         const sppId = spp.id;
-        const axiosObj = sppId ? axios.put(`${SPPS_URL}/${sppId}`, values) : axios.post(SPPS_URL, values);
+        const axiosObj = sppId ? axios.put(`${SPPS_URL}/${sppId}`, data) : axios.post(getSppsUrl(studentId), data);
         axiosObj.then(() => {
-          message.success('Saving spp success');
+          message.success('Saving SPP success');
           this.setState({
             saving: false,
           }, () => {
@@ -50,32 +59,38 @@ class SppWindow extends Component {
         visible={visible}
         title="Spp"
         okText="Save"
+        onCancel={onCancel}
         footer={[
-          <Button key="cancel" onClick={onCancel}>Cancel</Button>,
+          <Button key="cancel" onClick={onCancel}>Close</Button>,
           <Button key="save" type="primary" loading={saving} onClick={this.onSave}>
             Save
           </Button>,
         ]}
       >
         <Form layout="vertical">
-          <FormItem label="Code">
-            {getFieldDecorator('code', {
-              initialValue: spp.code,
+          <FormItem label="Payment Date">
+            {getFieldDecorator('paymentDate', {
+              initialValue: spp.paymentDate ? moment(spp.paymentDate) : undefined,
               rules: [
-                { required: true, message: 'Please input code' },
+                { required: true, message: 'Please input payment date' },
               ],
             })(
-              <Input maxLength="30" />,
+              <DatePicker />,
             )}
           </FormItem>
-          <FormItem label="Name">
-            {getFieldDecorator('name', {
-              initialValue: spp.name,
-              rules: [
-                { required: true, message: 'Please input name' },
-              ],
+          <FormItem label="Description">
+            {getFieldDecorator('description', {
+              initialValue: spp.description,
             })(
-              <Input maxLength="50" />,
+              <TextArea rows={2} maxLength={500} />,
+            )}
+          </FormItem>
+          <FormItem label="">
+            {getFieldDecorator('paid', {
+              initialValue: spp.paid,
+              valuePropName: 'checked',
+            })(
+              <Checkbox>Paid</Checkbox>,
             )}
           </FormItem>
         </Form>

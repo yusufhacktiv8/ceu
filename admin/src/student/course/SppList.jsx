@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Checkbox, Row, Col, message, Popconfirm } from 'antd';
+import moment from 'moment';
 import showError from '../../utils/ShowError';
 import SppWindow from './SppWindow';
 
@@ -64,7 +65,7 @@ class SppList extends Component {
     const hide = message.loading('Action in progress..', 0);
     axios.delete(`${SPPS_URL}/${spp.id}`)
       .then(() => {
-        message.success('Delete spp success');
+        message.success('Delete SPP success');
         this.fetchSpps();
       })
       .catch((error) => {
@@ -98,25 +99,12 @@ class SppList extends Component {
   }
 
   render() {
+    const { studentId, level } = this.props;
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
-            <Input
-              value={this.state.searchText}
-              onChange={this.onSearchChange}
-              placeholder="Name or SID"
-              maxLength="50"
-            />
-          </Col>
           <Col span={16}>
             <span>
-              <Button
-                shape="circle"
-                icon="search"
-                onClick={this.filterSpps}
-                style={{ marginRight: 15 }}
-              />
               <Button
                 type="primary"
                 shape="circle"
@@ -130,21 +118,35 @@ class SppList extends Component {
           <Col span={24}>
             <Table
               dataSource={this.state.spps}
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 10 }}
               rowKey="id"
               loading={this.state.loading}
               onChange={this.pageChanged}
               size="small"
             >
               <Column
-                title="Code"
-                dataIndex="code"
-                key="code"
+                title="Paid"
+                dataIndex="paid"
+                render={(text, record) => (
+                  <span>
+                    <Checkbox checked={record.paid} />
+                  </span>
+                )}
               />
               <Column
-                title="Name"
-                dataIndex="name"
-                key="name"
+                title="Payment Date"
+                dataIndex="paymentDate"
+                key="paymentDate"
+                render={(text, record) => (
+                  <span>
+                    {moment(text).format('DD/MM/YYYY')}
+                  </span>
+                )}
+              />
+              <Column
+                title="Description"
+                dataIndex="description"
+                key="description"
               />
               <Column
                 title="Action"
@@ -158,7 +160,7 @@ class SppList extends Component {
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm
-                      title={`Are you sure delete spp ${record.name}`}
+                      title={`Are you sure delete SPP ${moment(record.paymentDate).format('DD/MM/YYYY')}`}
                       onConfirm={() => this.deleteSpp(record)}
                       okText="Yes" cancelText="No"
                     >
@@ -176,6 +178,8 @@ class SppList extends Component {
         </Row>
 
         <SppWindow
+          studentId={studentId}
+          level={level}
           visible={this.state.sppWindowVisible}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}

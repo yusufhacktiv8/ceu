@@ -55,6 +55,7 @@ var tutorsForSelect = require('./routes/tutors_for_select');
 var supervisors = require('./routes/supervisors');
 var supervisorsForSelect = require('./routes/supervisors_for_select');
 var dashboard = require('./routes/dashboard');
+var spps = require('./routes/spp');
 
 var app = express();
 
@@ -120,6 +121,7 @@ app.use('/api/tutorsforselect', tutorsForSelect);
 app.use('/api/supervisors', supervisors);
 app.use('/api/supervisorsforselect', supervisorsForSelect);
 app.use('/api/dashboard', dashboard);
+app.use('/api/spps', spps);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

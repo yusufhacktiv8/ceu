@@ -21,14 +21,13 @@ class PreRequisiteWindow extends Component {
     return (
       <Modal
         wrapClassName="vertical-center-modal"
+        width={650}
         visible={visible}
         title="Pre-Requisite"
         okText="Save"
+        onCancel={onCancel}
         footer={[
-          <Button key="cancel" onClick={onCancel}>Cancel</Button>,
-          <Button key="save" type="primary" loading={saving} onClick={this.onSave}>
-            Save
-          </Button>,
+          <Button key="cancel" onClick={onCancel}>Close</Button>,
         ]}
       >
         <Tabs defaultActiveKey="1" style={{ minHeight: 445 }}>
