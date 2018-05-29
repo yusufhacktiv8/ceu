@@ -59,6 +59,11 @@ export default class Gantt extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
+    if (this.props.weekly === nextProps.weekly) {
+      return;
+    }
+
     try {
       if (nextProps.weekly) {
         gantt.config.subscales = [
