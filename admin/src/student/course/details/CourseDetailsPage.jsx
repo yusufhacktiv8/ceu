@@ -7,6 +7,7 @@ import ScheduleForm from './schedule/ScheduleForm';
 import PortofolioList from './portofolio/PortofolioList';
 import SeminarList from './seminar/SeminarList';
 import CourseProblemList from './course_problem/CourseProblemList';
+import ScoreList from './score/ScoreList';
 import showError from '../../../utils/ShowError';
 import { dateFormat } from '../../../constant';
 
@@ -300,6 +301,12 @@ export default class CourseDetailsPage extends Component {
               <ScheduleForm
                 courseId={courseId}
                 ref={(scheduleForm) => { this.scheduleForm = scheduleForm; }}
+              />
+            </TabPane>
+            <TabPane tab="Scores" key="3b" forceRender>
+              <ScoreList
+                courseId={courseId}
+                ref={(scoreListForm) => { this.scoreListForm = scoreListForm; }}
               />
             </TabPane>
             <TabPane tab="Portofolios" key="4">
