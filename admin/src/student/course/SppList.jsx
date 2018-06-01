@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Checkbox, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Checkbox, Row, Col, Upload, Icon, message, Popconfirm, notification } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 import SppWindow from './SppWindow';
@@ -8,7 +8,34 @@ import SppWindow from './SppWindow';
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SPPS_URL = `${process.env.REACT_APP_SERVER_URL}/api/spps`;
 const getSppsUrl = studentId => `${STUDENTS_URL}/${studentId}/spps`;
+const FILES_URL = process.env.REACT_APP_FILES_URL;
 const Column = Table.Column;
+
+const getUploadProps = sppId => (
+  {
+    name: 'krsFile',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    action: `${SPPS_URL}/uploadfile/${sppId}`,
+    onChange: (info) => {
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        notification.success({
+          message: 'Upload success',
+          description: info.file.response,
+        });
+      } else if (info.file.status === 'error') {
+        notification.error({
+          message: 'Upload error',
+          description: `${info.file.name} file upload failed.`,
+        });
+      }
+    },
+  }
+);
 
 class SppList extends Component {
   state = {
@@ -149,6 +176,19 @@ class SppList extends Component {
                 key="description"
               />
               <Column
+                title="File"
+                render={(text, record) => {
+                  if (record.fileId) {
+                    return (
+                      <a target="_blank" href={`${FILES_URL}/spp/${record.fileId}.jpg`}>
+                        {record.fileId}
+                      </a>
+                    );
+                  }
+                  return (<div>No File</div>);
+                }}
+              />
+              <Column
                 title="Action"
                 key="action"
                 render={(text, record) => (
@@ -159,6 +199,13 @@ class SppList extends Component {
                       onClick={() => this.openEditWindow(record)}
                       style={{ marginRight: 5 }}
                     />
+                    <Upload {...getUploadProps(record.id)} showUploadList={false}>
+                      <Button
+                        icon="upload"
+                        size="small"
+                        style={{ marginRight: 5 }}
+                      />
+                    </Upload>
                     <Popconfirm
                       title={`Are you sure delete SPP ${moment(record.paymentDate).format('DD/MM/YYYY')}`}
                       onConfirm={() => this.deleteSpp(record)}
