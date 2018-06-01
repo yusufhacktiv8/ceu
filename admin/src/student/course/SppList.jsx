@@ -181,7 +181,7 @@ class SppList extends Component {
                 render={(text, record) => {
                   if (record.fileId) {
                     return (
-                      <a target="_blank" href={`${FILES_URL}/spp/${record.fileId}.jpg`}>
+                      <a target="_blank" href={`${FILES_URL}/students/${record.StudentId}/spp/${record.fileId}.jpg`}>
                         {record.fileId}
                       </a>
                     );

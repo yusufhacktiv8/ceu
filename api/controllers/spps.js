@@ -74,7 +74,7 @@ exports.upload = function upload(req, res) {
   })
   .then((spp) => {
     const fileId = shortid.generate();
-    const fileKey = `spp/${fileId}.jpg`;
+    const fileKey = `students/${spp.StudentId}/spp/${fileId}.jpg`;
     s3.putObject({
       Bucket: BUCKET_NAME,
       Key: fileKey,
