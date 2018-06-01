@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const isAuthorizedAsAdmin = function(req, res, next) {
   const token = req.headers.token;
 
-  jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, function(err, decoded) {
+  jwt.verify(token, process.env.TOKEN_PASSWORD, function(err, decoded) {
     if (decoded && decoded.role === 'ADMIN') {
       next();
     } else {
@@ -15,7 +15,7 @@ const isAuthorizedAsAdmin = function(req, res, next) {
 const isAuthorizedAsBakordik = function(req, res, next) {
   const token = req.headers.token;
 
-  jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, function(err, decoded) {
+  jwt.verify(token, process.env.TOKEN_PASSWORD, function(err, decoded) {
     if (decoded && decoded.role === 'BAKORDIK') {
       next();
     } else {
@@ -27,7 +27,7 @@ const isAuthorizedAsBakordik = function(req, res, next) {
 const isAuthenticated = function(req, res, next) {
   const token = req.headers.token;
 
-  jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, function(err, decoded) {
+  jwt.verify(token, process.env.TOKEN_PASSWORD, function(err, decoded) {
     if (decoded) {
       next();
     } else {
@@ -41,7 +41,7 @@ const isAuthorizedAs = role => (
     const authorizationHeader = req.headers.authorization;
     if (authorizationHeader) {
       const token = authorizationHeader.replace('Bearer ', '');
-      jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, (err, decoded) => {
+      jwt.verify(token, process.env.TOKEN_PASSWORD, (err, decoded) => {
         if (decoded && decoded.role === role) {
           next();
         } else {
@@ -59,7 +59,7 @@ const isAuthorizedAsIn = roles => (
     const authorizationHeader = req.headers.authorization;
     if (authorizationHeader) {
       const token = authorizationHeader.replace('Bearer ', '');
-      jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, (err, decoded) => {
+      jwt.verify(token, process.env.TOKEN_PASSWORD, (err, decoded) => {
         if (decoded && roles.includes(decoded.role)) {
           next();
         } else {

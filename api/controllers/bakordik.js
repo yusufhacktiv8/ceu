@@ -8,7 +8,7 @@ const sendError = (err, res) => {
 
 const getHospitalIdFromJwt = token => new Promise((resolve, reject) => {
   console.log('token ====> ', token);
-  jwt.verify(token, process.env.REACT_APP_TOKEN_PASSWORD, (err, decoded) => {
+  jwt.verify(token, process.env.TOKEN_PASSWORD, (err, decoded) => {
     console.log(decoded);
     if (decoded) {
       const { userId } = decoded;
