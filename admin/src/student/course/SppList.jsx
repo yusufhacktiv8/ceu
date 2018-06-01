@@ -200,7 +200,7 @@ class SppList extends Component {
                       onClick={() => this.openEditWindow(record)}
                       style={{ marginRight: 5 }}
                     />
-                    <Upload {...getUploadProps(record.id, this.fetchSpps)} showUploadList={false}>
+                    <Upload {...getUploadProps(record.id, () => (this.fetchSpps()))} showUploadList={false}>
                       <Button
                         icon="upload"
                         size="small"
