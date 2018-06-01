@@ -26,7 +26,7 @@ exports.signIn = function (req, res) {
             userId: user.id,
             name: user.name,
             role: user.Role.code,
-          }, process.env.REACT_APP_TOKEN_PASSWORD, { expiresIn: 60 * 60 });
+          }, process.env.TOKEN_PASSWORD, { expiresIn: 60 * 60 });
           res.json({
             token,
           });
