@@ -19,6 +19,8 @@ services:
         app_env: ${APP_ENV}
         port_env: ${PORT_ENV}
         token_password_env: ${TOKEN_PASSWORD_ENV}
+        aws_access_key_id: ${AWS_ACCESS_KEY_ID}
+        aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
     volumes:
       - ./api:/api
@@ -34,6 +36,7 @@ services:
       args:
         app_env: ${APP_ENV}
         server_url_env: ${SERVER_URL_ENV}
+        files_url: ${FILES_URL}
     volumes:
       - ./admin/src:/admin/src
     ports:
