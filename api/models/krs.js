@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     paid: DataTypes.BOOLEAN,
     level: DataTypes.INTEGER,
     description: DataTypes.STRING,
+    fileId: DataTypes.STRING,
     paymentDate: DataTypes.DATEONLY
   }, {
     classMethods: {
