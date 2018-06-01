@@ -6,6 +6,7 @@ FROM node
 ENV NPM_CONFIG_LOGLEVEL warn
 ARG app_env
 ARG server_url_env
+ARG files_url_env
 ENV NODE_ENV $app_env
 ENV REACT_APP_SERVER_URL $server_url_env
 ENV REACT_APP_FILES_URL $files_url_env
