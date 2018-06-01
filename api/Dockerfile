@@ -8,8 +8,10 @@ ARG app_env
 ARG token_password_env
 ARG port_env
 ENV NODE_ENV $app_env
-ENV REACT_APP_TOKEN_PASSWORD $token_password_env
+ENV TOKEN_PASSWORD $token_password_env
 ENV PORT $port_env
+ENV AWS_ACCESS_KEY_ID $aws_access_key_id
+ENV AWS_SECRET_ACCESS_KEY $aws_secret_access_key
 
 RUN mkdir -p /api
 WORKDIR /api

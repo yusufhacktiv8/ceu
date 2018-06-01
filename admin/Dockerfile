@@ -8,6 +8,7 @@ ARG app_env
 ARG server_url_env
 ENV NODE_ENV $app_env
 ENV REACT_APP_SERVER_URL $server_url_env
+ENV REACT_APP_FILES_URL $files_url
 
 RUN mkdir -p /admin
 WORKDIR /admin

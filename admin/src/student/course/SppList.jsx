@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Checkbox, Row, Col, Upload, Icon, message, Popconfirm, notification } from 'antd';
+import { Table, Button, Checkbox, Row, Col, Upload, message, Popconfirm, notification } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 import SppWindow from './SppWindow';
@@ -11,13 +11,13 @@ const getSppsUrl = studentId => `${STUDENTS_URL}/${studentId}/spps`;
 const FILES_URL = process.env.REACT_APP_FILES_URL;
 const Column = Table.Column;
 
-const getUploadProps = sppId => (
+const getUploadProps = (sppId, afterUpload) => (
   {
-    name: 'krsFile',
+    name: 'sppFile',
     headers: {
       authorization: 'authorization-text',
     },
-    action: `${SPPS_URL}/uploadfile/${sppId}`,
+    action: `${SPPS_URL}/${sppId}`,
     onChange: (info) => {
       if (info.file.status !== 'uploading') {
         // console.log(info.file, info.fileList);
@@ -27,6 +27,7 @@ const getUploadProps = sppId => (
           message: 'Upload success',
           description: info.file.response,
         });
+        afterUpload();
       } else if (info.file.status === 'error') {
         notification.error({
           message: 'Upload error',
@@ -199,7 +200,7 @@ class SppList extends Component {
                       onClick={() => this.openEditWindow(record)}
                       style={{ marginRight: 5 }}
                     />
-                    <Upload {...getUploadProps(record.id)} showUploadList={false}>
+                    <Upload {...getUploadProps(record.id, this.fetchSpps)} showUploadList={false}>
                       <Button
                         icon="upload"
                         size="small"
