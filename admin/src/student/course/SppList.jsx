@@ -204,7 +204,7 @@ class SppList extends Component {
                             okText="Yes" cancelText="No"
                           >
                             <Button
-                              type="dashed"
+                              style={{ border: 0 }}
                               icon="close-circle"
                               shape="circle"
                               size="small"

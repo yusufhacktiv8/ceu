@@ -401,6 +401,7 @@ exports.findSpps = function(req, res) {
   const { studentId } = req.params;
   models.Spp.findAll({
     where: {},
+    order: ['id'],
     include: [
       { model: models.Student, where: { id: studentId } },
     ],
