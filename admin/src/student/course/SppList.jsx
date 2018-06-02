@@ -104,6 +104,21 @@ class SppList extends Component {
       });
   }
 
+  deleteSppFile(spp) {
+    const hide = message.loading('Action in progress..', 0);
+    axios.put(`${SPPS_URL}/${spp.id}/deletefile`)
+      .then(() => {
+        message.success('Delete file success');
+        this.fetchSpps();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        hide();
+      });
+  }
+
   openEditWindow = (record) => {
     this.setState({
       spp: record,
@@ -181,9 +196,27 @@ class SppList extends Component {
                 render={(text, record) => {
                   if (record.fileId) {
                     return (
-                      <a target="_blank" href={`${FILES_URL}/students/${record.StudentId}/spp/${record.fileId}.jpg`}>
-                        {record.fileId}
-                      </a>
+                      <div>
+                        <span style={{ marginRight: 5 }}>
+                          <Popconfirm
+                            title={'Are you sure to remove file'}
+                            onConfirm={() => this.deleteSppFile(record)}
+                            okText="Yes" cancelText="No"
+                          >
+                            <Button
+                              type="dashed"
+                              icon="close-circle"
+                              shape="circle"
+                              size="small"
+                            />
+                          </Popconfirm>
+                        </span>
+                        <span>
+                          <a target="_blank" href={`${FILES_URL}/students/${record.StudentId}/spp/${record.fileId}.jpg`}>
+                            {record.fileId}
+                          </a>
+                        </span>
+                      </div>
                     );
                   }
                   return (<div>No File</div>);

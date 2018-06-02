@@ -73,20 +73,56 @@ exports.upload = function upload(req, res) {
     where: { id: sppId },
   })
   .then((spp) => {
-    const fileId = shortid.generate();
+    const fileId = spp.fileId ? spp.fileId : shortid.generate();
     const fileKey = `students/${spp.StudentId}/spp/${fileId}.jpg`;
     s3.putObject({
       Bucket: BUCKET_NAME,
       Key: fileKey,
       Body: base64data,
       ACL: 'public-read',
-    }, () => {
-      console.log('Successfully uploaded spp.');
-      spp.fileId = fileId;
-      spp.save()
-      .then(() => {
-        res.send(fileId);
-      });
+    }, (err) => {
+      if (!err) {
+        console.log('Successfully uploaded spp.');
+        spp.fileId = fileId;
+        spp.save()
+        .then(() => {
+          res.send(fileId);
+        });
+      } else {
+        sendError(err, res);
+      }
     });
+  });
+};
+
+exports.deleteFile = function deleteFile(req, res) {
+  const sppId = req.params.sppId;
+
+  const s3 = new AWS.S3();
+
+  models.Spp.findOne({
+    where: { id: sppId },
+  })
+  .then((spp) => {
+    if (spp.fileId) {
+      const fileKey = `students/${spp.StudentId}/spp/${spp.fileId}.jpg`;
+      s3.deleteObject({
+        Bucket: BUCKET_NAME,
+        Key: fileKey,
+      }, (err) => {
+        if (!err) {
+          console.log('Successfully delete spp.');
+          spp.fileId = null;
+          spp.save()
+          .then(() => {
+            res.send(spp.fileId);
+          });
+        } else {
+          sendError(err, res);
+        }
+      });
+    } else {
+      sendError(new Error('No file found'), res);
+    }
   });
 };
