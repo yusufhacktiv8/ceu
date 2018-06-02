@@ -38,6 +38,10 @@ export default class StudentDetailsPage extends Component {
     this.props.history.push('/students');
   }
 
+  onStudentUpdate = () => {
+    this.fetchStudent();
+  }
+
   fetchStudent = () => {
     const { match } = this.props;
     const { studentId } = match.params;
@@ -103,7 +107,11 @@ export default class StudentDetailsPage extends Component {
               &&
               <Row>
                 <Col span={12}>
-                  <RegistrationForm loading={loading} student={student} />
+                  <RegistrationForm
+                    loading={loading}
+                    student={student}
+                    onStudentUpdate={this.onStudentUpdate}
+                  />
                 </Col>
               </Row>
             }

@@ -19,7 +19,7 @@ class RegistrationForm extends Component {
   }
 
   onSubmit = () => {
-    const { form, student } = this.props;
+    const { form, student, onStudentUpdate } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         this.setState({
@@ -31,6 +31,7 @@ class RegistrationForm extends Component {
           this.setState({
             saving: false,
           });
+          onStudentUpdate();
         })
           .catch((error) => {
             this.setState({
