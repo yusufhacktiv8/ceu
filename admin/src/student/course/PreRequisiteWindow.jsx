@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, Tabs, message } from 'antd';
 // import axios from 'axios';
 // import showError from '../../utils/ShowError';
 import SppList from './SppList';
+import KrsList from './KrsList';
 
 // const ROLES_URL = `${process.env.REACT_APP_SERVER_URL}/api/roles`;
 
@@ -35,6 +36,7 @@ class PreRequisiteWindow extends Component {
             <SppList studentId={studentId} level={level} />
           </TabPane>
           <TabPane tab="KRS" key="2">
+            <KrsList studentId={studentId} level={level} />
           </TabPane>
         </Tabs>
       </Modal>

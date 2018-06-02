@@ -21,5 +21,7 @@ router.post('/:studentId/uploadfile/spp', isAuthorizedAs('ADMIN'), StudentContro
 router.post('/:studentId/uploadfile/ijazah', isAuthorizedAs('ADMIN'), StudentController.ijazahUpload);
 router.get('/:studentId/spps', isAuthorizedAsIn(['ADMIN']), StudentController.findSpps);
 router.post('/:studentId/spps', isAuthorizedAsIn(['ADMIN']), StudentController.addSpp);
+router.get('/:studentId/krss', isAuthorizedAsIn(['ADMIN']), StudentController.findKrss);
+router.post('/:studentId/krss', isAuthorizedAsIn(['ADMIN']), StudentController.addKrs);
 
 module.exports = router;

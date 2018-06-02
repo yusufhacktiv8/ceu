@@ -425,6 +425,34 @@ exports.addSpp = function(req, res) {
   });
 };
 
+exports.findKrss = function(req, res) {
+  const { studentId } = req.params;
+  models.Krs.findAll({
+    where: {},
+    order: ['id'],
+    include: [
+      { model: models.Student, where: { id: studentId } },
+    ],
+  })
+  .then((krss) => {
+    res.json(krss);
+  });
+};
+
+exports.addKrs = function(req, res) {
+  const studentId = req.params.studentId;
+  const krsForm = req.body;
+  krsForm.StudentId = parseInt(studentId, 10);
+  models.Krs.create(krsForm)
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send('Error when doing operation.');
+  });
+};
+
 exports.deleteCourse = function(req, res) {
   const courseId = req.params.courseId;
   models.Course.destroy({
