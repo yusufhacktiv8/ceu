@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Checkbox, Upload, Button, Icon, Row, Col, Spin, Tabs, notification, message } from 'antd';
+import { Form, Checkbox, Upload, Button, Icon, Row, Col, Spin, Tabs, Popconfirm, notification, message } from 'antd';
 import showError from '../utils/ShowError';
 import SppList from './course/SppList';
 import KrsList from './course/KrsList';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
+const FILES_URL = process.env.REACT_APP_FILES_URL;
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
@@ -44,11 +45,13 @@ class RegistrationForm extends Component {
   }
 
   setUploadProps = (student) => {
+    const { onStudentUpdate } = this.props;
+    const token = window.sessionStorage.getItem('token');
     const uploadProps = {
       name: 'ijazahFile',
       action: '',
       headers: {
-        authorization: 'authorization-text',
+        authorization: `Bearer ${token}`,
       },
     };
     uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/ijazah`;
@@ -61,6 +64,7 @@ class RegistrationForm extends Component {
           message: 'Upload Ijazah success',
           description: info.file.response,
         });
+        onStudentUpdate();
       } else if (info.file.status === 'error') {
         notification.error({
           message: 'Upload Ijazah error',
@@ -71,6 +75,22 @@ class RegistrationForm extends Component {
     this.setState({
       uploadProps,
     });
+  }
+
+  deleteIjazahFile(student) {
+    const { onStudentUpdate } = this.props;
+    const hide = message.loading('Action in progress..', 0);
+    axios.put(`${STUDENTS_URL}/${student.id}/uploadfile/ijazah`)
+      .then(() => {
+        message.success('Delete file success');
+        onStudentUpdate();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        hide();
+      });
   }
 
   render() {
@@ -84,9 +104,27 @@ class RegistrationForm extends Component {
     let ijazahFileIdComponent = 'No File';
     if (student.ijazahFileId) {
       ijazahFileIdComponent = (
-        <a target="_blank" href={`${STUDENTS_URL}/ijazah/${student.ijazahFileId}.jpg`}>
-          {student.ijazahFileId}
-        </a>
+        <div>
+          <span style={{ marginRight: 5 }}>
+            <Popconfirm
+              title={'Are you sure to remove file'}
+              onConfirm={() => this.deleteIjazahFile(student)}
+              okText="Yes" cancelText="No"
+            >
+              <Button
+                style={{ border: 0 }}
+                icon="close-circle"
+                shape="circle"
+                size="small"
+              />
+            </Popconfirm>
+          </span>
+          <span>
+            <a target="_blank" href={`${FILES_URL}/students/${student.id}/ijazah/${student.ijazahFileId}.jpg`}>
+              {student.ijazahFileId}
+            </a>
+          </span>
+        </div>
       );
     }
 

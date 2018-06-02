@@ -4,6 +4,11 @@ const AWS = require('aws-sdk');
 const shortid = require('shortid');
 const _ = require('lodash');
 const models = require('../models');
+const { BUCKET_NAME } = require('../Constant');
+
+const sendError = (err, res) => {
+  res.status(500).send(`Error while doing operation: ${err.name}, ${err.message}`);
+};
 
 const WEEK_BREAK_DURATION = 2;
 
@@ -491,74 +496,6 @@ exports.findKompres = function(req, res) {
   });
 };
 
-exports.krsUpload = function krsUpload(req, res) {
-  if (!req.files) {
-    return res.status(400).send('No files were uploaded.');
-  }
-
-  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
-  const krsFile = req.files.krsFile;
-  const studentId = req.params.studentId;
-
-  const base64data = new Buffer(krsFile.data, 'binary');
-  const s3 = new AWS.S3();
-
-  models.Student.findOne({
-    where: { id: studentId },
-  })
-  .then((student) => {
-    const fileId = shortid.generate();
-    const fileKey = `student/krs/${fileId}.jpg`;
-    s3.putObject({
-      Bucket: 'ceufkumifiles',
-      Key: fileKey,
-      Body: base64data,
-      ACL: 'public-read',
-    }, () => {
-      console.log('Successfully uploaded krs.');
-      student.krsFileId = fileId;
-      student.save()
-      .then(() => {
-        res.send(fileId);
-      });
-    });
-  });
-};
-
-exports.sppUpload = function sppUpload(req, res) {
-  if (!req.files) {
-    return res.status(400).send('No files were uploaded.');
-  }
-
-  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
-  const sppFile = req.files.sppFile;
-  const studentId = req.params.studentId;
-
-  const base64data = new Buffer(sppFile.data, 'binary');
-  const s3 = new AWS.S3();
-
-  models.Student.findOne({
-    where: { id: studentId },
-  })
-  .then((student) => {
-    const fileId = shortid.generate();
-    const fileKey = `student/spp/${fileId}.jpg`;
-    s3.putObject({
-      Bucket: 'ceufkumifiles',
-      Key: fileKey,
-      Body: base64data,
-      ACL: 'public-read',
-    }, () => {
-      console.log('Successfully uploaded spp.');
-      student.sppFileId = fileId;
-      student.save()
-      .then(() => {
-        res.send(fileId);
-      });
-    });
-  });
-};
-
 exports.ijazahUpload = function ijazahUpload(req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
@@ -575,8 +512,8 @@ exports.ijazahUpload = function ijazahUpload(req, res) {
     where: { id: studentId },
   })
   .then((student) => {
-    const fileId = shortid.generate();
-    const fileKey = `student/ijazah/${fileId}.jpg`;
+    const fileId = student.ijazahFileId ? student.ijazahFileId : shortid.generate();
+    const fileKey = `students/${studentId}/ijazah/${fileId}.jpg`;
     s3.putObject({
       Bucket: 'ceufkumifiles',
       Key: fileKey,
@@ -590,5 +527,37 @@ exports.ijazahUpload = function ijazahUpload(req, res) {
         res.send(fileId);
       });
     });
+  });
+};
+
+exports.deleteIjazahFile = function deleteIjazahFile(req, res) {
+  const studentId = req.params.studentId;
+
+  const s3 = new AWS.S3();
+
+  models.Student.findOne({
+    where: { id: studentId },
+  })
+  .then((student) => {
+    if (student.ijazahFileId) {
+      const fileKey = `students/${studentId}/ijazah/${student.ijazahFileId}.jpg`;
+      s3.deleteObject({
+        Bucket: BUCKET_NAME,
+        Key: fileKey,
+      }, (err) => {
+        if (!err) {
+          console.log('Successfully delete ijazah.');
+          student.ijazahFileId = null;
+          student.save()
+          .then(() => {
+            res.send(student.ijazahFileId);
+          });
+        } else {
+          sendError(err, res);
+        }
+      });
+    } else {
+      sendError(new Error('No file found'), res);
+    }
   });
 };
