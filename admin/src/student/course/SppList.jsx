@@ -11,11 +11,16 @@ const getSppsUrl = studentId => `${STUDENTS_URL}/${studentId}/spps`;
 const FILES_URL = process.env.REACT_APP_FILES_URL;
 const Column = Table.Column;
 
+const getAuthorizationHeader = () => {
+  const token = window.sessionStorage.getItem('token');
+  return `Bearer ${token}`;
+};
+
 const getUploadProps = (sppId, afterUpload) => (
   {
     name: 'sppFile',
     headers: {
-      authorization: 'authorization-text',
+      authorization: getAuthorizationHeader(),
     },
     action: `${SPPS_URL}/${sppId}`,
     onChange: (info) => {

@@ -11,11 +11,16 @@ const getKrssUrl = studentId => `${STUDENTS_URL}/${studentId}/krss`;
 const FILES_URL = process.env.REACT_APP_FILES_URL;
 const Column = Table.Column;
 
+const getAuthorizationHeader = () => {
+  const token = window.sessionStorage.getItem('token');
+  return `Bearer ${token}`;
+};
+
 const getUploadProps = (krsId, afterUpload) => (
   {
     name: 'krsFile',
     headers: {
-      authorization: 'authorization-text',
+      authorization: getAuthorizationHeader(),
     },
     action: `${KRSS_URL}/${krsId}`,
     onChange: (info) => {
