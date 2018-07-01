@@ -48,11 +48,11 @@ const checkProblems = (course) => {
 
 const checkSeminars = course => (
   new Promise((resolve, reject) => {
-    resolve({
+    /* resolve({
       valid: true,
       message: '',
-    });
-    /*const startDate = course.realStartDate;
+    }); */
+    const startDate = course.realStartDate;
     const endDate = course.realEndDate;
     const where = {
       eventDate: {},
@@ -88,7 +88,7 @@ const checkSeminars = course => (
           message: '',
         });
       }
-    }); */
+    });
   })
 );
 
