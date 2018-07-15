@@ -58,6 +58,9 @@ var dashboard = require('./routes/dashboard');
 var spps = require('./routes/spp');
 var krss = require('./routes/krs');
 
+var midKompreCandidate = require('./routes/midkomprecandidates');
+var yudisiumCandidate = require('./routes/yudisiumcandidates');
+
 var app = express();
 
 // view engine setup
@@ -124,6 +127,8 @@ app.use('/api/supervisorsforselect', supervisorsForSelect);
 app.use('/api/dashboard', dashboard);
 app.use('/api/spps', spps);
 app.use('/api/krss', krss);
+app.use('/api/midkomprecandidates', midKompreCandidate);
+app.use('/api/yudisiumcandidates', yudisiumCandidate);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
