@@ -19,6 +19,7 @@ import LevelPage from '../process/level/LevelPage';
 import AssistancePage from '../process/assistance/AssistancePage';
 import PreTestPage from '../report/schedule/PreTestPage';
 import DashboardPage from '../dashboard/DashboardPage';
+import YudisiumCandidatePage from '../report/candidates/YudisiumCandidatePage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -91,6 +92,8 @@ class Workspace extends Component {
       selectedKeys = ['pretest'];
     } else if (location.includes('bakordik')) {
       selectedKeys = ['bakordik'];
+    } else if (location.includes('yudisiumcandidates')) {
+      selectedKeys = ['yudisiumcandidates'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -161,6 +164,11 @@ class Workspace extends Component {
                       <Link to="/pretest">Pre Test</Link>
                     </Menu.Item>
                   </MenuItemGroup>
+                  <MenuItemGroup title="Candidates">
+                    <Menu.Item key="yudisiumcandidates">
+                      <Link to="/yudisiumcandidates">Yudisium</Link>
+                    </Menu.Item>
+                  </MenuItemGroup>
                 </SubMenu>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
@@ -202,6 +210,7 @@ class Workspace extends Component {
             <Route exact path="/level" component={LevelPage} />
             <Route exact path="/assistance" component={AssistancePage} />
             <Route exact path="/pretest" component={PreTestPage} />
+            <Route exact path="/yudisiumcandidates" component={YudisiumCandidatePage} />
           </div>
         </Content>
       </Layout>

@@ -128,7 +128,7 @@ app.use('/api/dashboard', dashboard);
 app.use('/api/spps', spps);
 app.use('/api/krss', krss);
 app.use('/api/midkomprecandidates', midKompreCandidate);
-app.use('/api/yudisiumcandidates', yudisiumCandidate);
+app.use('/api/reports/yudisiumcandidates', yudisiumCandidate);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

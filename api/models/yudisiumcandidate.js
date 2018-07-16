@@ -1,8 +1,8 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var YudisiumCandidate = sequelize.define('YudisiumCandidate', {
-    testDate: DataTypes.DATEONLY,
-    testPassed: DataTypes.BOOLEAN
+    yudisiumDate: DataTypes.DATEONLY,
+    completed: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {
