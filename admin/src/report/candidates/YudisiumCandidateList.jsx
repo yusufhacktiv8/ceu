@@ -89,9 +89,9 @@ class YudisiumCandidateList extends Component {
       return;
     }
     const onOk = () => {
-      const axiosObj = axios.put(`${YUDISIUM_CANDIDATE_REPORTS_URL}/remove`, { courseIds: selectedRowKeys });
+      const axiosObj = axios.put(`${YUDISIUM_CANDIDATE_REPORTS_URL}/removein`, { studentIds: selectedRowKeys });
       axiosObj.then(() => {
-        message.success('Remove student from pretest success');
+        message.success('Remove student from yudisium success');
         this.fetchYudisiumCandidates();
       })
         .catch((error) => {
