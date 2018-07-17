@@ -26,7 +26,7 @@ class LevelExportWindow extends Component {
       this.setState({
         saving: true,
       }, () => {
-        const data = { courseIds, preTestDate: values.preTestDate.format(dateFormat) };
+        const data = { courseIds, yudisiumDate: values.yudisiumDate.format(dateFormat) };
         const axiosObj = axios.post(EXPORT_TO_PRE_TESTS_URL, data);
         axiosObj.then(() => {
           message.success('Export to pretest success');

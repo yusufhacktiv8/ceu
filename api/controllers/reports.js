@@ -137,6 +137,7 @@ exports.findLevelCourses = function(req, res) {
       },
       status: 2,
       finalCourse: true,
+      yudisium1Candidate: false,
     },
     include: [
       {
@@ -316,7 +317,7 @@ exports.levelXpt = function(req, res) {
     const courseId = courseIds[i];
     const promise = new Promise((resolve, reject) => {
       models.Course.findOne({
-        where: { id: courseId, yudisiumCandidate: false },
+        where: { id: courseId, yudisium1Candidate: false },
         include: [
           { model: models.Student },
         ],
