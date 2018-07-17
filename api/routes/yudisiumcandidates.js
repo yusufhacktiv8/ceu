@@ -1,5 +1,5 @@
 const express = require('express');
-const YudisiumCandidateController = require('../controllers/midkomprecandidates.js');
+const YudisiumCandidateController = require('../controllers/yudisiumcandidates.js');
 const { isAuthorizedAs } = require('../helpers/AuthUtils');
 
 const router = express.Router();

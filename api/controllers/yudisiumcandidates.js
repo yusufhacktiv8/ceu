@@ -11,10 +11,10 @@ exports.findAll = function findAll(req, res) {
   const offset = (currentPage - 1) * limit;
   models.YudisiumCandidate.findAndCountAll({
     where: {
-      $or: [
-        { code: { $ilike: searchText } },
-        { name: { $ilike: searchText } },
-      ],
+      // $or: [
+      //   { code: { $ilike: searchText } },
+      //   { name: { $ilike: searchText } },
+      // ],
     },
     limit,
     offset,

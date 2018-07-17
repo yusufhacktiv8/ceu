@@ -308,24 +308,30 @@ exports.exportToPreTest = function(req, res) {
 };
 
 exports.levelXpt = function(req, res) {
-  const exportToPreTestForm = req.body;
-  const preTestDate = exportToPreTestForm.preTestDate;
-  const courseIds = exportToPreTestForm.courseIds;
+  const form = req.body;
+  const yudisiumDate = form.yudisiumDate;
+  const courseIds = form.courseIds;
   const promises = [];
   for (let i = 0; i < courseIds.length; i += 1) {
     const courseId = courseIds[i];
     const promise = new Promise((resolve, reject) => {
       models.Course.findOne({
-        where: { id: courseId },
+        where: { id: courseId, yudisiumCandidate: false },
         include: [
           { model: models.Student },
         ],
       })
       .then((foundCourse) => {
-        foundCourse.preTestDate = preTestDate;
+        foundCourse.yudisium1Candidate = true;
         foundCourse.save()
         .then((result) => {
-          resolve(result);
+          models.YudisiumCandidate.create({
+            StudentId: foundCourse.StudentId,
+            yudisiumDate,
+            completed: false,
+          }).then(() => {
+            resolve(result);
+          });
         })
         .catch((err) => {
           reject(err);

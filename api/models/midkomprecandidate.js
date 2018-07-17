@@ -2,7 +2,7 @@
 module.exports = function(sequelize, DataTypes) {
   var MidKompreCandidate = sequelize.define('MidKompreCandidate', {
     testDate: DataTypes.DATEONLY,
-    testPassed: DataTypes.BOOLEAN
+    completed: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

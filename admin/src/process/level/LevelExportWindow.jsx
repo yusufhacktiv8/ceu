@@ -54,7 +54,7 @@ class LevelExportWindow extends Component {
       <Modal
         width={500}
         visible={visible}
-        title="Export To Pre Test"
+        title="Export To Yudisium Candidate"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
@@ -64,10 +64,10 @@ class LevelExportWindow extends Component {
         ]}
       >
         <Form layout="vertical">
-          <FormItem label="Pre Test Date">
-            {getFieldDecorator('preTestDate', {
+          <FormItem label="Yudisium Date">
+            {getFieldDecorator('yudisiumDate', {
               rules: [
-                { required: true, message: 'Please input pretest date' },
+                { required: true, message: 'Please input yudisium date' },
               ],
             })(
               <DatePicker style={{ width: '100%' }} />,

@@ -24,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     preTestDate: DataTypes.DATEONLY,
     courseIndex: DataTypes.INTEGER,
     finalCourse: DataTypes.BOOLEAN,
+    yudisium1Candidate: { type: DataTypes.BOOLEAN, defaultValue: false },
   }, {
     classMethods: {
       associate: function(models) {
