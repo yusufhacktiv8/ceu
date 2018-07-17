@@ -16,6 +16,11 @@ exports.findAll = function findAll(req, res) {
       //   { name: { $ilike: searchText } },
       // ],
     },
+    include: [
+      {
+        model: models.Student,
+      },
+    ],
     limit,
     offset,
   })

@@ -172,21 +172,6 @@ class YudisiumCandidateList extends Component {
               size="small"
             >
               <Column
-                title="Title"
-                dataIndex="title"
-                key="title"
-              />
-              <Column
-                title="Yudisium Date"
-                dataIndex="yudisiumDate"
-                key="yudisiumDate"
-                render={(text, record) => (
-                  <span>
-                    {moment(text).format('DD/MM/YYYY')}
-                  </span>
-                )}
-              />
-              <Column
                 title="Old SID"
                 dataIndex="Student.oldSid"
               />
@@ -197,6 +182,16 @@ class YudisiumCandidateList extends Component {
               <Column
                 title="Name"
                 dataIndex="Student.name"
+              />
+              <Column
+                title="Yudisium Date"
+                dataIndex="yudisiumDate"
+                key="yudisiumDate"
+                render={(text, record) => (
+                  <span>
+                    {moment(text).format('DD/MM/YYYY')}
+                  </span>
+                )}
               />
             </Table>
           </Col>
