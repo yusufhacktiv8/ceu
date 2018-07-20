@@ -29,6 +29,7 @@ module.exports = function(sequelize, DataTypes) {
     parentMobilePhone: DataTypes.STRING,
     yudisiumCheck: DataTypes.BOOLEAN,
     ukmppdCheck: DataTypes.BOOLEAN,
+    midKomprePass: DataTypes.BOOLEAN,
 
   }, {
     classMethods: {
