@@ -26,10 +26,10 @@ class LevelExportWindow extends Component {
       this.setState({
         saving: true,
       }, () => {
-        const data = { courseIds, yudisiumDate: values.yudisiumDate.format(dateFormat) };
+        const data = { courseIds, midKompreDate: values.midKompreDate.format(dateFormat) };
         const axiosObj = axios.post(EXPORT_TO_PRE_TESTS_URL, data);
         axiosObj.then(() => {
-          message.success('Export to pretest success');
+          message.success('Export to mid kompre schedule success');
           this.setState({
             saving: false,
           }, () => {
@@ -54,7 +54,7 @@ class LevelExportWindow extends Component {
       <Modal
         width={500}
         visible={visible}
-        title="Export To Yudisium Candidate"
+        title="Export To Mid Kompre Schedule"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
@@ -64,10 +64,10 @@ class LevelExportWindow extends Component {
         ]}
       >
         <Form layout="vertical">
-          <FormItem label="Yudisium Date">
-            {getFieldDecorator('yudisiumDate', {
+          <FormItem label="Mid Kompre Date">
+            {getFieldDecorator('midKompreDate', {
               rules: [
-                { required: true, message: 'Please input yudisium date' },
+                { required: true, message: 'Please input mid kompre date' },
               ],
             })(
               <DatePicker style={{ width: '100%' }} />,

@@ -116,28 +116,27 @@ exports.findLevelCourses = function(req, res) {
   const dateRange = req.query.dateRange;
   let startDate = null;
   let endDate = null;
-  if (dateRange) {
-    startDate = moment(dateRange[0].replace(/"/g, ''));
-    endDate = moment(dateRange[1].replace(/"/g, ''));
-  } else {
-    res.json({
-      count: 0,
-      rows: [],
-    });
-    return;
-  }
+  // if (dateRange) {
+  //   startDate = moment(dateRange[0].replace(/"/g, ''));
+  //   endDate = moment(dateRange[1].replace(/"/g, ''));
+  // } else {
+  //   res.json({
+  //     count: 0,
+  //     rows: [],
+  //   });
+  //   return;
+  // }
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 10;
   const currentPage = req.query.currentPage ? parseInt(req.query.currentPage, 10) : 1;
   const offset = (currentPage - 1) * limit;
   models.Course.findAndCountAll({
     where: {
-      realEndDate: {
-        $gte: startDate.toDate(),
-        $lte: endDate.toDate(),
-      },
-      status: 2,
-      finalCourse: true,
-      yudisium1Candidate: false,
+      // realEndDate: {
+      //   $gte: startDate.toDate(),
+      //   $lte: endDate.toDate(),
+      // },
+      // status: 2,
+      // finalCourse: true,
     },
     include: [
       {
@@ -148,7 +147,8 @@ exports.findLevelCourses = function(req, res) {
             { oldSid: { $ilike: searchText } },
             { newSid: { $ilike: searchText } },
           ],
-          yudisiumCheck: true,
+          // yudisiumCheck: true,
+          midKomprePass: false,
         },
       },
       {
@@ -310,29 +310,27 @@ exports.exportToPreTest = function(req, res) {
 
 exports.levelXpt = function(req, res) {
   const form = req.body;
-  const yudisiumDate = form.yudisiumDate;
+  const midKompreDate = form.midKompreDate;
   const courseIds = form.courseIds;
   const promises = [];
   for (let i = 0; i < courseIds.length; i += 1) {
     const courseId = courseIds[i];
     const promise = new Promise((resolve, reject) => {
       models.Course.findOne({
-        where: { id: courseId, yudisium1Candidate: false },
+        where: { id: courseId },
         include: [
           { model: models.Student },
         ],
       })
       .then((foundCourse) => {
-        foundCourse.yudisium1Candidate = true;
-        foundCourse.save()
+        models.Kompre.create({
+          StudentId: foundCourse.StudentId,
+          KompreTypeId: 2,
+          kompreDate: midKompreDate,
+          score: 0,
+        })
         .then((result) => {
-          models.YudisiumCandidate.create({
-            StudentId: foundCourse.StudentId,
-            yudisiumDate,
-            completed: false,
-          }).then(() => {
-            resolve(result);
-          });
+          resolve(result);
         })
         .catch((err) => {
           reject(err);

@@ -147,7 +147,7 @@ class Workspace extends Component {
                   <Menu.Item key="completed">
                     <Link to="/completed">Completed</Link></Menu.Item>
                   <Menu.Item key="level">
-                    <Link to="/level">Pre Yudisium</Link></Menu.Item>
+                    <Link to="/level">Mid Kompre Candidate</Link></Menu.Item>
                   <Menu.Item key="assistance">
                     <Link to="/assistance">Assistance</Link></Menu.Item>
                 </SubMenu>
