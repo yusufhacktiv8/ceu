@@ -20,6 +20,7 @@ import AssistancePage from '../process/assistance/AssistancePage';
 import PreTestPage from '../report/schedule/PreTestPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import YudisiumCandidatePage from '../report/candidates/YudisiumCandidatePage';
+import MidKompreSchedulePage from '../report/schedule/MidKompreSchedulePage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -94,6 +95,8 @@ class Workspace extends Component {
       selectedKeys = ['bakordik'];
     } else if (location.includes('yudisiumcandidates')) {
       selectedKeys = ['yudisiumcandidates'];
+    } else if (location.includes('midkomreschedule')) {
+      selectedKeys = ['midkomreschedule'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -163,6 +166,9 @@ class Workspace extends Component {
                     <Menu.Item key="pretest">
                       <Link to="/pretest">Pre Test</Link>
                     </Menu.Item>
+                    <Menu.Item key="midkomrepschedule">
+                      <Link to="/midkomrepschedule">Mid Kompre</Link>
+                    </Menu.Item>
                   </MenuItemGroup>
                   <MenuItemGroup title="Candidates">
                     <Menu.Item key="yudisiumcandidates">
@@ -211,6 +217,7 @@ class Workspace extends Component {
             <Route exact path="/assistance" component={AssistancePage} />
             <Route exact path="/pretest" component={PreTestPage} />
             <Route exact path="/yudisiumcandidates" component={YudisiumCandidatePage} />
+            <Route exact path="/midkomrepschedule" component={MidKompreSchedulePage} />
           </div>
         </Content>
       </Layout>

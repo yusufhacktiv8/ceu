@@ -1,5 +1,5 @@
 const moment = require('moment');
-const models = require('../models');
+const models = require('../../models');
 
 const sendError = (err, res) => {
   res.status(500).send(`Error while doing operation: ${err.name}, ${err.message}`);
