@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Checkbox, Button, Tabs, Table, Spin, Icon, Row, Col, Popconfirm, message } from 'antd';
+import { Form, DatePicker, Checkbox, Button, Tabs, Table, Spin, Icon, Row, Col, Popconfirm, message } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import numeral from 'numeral';
@@ -403,6 +403,27 @@ class YudisiumPage extends Component {
                 }}
               />
             </Table>
+          </Spin>
+        </TabPane>
+        <TabPane tab="Schedule" key="5">
+          <Spin indicator={antIcon} spinning={loadingYudisium}>
+            <Form layout="vertical">
+              <FormItem label="Yudisium Date">
+                {getFieldDecorator('yudisiumDate', {
+                  initialValue: yudisium.yudisiumDate ? moment(yudisium.yudisiumDate) : undefined,
+                })(
+                  <DatePicker />,
+                )}
+              </FormItem>
+              <FormItem label="Completed">
+                {getFieldDecorator('yudisiumPass', {
+                  initialValue: yudisium.yudisiumPass,
+                  valuePropName: 'checked',
+                })(
+                  <Checkbox>Yudisium Completed</Checkbox>,
+                )}
+              </FormItem>
+            </Form>
           </Spin>
         </TabPane>
       </Tabs>

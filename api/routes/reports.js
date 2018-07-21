@@ -19,5 +19,7 @@ router.get('/costunits', CostUnitController.costUnits);
 router.get('/costunitsclinic', CostUnitController.costUnitsClinic);
 router.get('/midkompreschedule', ScheduleController.findMidKompreSchedule);
 router.put('/midkompreschedule', ScheduleController.removeFromMidKompreSchedule);
+router.get('/yudisiumschedule', ScheduleController.findYudisiumSchedule);
+// router.put('/yudisiumschedule', ScheduleController.removeYudisiumSchedule);
 
 module.exports = router;
