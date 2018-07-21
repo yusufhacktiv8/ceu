@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Input, Table, Button, DatePicker, Row, Col, message, Modal } from 'antd';
+import { Input, Table, Button, DatePicker, Row, Col, message, Modal, Icon } from 'antd';
 import showError from '../../utils/ShowError';
+import ScoreWindow from '../../student/ukmppd/ScoreWindow';
 
 const { RangePicker } = DatePicker;
 const { confirm } = Modal;
@@ -20,9 +21,12 @@ class MidKompreSchedule extends Component {
     currentPage: 1,
     pageSize: 10,
     exportWindowVisible: false,
+    saving: false,
+    studentId: 0,
+    score: { KompreType: {} },
   }
   componentDidMount() {
-    this.fetchMidKompreCandidates();
+    this.fetchMidKompreSchedule();
   }
 
   onRangeChange = (e) => {
@@ -38,11 +42,11 @@ class MidKompreSchedule extends Component {
   }
 
   onSaveSuccess = () => {
-    this.closeExportWindow();
-    this.fetchMidKompreCandidates();
+    this.closeEditWindow();
+    this.fetchMidKompreSchedule();
   }
 
-  fetchMidKompreCandidates() {
+  fetchMidKompreSchedule() {
     this.setState({
       loading: true,
     });
@@ -73,7 +77,7 @@ class MidKompreSchedule extends Component {
     const page = pagination.current;
     this.setState({
       currentPage: page,
-    }, () => { this.fetchMidKompreCandidates(); });
+    }, () => { this.fetchMidKompreSchedule(); });
   }
 
   rowKeysChanged = (rowKeys) => {
@@ -89,10 +93,10 @@ class MidKompreSchedule extends Component {
       return;
     }
     const onOk = () => {
-      const axiosObj = axios.put(`${MIDKOMPRE_SCHEDULE_URL}/removein`, { studentIds: selectedRowKeys });
+      const axiosObj = axios.put(MIDKOMPRE_SCHEDULE_URL, { kompreIds: selectedRowKeys });
       axiosObj.then(() => {
-        message.success('Remove student from yudisium success');
-        this.fetchMidKompreCandidates();
+        message.success('Remove student from mid kompre schedule success');
+        this.fetchMidKompreSchedule();
       })
         .catch((error) => {
           showError(error);
@@ -100,12 +104,27 @@ class MidKompreSchedule extends Component {
     };
 
     confirm({
-      title: 'Do you want remove students from yudisium schedule?',
+      title: 'Do you want remove students from mid kompre schedule?',
       content: 'This action cannot be undone',
       onOk,
       onCancel() {
         console.log('Cancel');
       },
+    });
+  }
+
+  openEditWindow = (record) => {
+    this.setState({
+      score: { ...record, KompreType: { id: record.KompreTypeId } },
+      scoreWindowVisible: true,
+    }, () => {
+      this.scoreWindow.resetFields();
+    });
+  }
+
+  closeEditWindow = () => {
+    this.setState({
+      scoreWindowVisible: false,
     });
   }
 
@@ -143,7 +162,7 @@ class MidKompreSchedule extends Component {
               <Button
                 shape="circle"
                 icon="search"
-                onClick={() => this.fetchMidKompreCandidates()}
+                onClick={() => this.fetchMidKompreSchedule()}
                 style={{ marginRight: 5 }}
               />
               <Button
@@ -180,6 +199,10 @@ class MidKompreSchedule extends Component {
                 dataIndex="Student.newSid"
               />
               <Column
+                title="Score"
+                dataIndex="score"
+              />
+              <Column
                 title="Name"
                 dataIndex="Student.name"
               />
@@ -193,9 +216,42 @@ class MidKompreSchedule extends Component {
                   </span>
                 )}
               />
+              <Column
+                title="Selected"
+                dataIndex="selected"
+                key="selected"
+                render={(text, record) => (
+                  <span>
+                    {record.selected ? <Icon type="check-circle" style={{ color: 'green', fontSize: 20 }} /> : null}
+                  </span>
+                )}
+              />
+              <Column
+                title="Action"
+                key="action"
+                render={(text, record) => (
+                  <span>
+                    <Button
+                      icon="ellipsis"
+                      size="small"
+                      onClick={() => this.openEditWindow(record)}
+                      style={{ marginRight: 5 }}
+                    />
+                  </span>
+                )}
+              />
             </Table>
           </Col>
         </Row>
+
+        <ScoreWindow
+          visible={this.state.scoreWindowVisible}
+          onSaveSuccess={this.onSaveSuccess}
+          onCancel={this.closeEditWindow}
+          onClose={this.closeEditWindow}
+          score={this.state.score}
+          ref={scoreWindow => (this.scoreWindow = scoreWindow)}
+        />
       </div>
     );
   }

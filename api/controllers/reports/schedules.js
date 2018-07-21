@@ -54,3 +54,18 @@ exports.findMidKompreSchedule = function(req, res) {
     sendError(err, res);
   });
 };
+
+exports.removeFromMidKompreSchedule = function(req, res) {
+  const form = req.body;
+  const kompreIds = form.kompreIds;
+  models.Kompre.destroy(
+    {
+      where: { id: kompreIds, selected: false },
+    })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};

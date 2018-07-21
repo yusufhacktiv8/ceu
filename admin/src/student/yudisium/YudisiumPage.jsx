@@ -55,6 +55,11 @@ class YudisiumPage extends Component {
     });
   }
 
+  onSaveSuccess = () => {
+    this.closeEditWindow();
+    this.fetchScores();
+  }
+
   fetchYudisium() {
     const { studentId } = this.props;
     this.setState({

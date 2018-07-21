@@ -18,5 +18,6 @@ router.put('/pretests/remove', ReportController.removeCoursesFormPreTest);
 router.get('/costunits', CostUnitController.costUnits);
 router.get('/costunitsclinic', CostUnitController.costUnitsClinic);
 router.get('/midkompreschedule', ScheduleController.findMidKompreSchedule);
+router.put('/midkompreschedule', ScheduleController.removeFromMidKompreSchedule);
 
 module.exports = router;
