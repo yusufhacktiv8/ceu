@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Input, Table, Button, DatePicker, Row, Col, message, Modal } from 'antd';
+import { Input, Icon, Table, Button, DatePicker, Row, Col, message, Modal } from 'antd';
 import showError from '../../utils/ShowError';
 
 const { RangePicker } = DatePicker;
@@ -190,6 +190,16 @@ class YudisiumSchedule extends Component {
                 render={(text, record) => (
                   <span>
                     {moment(text).format('DD/MM/YYYY')}
+                  </span>
+                )}
+              />
+              <Column
+                title="Completed"
+                dataIndex="completed"
+                key="completed"
+                render={(text, record) => (
+                  <span>
+                    {record.completed ? <Icon type="check-circle" style={{ color: 'green', fontSize: 20 }} /> : null}
                   </span>
                 )}
               />
