@@ -208,8 +208,8 @@ class MidKompreSchedule extends Component {
               />
               <Column
                 title="Mid Kompre Date"
-                dataIndex="yudisiumDate"
-                key="yudisiumDate"
+                dataIndex="kompreDate"
+                key="kompreDate"
                 render={(text, record) => (
                   <span>
                     {moment(text).format('DD/MM/YYYY')}
