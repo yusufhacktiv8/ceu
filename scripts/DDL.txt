@@ -1,4 +1,3 @@
-ALTER TABLE public."Courses" ADD "yudisium1Candidate" bool NULL DEFAULT false;
 ALTER TABLE public."Students" ADD "midKomprePass" bool NULL DEFAULT false;
 
 ALTER TABLE public."YudisiumChecklists" ADD "yudisiumDate" date NULL;
