@@ -88,10 +88,10 @@ exports.findYudisiumSchedule = function(req, res) {
   const offset = (currentPage - 1) * limit;
   models.YudisiumChecklist.findAndCountAll({
     where: {
-      // yudisiumDate: {
-      //   $gte: startDate.toDate(),
-      //   $lte: endDate.toDate(),
-      // },
+      yudisiumDate: {
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate(),
+      },
     },
     include: [
       {
@@ -108,6 +108,25 @@ exports.findYudisiumSchedule = function(req, res) {
     limit,
     offset,
   })
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
+
+exports.removeFromYudisiumSchedule = function(req, res) {
+  const form = req.body;
+  const yudisiumIds = form.yudisiumIds;
+  console.log(yudisiumIds, '=========>');
+  models.YudisiumChecklist.update(
+    {
+      yudisiumDate: null,
+    },
+    {
+      where: { id: yudisiumIds },
+    })
   .then((result) => {
     res.json(result);
   })

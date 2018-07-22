@@ -416,8 +416,8 @@ class YudisiumPage extends Component {
                 )}
               </FormItem>
               <FormItem label="Completed">
-                {getFieldDecorator('yudisiumPass', {
-                  initialValue: yudisium.yudisiumPass,
+                {getFieldDecorator('completed', {
+                  initialValue: yudisium.completed,
                   valuePropName: 'checked',
                 })(
                   <Checkbox>Yudisium Completed</Checkbox>,

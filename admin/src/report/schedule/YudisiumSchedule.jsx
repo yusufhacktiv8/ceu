@@ -7,13 +7,13 @@ import showError from '../../utils/ShowError';
 const { RangePicker } = DatePicker;
 const { confirm } = Modal;
 
-const YUDISIUM_CANDIDATE_REPORTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/yudisiumcandidates`;
+const YUDISIUM_SCHEDULE_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/yudisiumschedule`;
 const Column = Table.Column;
 
-class YudisiumCandidateList extends Component {
+class YudisiumSchedule extends Component {
   state = {
     searchText: '',
-    preTests: [],
+    yudisiums: [],
     selectedRowKeys: [],
     loading: false,
     count: 0,
@@ -22,7 +22,7 @@ class YudisiumCandidateList extends Component {
     exportWindowVisible: false,
   }
   componentDidMount() {
-    this.fetchYudisiumCandidates();
+    this.fetchYudisiumSchedule();
   }
 
   onRangeChange = (e) => {
@@ -39,14 +39,14 @@ class YudisiumCandidateList extends Component {
 
   onSaveSuccess = () => {
     this.closeExportWindow();
-    this.fetchYudisiumCandidates();
+    this.fetchYudisiumSchedule();
   }
 
-  fetchYudisiumCandidates() {
+  fetchYudisiumSchedule() {
     this.setState({
       loading: true,
     });
-    axios.get(YUDISIUM_CANDIDATE_REPORTS_URL, { params: {
+    axios.get(YUDISIUM_SCHEDULE_URL, { params: {
       searchText: this.state.searchText,
       dateRange: this.state.dateRange,
       start: (this.state.currentPage - 1) * this.state.pageSize,
@@ -54,7 +54,7 @@ class YudisiumCandidateList extends Component {
     } })
       .then((response) => {
         this.setState({
-          preTests: response.data.rows,
+          yudisiums: response.data.rows,
           count: response.data.count,
           loading: false,
         });
@@ -73,7 +73,7 @@ class YudisiumCandidateList extends Component {
     const page = pagination.current;
     this.setState({
       currentPage: page,
-    }, () => { this.fetchYudisiumCandidates(); });
+    }, () => { this.fetchYudisiumSchedule(); });
   }
 
   rowKeysChanged = (rowKeys) => {
@@ -89,10 +89,10 @@ class YudisiumCandidateList extends Component {
       return;
     }
     const onOk = () => {
-      const axiosObj = axios.put(`${YUDISIUM_CANDIDATE_REPORTS_URL}/removein`, { studentIds: selectedRowKeys });
+      const axiosObj = axios.put(YUDISIUM_SCHEDULE_URL, { yudisiumIds: selectedRowKeys });
       axiosObj.then(() => {
         message.success('Remove student from yudisium success');
-        this.fetchYudisiumCandidates();
+        this.fetchYudisiumSchedule();
       })
         .catch((error) => {
           showError(error);
@@ -143,7 +143,7 @@ class YudisiumCandidateList extends Component {
               <Button
                 shape="circle"
                 icon="search"
-                onClick={() => this.fetchYudisiumCandidates()}
+                onClick={() => this.fetchYudisiumSchedule()}
                 style={{ marginRight: 5 }}
               />
               <Button
@@ -158,7 +158,7 @@ class YudisiumCandidateList extends Component {
         <Row>
           <Col span={24}>
             <Table
-              dataSource={this.state.preTests}
+              dataSource={this.state.yudisiums}
               style={{ marginTop: 20, width: '100%' }}
               rowKey="id"
               loading={this.state.loading}
@@ -201,4 +201,4 @@ class YudisiumCandidateList extends Component {
   }
 }
 
-export default YudisiumCandidateList;
+export default YudisiumSchedule;

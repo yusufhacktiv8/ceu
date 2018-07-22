@@ -116,27 +116,27 @@ exports.findLevelCourses = function(req, res) {
   const dateRange = req.query.dateRange;
   let startDate = null;
   let endDate = null;
-  // if (dateRange) {
-  //   startDate = moment(dateRange[0].replace(/"/g, ''));
-  //   endDate = moment(dateRange[1].replace(/"/g, ''));
-  // } else {
-  //   res.json({
-  //     count: 0,
-  //     rows: [],
-  //   });
-  //   return;
-  // }
+  if (dateRange) {
+    startDate = moment(dateRange[0].replace(/"/g, ''));
+    endDate = moment(dateRange[1].replace(/"/g, ''));
+  } else {
+    res.json({
+      count: 0,
+      rows: [],
+    });
+    return;
+  }
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 10;
   const currentPage = req.query.currentPage ? parseInt(req.query.currentPage, 10) : 1;
   const offset = (currentPage - 1) * limit;
   models.Course.findAndCountAll({
     where: {
-      // realEndDate: {
-      //   $gte: startDate.toDate(),
-      //   $lte: endDate.toDate(),
-      // },
-      // status: 2,
-      // finalCourse: true,
+      realEndDate: {
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate(),
+      },
+      status: 2,
+      finalCourse: true,
     },
     include: [
       {
