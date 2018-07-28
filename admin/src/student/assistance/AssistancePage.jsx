@@ -87,7 +87,7 @@ class AssistancePage extends Component {
     this.setState({
       loading: true,
     });
-    axios.get(`${YUDISIUM_CHECKLISTS_URL}/portofolios/${studentId}`, { params: {} })
+    axios.get(`${YUDISIUM_CHECKLISTS_URL}/portofolios/${studentId}`, { params: { level: 2 } })
       .then((response) => {
         this.setState({
           portofolioCompletions: response.data,

@@ -17,6 +17,7 @@ exports.findByStudent = function findOne(req, res) {
 };
 
 exports.findPortofolios = (req, res) => {
+  const level = req.query.level || 1;
   models.Course.findAll({
     where: {
       StudentId: req.params.studentId,
@@ -26,7 +27,7 @@ exports.findPortofolios = (req, res) => {
       {
         model: models.Department,
         where: {
-          level: 1,
+          level,
         },
       },
     ],
