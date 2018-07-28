@@ -4,6 +4,7 @@ import { Layout, Steps, Row, Col, Button, Tag, message, Icon, Spin } from 'antd'
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
 import YudisiumPage from './yudisium/YudisiumPage';
+import AssistancePage from './assistance/AssistancePage';
 import UkmppdPage from './ukmppd/UkmppdPage';
 import showError from '../utils/ShowError';
 
@@ -97,6 +98,8 @@ export default class StudentDetailsPage extends Component {
             <Step title="Level 1" />
             <Step title="Yudisium 1" />
             <Step title="Level 2" />
+            <Step title="Assistance" />
+            <Step title="Try Out" />
             <Step title="Yudisium 2" />
             <Step title="UKMPPD" />
             <Step title="Graduate" />
@@ -132,6 +135,12 @@ export default class StudentDetailsPage extends Component {
               this.state.current === 3
               &&
               <CoursePage studentId={studentId} level={2} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 4
+              &&
+              <AssistancePage studentId={studentId} level={2} history={this.props.history} />
             }
 
             {
