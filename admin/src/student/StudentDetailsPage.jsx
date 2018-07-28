@@ -6,6 +6,7 @@ import CoursePage from './course/CoursePage';
 import YudisiumPage from './yudisium/YudisiumPage';
 import AssistancePage from './assistance/AssistancePage';
 import UkmppdPage from './ukmppd/UkmppdPage';
+import TryOutPage from './tryout/TryOutPage';
 import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -145,6 +146,12 @@ export default class StudentDetailsPage extends Component {
 
             {
               this.state.current === 5
+              &&
+              <TryOutPage studentId={studentId} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 6
               &&
               <UkmppdPage studentId={studentId} history={this.props.history} />
             }
