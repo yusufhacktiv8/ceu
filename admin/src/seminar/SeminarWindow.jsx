@@ -93,7 +93,7 @@ class SeminarWindow extends Component {
             <Col span={12}>
               <FormItem label="Department">
                 {getFieldDecorator('department', {
-                  initialValue: seminar.Department ? String(seminar.Department.DepartmentId) : undefined,
+                  initialValue: seminar.SeminarType ? String(seminar.SeminarType.DepartmentId) : undefined,
                   rules: [
                     { required: true, message: 'Please input department' },
                   ],
