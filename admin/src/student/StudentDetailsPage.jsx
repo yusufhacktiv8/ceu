@@ -4,6 +4,7 @@ import { Layout, Steps, Row, Col, Button, Tag, message, Icon, Spin } from 'antd'
 import RegistrationForm from './RegistrationForm';
 import CoursePage from './course/CoursePage';
 import YudisiumPage from './yudisium/YudisiumPage';
+import Yudisium2Page from './yudisium/Yudisium2Page';
 import AssistancePage from './assistance/AssistancePage';
 import UkmppdPage from './ukmppd/UkmppdPage';
 import TryOutPage from './tryout/TryOutPage';
@@ -11,7 +12,7 @@ import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
 const { Step } = Steps;
-const stepsCount = 7;
+const stepsCount = 9;
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -152,6 +153,12 @@ export default class StudentDetailsPage extends Component {
 
             {
               this.state.current === 6
+              &&
+              <Yudisium2Page studentId={studentId} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 7
               &&
               <UkmppdPage studentId={studentId} history={this.props.history} />
             }

@@ -130,7 +130,7 @@ class RegistrationForm extends Component {
 
     return (
       <Form>
-        <Tabs defaultActiveKey="1" style={{ minHeight: 445 }}>
+        <Tabs defaultActiveKey="1" style={{ minHeight: 300 }}>
           <TabPane tab="SPP" key="1">
             <SppList studentId={studentId} level={1} />
           </TabPane>

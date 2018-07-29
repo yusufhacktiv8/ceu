@@ -174,7 +174,7 @@ class TryOutPage extends Component {
         style={{ marginTop: -10, height: 300, overflow: 'scroll' }}
         tabBarExtraContent={buttons}
       >
-        <TabPane tab="Mid kompre" key="1">
+        <TabPane tab="Final kompre" key="1">
           <Row gutter={10} style={{ marginBottom: 10 }}>
             <Col span={16}>
               <span>
@@ -189,7 +189,7 @@ class TryOutPage extends Component {
                   icon="plus"
                   onClick={() => this.openEditWindow({
                     KompreType: {
-                      id: 2,
+                      id: 3,
                     },
                   })}
                   style={{ marginLeft: 10 }}
@@ -199,7 +199,7 @@ class TryOutPage extends Component {
           </Row>
           <Table
             dataSource={this.state.scores.filter(score =>
-              String(score.KompreType.code) === 'K002')}
+              String(score.KompreType.code) === 'K003')}
             style={{ marginTop: 5 }}
             rowKey="id"
             loading={this.state.loading}
@@ -267,6 +267,91 @@ class TryOutPage extends Component {
             score={this.state.score}
             ref={scoreWindow => (this.scoreWindow = scoreWindow)}
           />
+        </TabPane>
+        <TabPane tab="Try Out" key="2">
+          <Row gutter={10} style={{ marginBottom: 10 }}>
+            <Col span={16}>
+              <span>
+                <Button
+                  shape="circle"
+                  icon="retweet"
+                  onClick={this.fetchScores}
+                />
+                <Button
+                  type="primary"
+                  shape="circle"
+                  icon="plus"
+                  onClick={() => this.openEditWindow({
+                    KompreType: {
+                      id: 4,
+                    },
+                  })}
+                  style={{ marginLeft: 10 }}
+                />
+              </span>
+            </Col>
+          </Row>
+          <Table
+            dataSource={this.state.scores.filter(score =>
+              String(score.KompreType.code) === 'K004')}
+            style={{ marginTop: 5 }}
+            rowKey="id"
+            loading={this.state.loading}
+            size="small"
+          >
+            <Column
+              title="Selected"
+              dataIndex="selected"
+              render={(text, record) => (
+                <span>
+                  <Checkbox checked={record.selected} />
+                </span>
+              )}
+            />
+            <Column
+              title="Score"
+              dataIndex="score"
+            />
+            <Column
+              title="Type"
+              dataIndex="KompreType.name"
+            />
+            <Column
+              title="Date"
+              dataIndex="kompreDate"
+              key="kompreDate"
+              render={text => (
+                <span>
+                  {moment(text).format('DD/MM/YYYY')}
+                </span>
+              )}
+            />
+            <Column
+              title="Action"
+              key="action"
+              render={(text, record) => (
+                <span>
+                  <Button
+                    icon="ellipsis"
+                    size="small"
+                    onClick={() => this.openEditWindow(record)}
+                    style={{ marginRight: 5 }}
+                  />
+                  <Popconfirm
+                    title={'Are you sure delete score?'}
+                    onConfirm={() => this.deleteScore(record)}
+                    okText="Yes" cancelText="No"
+                  >
+                    <Button
+                      type="danger"
+                      icon="delete"
+                      size="small"
+                    />
+                  </Popconfirm>
+                </span>
+              )}
+            />
+          </Table>
         </TabPane>
       </Tabs>
     );
