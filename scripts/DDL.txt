@@ -2,3 +2,10 @@ ALTER TABLE public."Students" ADD "midKomprePass" bool NULL DEFAULT false;
 
 ALTER TABLE public."YudisiumChecklists" ADD "yudisiumDate" date NULL;
 ALTER TABLE public."YudisiumChecklists" ADD completed bool NULL;
+
+# 29/07/2018
+ALTER TABLE public."YudisiumChecklists" ADD "checklist1B" bool NULL;
+ALTER TABLE public."YudisiumChecklists" ADD "checklist2B" bool NULL;
+ALTER TABLE public."YudisiumChecklists" ADD "checklist3B" bool NULL;
+ALTER TABLE public."YudisiumChecklists" ADD "yudisiumDateB" date NULL;
+ALTER TABLE public."YudisiumChecklists" ADD "completedB" bool NULL;

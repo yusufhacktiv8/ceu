@@ -178,19 +178,27 @@ class AssistancePage extends Component {
           <Spin indicator={antIcon} spinning={loadingYudisium}>
             <Form layout="vertical">
               <FormItem label="">
-                {getFieldDecorator('checklist1', {
-                  initialValue: yudisium.checklist1,
+                {getFieldDecorator('checklist1B', {
+                  initialValue: yudisium.checklist1B,
                   valuePropName: 'checked',
                 })(
-                  <Checkbox>Rapor</Checkbox>,
+                  <Checkbox>Bebas Pustaka</Checkbox>,
                 )}
               </FormItem>
               <FormItem label="">
-                {getFieldDecorator('checklist2', {
-                  initialValue: yudisium.checklist2,
+                {getFieldDecorator('checklist2B', {
+                  initialValue: yudisium.checklist2B,
                   valuePropName: 'checked',
                 })(
-                  <Checkbox>Tanda Tangan Ketua CEU</Checkbox>,
+                  <Checkbox>Buku Kontrol</Checkbox>,
+                )}
+              </FormItem>
+              <FormItem label="">
+                {getFieldDecorator('checklist3B', {
+                  initialValue: yudisium.checklist3B,
+                  valuePropName: 'checked',
+                })(
+                  <Checkbox>Rapor</Checkbox>,
                 )}
               </FormItem>
             </Form>
