@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     checklist1B: DataTypes.BOOLEAN,
     checklist2B: DataTypes.BOOLEAN,
     checklist3B: DataTypes.BOOLEAN,
+    checklist4B: DataTypes.BOOLEAN,
     yudisiumDateB: DataTypes.DATEONLY,
     completedB: DataTypes.BOOLEAN,
   }, {

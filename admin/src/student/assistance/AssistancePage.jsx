@@ -257,8 +257,8 @@ class AssistancePage extends Component {
         <TabPane tab="Stase kompre" key="4">
           <Spin indicator={antIcon} spinning={loadingYudisium}>
             <FormItem label="">
-              {getFieldDecorator('checklist3', {
-                initialValue: yudisium.checklist3,
+              {getFieldDecorator('checklist4B', {
+                initialValue: yudisium.checklist4B,
                 valuePropName: 'checked',
               })(
                 <Checkbox>Lulus Stase Kompre</Checkbox>,
