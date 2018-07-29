@@ -40,6 +40,11 @@ exports.findAll = function findAll(req, res) {
         $lte: endDate.toDate(),
       },
     },
+    include: [
+      {
+        model: models.Department,
+      },
+    ],
     limit,
     offset,
   })
@@ -99,6 +104,11 @@ exports.findOne = function findOne(req, res) {
 exports.create = function create(req, res) {
   const assistanceForm = req.body;
   assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
+
+  if (assistanceForm.department) {
+    assistanceForm.DepartmentId = parseInt(assistanceForm.department, 10);
+  }
+
   if (assistanceForm.mainTutor) {
     assistanceForm.mainTutorId = parseInt(assistanceForm.mainTutor, 10);
   }
@@ -123,6 +133,11 @@ exports.create = function create(req, res) {
 exports.update = function update(req, res) {
   const assistanceForm = req.body;
   assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
+
+  if (assistanceForm.department) {
+    assistanceForm.DepartmentId = parseInt(assistanceForm.department, 10);
+  }
+
   if (assistanceForm.mainTutor) {
     assistanceForm.mainTutorId = parseInt(assistanceForm.mainTutor, 10);
   } else {

@@ -319,22 +319,15 @@ class AssistancePage extends Component {
             </Table>
           </Spin>
         </TabPane>
-        <TabPane tab="Schedule" key="5">
+        <TabPane tab="Info" key="5">
           <Spin indicator={antIcon} spinning={loadingYudisium}>
             <Form layout="vertical">
-              <FormItem label="Yudisium Date">
-                {getFieldDecorator('yudisiumDate', {
-                  initialValue: yudisium.yudisiumDate ? moment(yudisium.yudisiumDate) : undefined,
-                })(
-                  <DatePicker />,
-                )}
-              </FormItem>
               <FormItem label="Completed">
-                {getFieldDecorator('completed', {
-                  initialValue: yudisium.completed,
+                {getFieldDecorator('assistanceCompleted', {
+                  initialValue: yudisium.assistanceCompleted,
                   valuePropName: 'checked',
                 })(
-                  <Checkbox>Yudisium Completed</Checkbox>,
+                  <Checkbox>Assistance Completed</Checkbox>,
                 )}
               </FormItem>
             </Form>

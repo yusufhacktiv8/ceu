@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Checkbox, DatePicker, TimePicker, Button, Row, Col, Tabs, message } from 'antd';
+import { Modal, Form, Input, InputNumber, Checkbox, DatePicker, TimePicker, Button, Row, Col, Tabs, message } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../utils/ShowError';
 import { dateFormat, timeFormat } from '../constant';
 import TutorSelect from '../settings/tutor/TutorSelect';
+import DepartmentSelect from '../settings/department/DepartmentSelect';
 
 const ASSISTANCES_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistances`;
 
@@ -56,6 +57,7 @@ class AssistanceWindow extends Component {
     const { getFieldDecorator } = form;
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         visible={visible}
         title="Assistance"
         okText="Save"
@@ -69,7 +71,7 @@ class AssistanceWindow extends Component {
         <Form layout="vertical">
           <Tabs
             defaultActiveKey="1"
-            style={{ marginTop: -15 }}
+            style={{ marginTop: -15, height: 470 }}
           >
             <TabPane tab="Main" key="1">
               <FormItem label="Code">
@@ -90,6 +92,30 @@ class AssistanceWindow extends Component {
                   ],
                 })(
                   <Input maxLength="50" />,
+                )}
+              </FormItem>
+              <Row>
+                <Col span={12}>
+                  <FormItem label="Department">
+                    {getFieldDecorator('department', {
+                      initialValue: assistance.Department ? String(assistance.Department.id) : undefined,
+                      rules: [
+                        { required: true, message: 'Please input department' },
+                      ],
+                    })(
+                      <DepartmentSelect level={-1} />,
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+              <FormItem label="Duration (Minutes)">
+                {getFieldDecorator('duration', {
+                  initialValue: assistance.duration,
+                  rules: [
+                    { required: true, message: 'Please input duration' },
+                  ],
+                })(
+                  <InputNumber min={1} max={600} />,
                 )}
               </FormItem>
               <Row>
@@ -119,7 +145,7 @@ class AssistanceWindow extends Component {
                 </Col>
               </Row>
             </TabPane>
-            <TabPane tab="Tutors" key="2">
+            <TabPane tab="Speaker" key="2">
               <Row>
                 <Col span={16}>
                   <FormItem label="Utama">
@@ -183,9 +209,11 @@ class AssistanceWindow extends Component {
                   </FormItem>
                 </Col>
               </Row>
+            </TabPane>
+            <TabPane tab="Moderator" key="3">
               <Row>
                 <Col span={16}>
-                  <FormItem label="Pendamping">
+                  <FormItem label="Moderator">
                     {getFieldDecorator('facilitator', {
                       initialValue: assistance.facilitatorId || undefined,
                     })(

@@ -5,6 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     eventDate: DataTypes.DATEONLY,
     eventTime: DataTypes.TIME,
+    duration: DataTypes.INTEGER,
     description: DataTypes.STRING,
     mainTutorPresent: DataTypes.BOOLEAN,
     secondTutorPresent: DataTypes.BOOLEAN,
@@ -20,6 +21,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Assistance.associate = function (models) {
     Assistance.hasMany(models.AssistanceParticipant);
+    Assistance.belongsTo(models.Department, { onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'mainTutor', onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'secondTutor', onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'thirdTutor', onDelete: 'restrict' });
