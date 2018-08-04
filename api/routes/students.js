@@ -16,6 +16,8 @@ router.delete('/:studentId/courses/:courseId', isAuthorizedAs('ADMIN'), StudentC
 router.get('/:studentId/scores', isAuthorizedAs('ADMIN'), StudentController.findScores);
 router.post('/:studentId/kompres', isAuthorizedAs('ADMIN'), StudentController.addKompre);
 router.get('/:studentId/kompres', isAuthorizedAs('ADMIN'), StudentController.findKompres);
+router.post('/:studentId/ukmppds', isAuthorizedAs('ADMIN'), StudentController.addUkmppd);
+router.get('/:studentId/ukmppds', isAuthorizedAs('ADMIN'), StudentController.findUkmppds);
 router.post('/:studentId/uploadfile/ijazah', isAuthorizedAs('ADMIN'), StudentController.ijazahUpload);
 router.put('/:studentId/uploadfile/ijazah', isAuthorizedAs('ADMIN'), StudentController.deleteIjazahFile);
 router.get('/:studentId/spps', isAuthorizedAsIn(['ADMIN']), StudentController.findSpps);

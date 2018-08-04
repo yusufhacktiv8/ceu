@@ -496,6 +496,30 @@ exports.findKompres = function(req, res) {
   });
 };
 
+exports.addUkmppd = function(req, res) {
+  const studentId = req.params.studentId;
+  const ukmppdForm = req.body;
+  ukmppdForm.StudentId = parseInt(studentId, 10);
+  models.Ukmppd.create(ukmppdForm)
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send('Error when doing operation.');
+  });
+};
+
+exports.findUkmppds = function(req, res) {
+  const studentId = req.params.studentId;
+  models.Ukmppd.findAll({
+    where: { StudentId: studentId },
+  })
+  .then((ukmppds) => {
+    res.json(ukmppds);
+  });
+};
+
 exports.ijazahUpload = function ijazahUpload(req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');

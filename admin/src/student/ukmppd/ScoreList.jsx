@@ -7,15 +7,15 @@ import ScoreWindow from './ScoreWindow';
 
 const Column = Table.Column;
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
-const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/ukmppds`;
+const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/ukmppds`;
 
 class ScoreList extends Component {
   state = {
     scores: [],
     score: {},
     loading: false,
-    activeKey: 'K001',
+    activeKey: 'CBT',
     scoreWindowVisible: false,
   }
   componentDidMount() {
@@ -114,17 +114,11 @@ class ScoreList extends Component {
               onClick={this.onTabsChange}
               style={{ marginBottom: 10, backgroundColor: '#FAFAFA' }}
             >
-              <Menu.Item key="K001">
-                Pre Kompre
+              <Menu.Item key="CBT">
+                CBT
               </Menu.Item>
-              <Menu.Item key="K002">
-                Mid Kompre
-              </Menu.Item>
-              <Menu.Item key="K003">
-                Final Kompre
-              </Menu.Item>
-              <Menu.Item key="K004">
-                Try Out
+              <Menu.Item key="OSCE">
+                OSCE
               </Menu.Item>
             </Menu>
           </Col>
@@ -152,12 +146,12 @@ class ScoreList extends Component {
           />
           <Column
             title="Type"
-            dataIndex="KompreType.name"
+            dataIndex="testType"
           />
           <Column
             title="Date"
-            dataIndex="kompreDate"
-            key="kompreDate"
+            dataIndex="testDate"
+            key="testDate"
             render={text => (
               <span>
                 {moment(text).format('DD/MM/YYYY')}
