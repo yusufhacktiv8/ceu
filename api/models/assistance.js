@@ -1,12 +1,13 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Assistance = sequelize.define('Assistance', {
-    code: DataTypes.STRING,
+    code: { type: DataTypes.STRING, unique: true },
     name: DataTypes.STRING,
     eventDate: DataTypes.DATEONLY,
     eventTime: DataTypes.TIME,
-    duration: DataTypes.INTEGER,
     description: DataTypes.STRING,
+    batch: DataTypes.INTEGER,
+    duration: DataTypes.INTEGER,
     mainTutorPresent: DataTypes.BOOLEAN,
     secondTutorPresent: DataTypes.BOOLEAN,
     thirdTutorPresent: DataTypes.BOOLEAN,
@@ -21,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Assistance.associate = function (models) {
     Assistance.hasMany(models.AssistanceParticipant);
-    Assistance.belongsTo(models.Department, { onDelete: 'restrict' });
+    Assistance.belongsTo(models.AssistanceTopic, { onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'mainTutor', onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'secondTutor', onDelete: 'restrict' });
     Assistance.belongsTo(models.Tutor, { as: 'thirdTutor', onDelete: 'restrict' });

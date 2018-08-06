@@ -199,6 +199,11 @@ class AssistanceList extends Component {
                 key="eventTime"
               />
               <Column
+                title="Batch"
+                dataIndex="batch"
+                key="batch"
+              />
+              <Column
                 title="Action"
                 key="action"
                 render={(text, record) => (
