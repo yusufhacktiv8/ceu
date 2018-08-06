@@ -3,12 +3,12 @@ import { Modal, Form, InputNumber, DatePicker, Checkbox, Button, message } from 
 import moment from 'moment';
 import axios from 'axios';
 import showError from '../../utils/ShowError';
-import KompreTypeSelect from './KompreTypeSelect';
+import UkmppdTypeSelect from './UkmppdTypeSelect';
 import { dateFormat } from '../../constant';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
-const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/ukmppds`;
+const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/ukmppds`;
 
 const FormItem = Form.Item;
 
@@ -27,7 +27,7 @@ class ScoreWindow extends Component {
         saving: true,
       }, () => {
         const scoreId = score.id;
-        values.kompreDate = values.kompreDate.format(dateFormat);
+        values.testDate = values.testDate.format(dateFormat);
         const axiosObj = scoreId ? axios.put(`${SCORES_URL}/${scoreId}`, values) : axios.post(getScoresUrl(studentId), values);
         axiosObj.then(() => {
           message.success('Saving score success');
@@ -76,18 +76,18 @@ class ScoreWindow extends Component {
             )}
           </FormItem>
           <FormItem label="Type">
-            {getFieldDecorator('kompreType', {
+            {getFieldDecorator('ukmppdType', {
               initialValue: score.KompreType ? score.KompreType.id : undefined,
               rules: [
                 { required: true, message: 'Please input type' },
               ],
             })(
-              <KompreTypeSelect />,
+              <UkmppdTypeSelect />,
             )}
           </FormItem>
           <FormItem label="Date">
-            {getFieldDecorator('kompreDate', {
-              initialValue: score.kompreDate ? moment(score.kompreDate) : undefined,
+            {getFieldDecorator('testDate', {
+              initialValue: score.testDate ? moment(score.testDate) : undefined,
               rules: [
                 { required: true, message: 'Please input date' },
               ],
