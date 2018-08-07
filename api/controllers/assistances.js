@@ -42,7 +42,10 @@ exports.findAll = function findAll(req, res) {
     },
     include: [
       {
-        model: models.Department,
+        model: models.AssistanceTopic,
+        include: [
+          { model: models.Department },
+        ],
       },
     ],
     limit,
@@ -105,8 +108,8 @@ exports.create = function create(req, res) {
   const assistanceForm = req.body;
   assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
 
-  if (assistanceForm.department) {
-    assistanceForm.DepartmentId = parseInt(assistanceForm.department, 10);
+  if (assistanceForm.assistanceTopic) {
+    assistanceForm.AssistanceTopicId = parseInt(assistanceForm.assistanceTopic, 10);
   }
 
   if (assistanceForm.mainTutor) {
@@ -134,8 +137,8 @@ exports.update = function update(req, res) {
   const assistanceForm = req.body;
   assistanceForm.eventTime = moment(assistanceForm.eventTime, moment.HTML5_FMT.TIME_SECONDS).toDate();
 
-  if (assistanceForm.department) {
-    assistanceForm.DepartmentId = parseInt(assistanceForm.department, 10);
+  if (assistanceForm.assistanceTopic) {
+    assistanceForm.AssistanceTopicId = parseInt(assistanceForm.assistanceTopic, 10);
   }
 
   if (assistanceForm.mainTutor) {
