@@ -8,6 +8,7 @@ import StudentDetailsPage from '../student/StudentDetailsPage';
 import CourseDetailsPage from '../bakordik/CourseDetailsPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import TutorPage from '../settings/tutor/TutorPage';
+import AssistanceTopicPage from '../settings/assistance_topic/AssistanceTopicPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -53,9 +54,9 @@ class Workspace extends Component {
   render() {
     const location = this.props.location.pathname;
     let selectedKeys = 'dashboard';
-    if ((location.includes('assistances') || location.includes('participants')) && !location.includes('assistancetypes')) {
+    if ((location.includes('assistances') || location.includes('participants')) && !location.includes('assistancetopics')) {
       selectedKeys = ['assistances'];
-    } else if (location.includes('assistancetypes')) {
+    } else if (location.includes('assistancetopics')) {
       selectedKeys = ['assistanceTypes'];
     } else if (location.includes('tutors')) {
       selectedKeys = ['tutors'];
@@ -104,6 +105,9 @@ class Workspace extends Component {
                 </Menu.Item>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Application">
+                    <Menu.Item key="assistanceTopics">
+                      <Link to="/assistancetopics">Assistance Topics</Link>
+                    </Menu.Item>
                     <Menu.Item key="tutors">
                       <Link to="/tutors">Tutors</Link>
                     </Menu.Item>
@@ -120,6 +124,7 @@ class Workspace extends Component {
             <Route exact path="/assistances/:assistanceId/participants" component={ParticipantPage} />
             <Route exact path="/students/:studentId" component={StudentDetailsPage} />
             <Route path="/students/:studentId/courses/:courseId" component={CourseDetailsPage} />
+            <Route exact path="/assistancetopics" component={AssistanceTopicPage} />
             <Route exact path="/tutors" component={TutorPage} />
           </div>
         </Content>
