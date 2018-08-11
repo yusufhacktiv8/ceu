@@ -139,9 +139,10 @@ class AssistancePage extends Component {
     });
     axios.get(`${ASSISTANCE_ATTENDANCE_URL}/${studentId}`, { params: {} })
       .then((response) => {
-        const { attendances } = response.data;
+        const { assistances, attendances } = response.data;
         this.setState({
           attendances,
+          assistances,
           loadingAssistanceAttendance: false,
         });
       })
@@ -205,6 +206,8 @@ class AssistancePage extends Component {
         Save
       </Button>,
     ];
+
+    const attendancePercentage = attendances.length > 0 ? (assistances.length / attendances.length) * 100 : 0;
 
     return (
       <Tabs
@@ -367,42 +370,8 @@ class AssistancePage extends Component {
               size="middle"
             >
               <Column
-                title="Title"
-                dataIndex="course.title"
-              />
-              <Column
-                title="Department"
-                dataIndex="course.Department.name"
-              />
-              <Column
-                title="Total"
-                key="total"
-                render={(text, record) => (
-                  record.portofolios.length
-                )}
-              />
-              <Column
-                title="Competed"
-                key="completed"
-                render={(text, record) => (
-                  record.portofolios.length > 0 ?
-                    record.portofolios.filter(portofolio => (portofolio.completed)).length :
-                    '-'
-                )}
-              />
-              <Column
-                title="Completion"
-                key="completions"
-                render={(text, record) => {
-                  if (record.portofolios.length > 0) {
-                    const percentage =
-                    (record.portofolios.filter(portofolio => (portofolio.completed)).length
-                    / record.portofolios.length) * 100;
-                    return `${numeral(percentage).format('0,0')}%`;
-                  }
-
-                  return '-';
-                }}
+                title="Code"
+                dataIndex="code"
               />
             </Table>
           </div>
@@ -410,7 +379,7 @@ class AssistancePage extends Component {
         <TabPane tab="Attendance" key="6">
           <Spin indicator={antIcon} spinning={loadingAssistanceAttendance}>
             <div style={{ fontSize: 24, fontWeigth: 'bold' }}>
-              { attendances.length > 0 ? `${(assistances.length / attendances.length)} %` : '0 %'}
+              {`${numeral(attendancePercentage).format('0,0.00')}%`}
             </div>
             <FormItem label="">
               {getFieldDecorator('assistanceCompleted', {
