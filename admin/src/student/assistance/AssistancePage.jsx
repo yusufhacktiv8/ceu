@@ -11,6 +11,7 @@ const { TabPane } = Tabs;
 const { Column } = Table;
 
 const YUDISIUM_CHECKLISTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/yudisiumchecklists`;
+const ASSISTANCE_ATTENDANCE_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistanceattendance`;
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
 const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
@@ -18,18 +19,23 @@ const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
 class AssistancePage extends Component {
   state = {
     yudisium: {},
+    assistanceAttendance: {},
     portofolioCompletions: [],
     loading: false,
     loadingYudisium: false,
+    loadingAssistanceAttendance: false,
     saving: false,
     scores: [],
     score: {},
+    assistances: [],
+    attendances: [],
   }
 
   componentDidMount() {
     this.fetchYudisium();
     this.fetchPortofolioCompletions();
     this.fetchScores();
+    this.fetchAssistanceAttendance();
   }
 
   onSubmit = () => {
@@ -126,6 +132,29 @@ class AssistancePage extends Component {
       });
   }
 
+  fetchAssistanceAttendance() {
+    const { studentId } = this.props;
+    this.setState({
+      loadingAssistanceAttendance: true,
+    });
+    axios.get(`${ASSISTANCE_ATTENDANCE_URL}/${studentId}`, { params: {} })
+      .then((response) => {
+        const { attendances } = response.data;
+        this.setState({
+          attendances,
+          loadingAssistanceAttendance: false,
+        });
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loadingAssistanceAttendance: false,
+        });
+      });
+  }
+
   deleteScore(score) {
     const hide = message.loading('Action in progress..', 0);
     axios.delete(`${SCORES_URL}/${score.id}`)
@@ -158,7 +187,16 @@ class AssistancePage extends Component {
 
   render() {
     const { form, studentId } = this.props;
-    const { yudisium, portofolioCompletions, loadingYudisium, loading, saving } = this.state;
+    const {
+      yudisium,
+      portofolioCompletions,
+      loadingYudisium,
+      loading,
+      saving,
+      assistances,
+      attendances,
+      loadingAssistanceAttendance,
+    } = this.state;
     const { getFieldDecorator } = form;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -239,7 +277,7 @@ class AssistancePage extends Component {
               />
               <Column
                 title="Completion"
-                key="cmpletions"
+                key="completions"
                 render={(text, record) => {
                   if (record.portofolios.length > 0) {
                     const percentage =
@@ -304,7 +342,7 @@ class AssistancePage extends Component {
               />
               <Column
                 title="Completion"
-                key="cmpletions"
+                key="completions"
                 render={(text, record) => {
                   if (record.portofolios.length > 0) {
                     const percentage =
@@ -319,18 +357,115 @@ class AssistancePage extends Component {
             </Table>
           </Spin>
         </TabPane>
-        <TabPane tab="Info" key="5">
-          <Spin indicator={antIcon} spinning={loadingYudisium}>
-            <Form layout="vertical">
-              <FormItem label="Completed">
-                {getFieldDecorator('assistanceCompleted', {
-                  initialValue: yudisium.assistanceCompleted,
-                  valuePropName: 'checked',
-                })(
-                  <Checkbox>Assistance Completed</Checkbox>,
+        <TabPane tab="Assistances" key="5">
+          <div style={{ marginTop: -15, height: 400 }}>
+            <Table
+              dataSource={assistances}
+              style={{ marginTop: 0 }}
+              rowKey="id"
+              loading={loading}
+              size="middle"
+            >
+              <Column
+                title="Title"
+                dataIndex="course.title"
+              />
+              <Column
+                title="Department"
+                dataIndex="course.Department.name"
+              />
+              <Column
+                title="Total"
+                key="total"
+                render={(text, record) => (
+                  record.portofolios.length
                 )}
-              </FormItem>
-            </Form>
+              />
+              <Column
+                title="Competed"
+                key="completed"
+                render={(text, record) => (
+                  record.portofolios.length > 0 ?
+                    record.portofolios.filter(portofolio => (portofolio.completed)).length :
+                    '-'
+                )}
+              />
+              <Column
+                title="Completion"
+                key="completions"
+                render={(text, record) => {
+                  if (record.portofolios.length > 0) {
+                    const percentage =
+                    (record.portofolios.filter(portofolio => (portofolio.completed)).length
+                    / record.portofolios.length) * 100;
+                    return `${numeral(percentage).format('0,0')}%`;
+                  }
+
+                  return '-';
+                }}
+              />
+            </Table>
+          </div>
+        </TabPane>
+        <TabPane tab="Attendance" key="6">
+          <Spin indicator={antIcon} spinning={loadingAssistanceAttendance}>
+            <div>
+              {assistances.length / attendances.length}
+            </div>
+            <FormItem label="">
+              {getFieldDecorator('assistanceCompleted', {
+                initialValue: yudisium.assistanceCompleted,
+                valuePropName: 'checked',
+              })(
+                <Checkbox>Assistance Completed</Checkbox>,
+              )}
+            </FormItem>
+            <Table
+              dataSource={attendances}
+              style={{ marginTop: 0 }}
+              rowKey="id"
+              loading={loading}
+              size="middle"
+            >
+              <Column
+                title="Title"
+                dataIndex="course.title"
+              />
+              <Column
+                title="Department"
+                dataIndex="course.Department.name"
+              />
+              <Column
+                title="Total"
+                key="total"
+                render={(text, record) => (
+                  record.portofolios.length
+                )}
+              />
+              <Column
+                title="Competed"
+                key="completed"
+                render={(text, record) => (
+                  record.portofolios.length > 0 ?
+                    record.portofolios.filter(portofolio => (portofolio.completed)).length :
+                    '-'
+                )}
+              />
+              <Column
+                title="Completion"
+                key="completions"
+                render={(text, record) => {
+                  if (record.portofolios.length > 0) {
+                    const percentage =
+                    (record.portofolios.filter(portofolio => (portofolio.completed)).length
+                    / record.portofolios.length) * 100;
+                    return `${numeral(percentage).format('0,0')}%`;
+                  }
+
+                  return '-';
+                }}
+              />
+            </Table>
           </Spin>
         </TabPane>
       </Tabs>

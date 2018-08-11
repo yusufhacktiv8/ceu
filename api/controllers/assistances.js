@@ -307,3 +307,18 @@ exports.fileUpload = (req, res) => {
         });
   });
 };
+
+exports.attendance = function findOne(req, res) {
+  models.AssistanceParticipant.findOne({
+    where: { StudentId: req.params.studentId },
+    include: [],
+  })
+  .then((assistanceParticipants) => {
+    res.json({
+      attendances: assistanceParticipants,
+    });
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
