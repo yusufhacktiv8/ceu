@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     checklist4B: DataTypes.BOOLEAN,
     yudisiumDateB: DataTypes.DATEONLY,
     completedB: DataTypes.BOOLEAN,
+    assistanceCompleted: DataTypes.BOOLEAN,
   }, {
     classMethods: {
       associate: function(models) {

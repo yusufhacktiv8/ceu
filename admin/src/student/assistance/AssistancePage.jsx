@@ -373,6 +373,16 @@ class AssistancePage extends Component {
                 title="Code"
                 dataIndex="code"
               />
+              <Column
+                title="Date"
+                dataIndex="eventDate"
+                key="eventDate"
+                render={(text, record) => (
+                  <span>
+                    {moment(text).format('DD/MM/YYYY')}
+                  </span>
+                )}
+              />
             </Table>
           </div>
         </TabPane>
@@ -400,7 +410,15 @@ class AssistancePage extends Component {
                 title="Code"
                 dataIndex="Assistance.code"
               />
-
+              <Column
+                title="Date"
+                dataIndex="Assistance.eventDate"
+                render={(text, record) => (
+                  <span>
+                    {moment(text).format('DD/MM/YYYY')}
+                  </span>
+                )}
+              />
             </Table>
           </Spin>
         </TabPane>
