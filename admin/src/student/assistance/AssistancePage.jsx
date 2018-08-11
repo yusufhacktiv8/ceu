@@ -409,8 +409,8 @@ class AssistancePage extends Component {
         </TabPane>
         <TabPane tab="Attendance" key="6">
           <Spin indicator={antIcon} spinning={loadingAssistanceAttendance}>
-            <div>
-              {assistances.length / attendances.length}
+            <div style={{ fontSize: 24, fontWeigth: 'bold' }}>
+              { attendances.length > 0 ? `${(assistances.length / attendances.length)} %` : '0 %'}
             </div>
             <FormItem label="">
               {getFieldDecorator('assistanceCompleted', {
@@ -428,43 +428,10 @@ class AssistancePage extends Component {
               size="middle"
             >
               <Column
-                title="Title"
-                dataIndex="course.title"
+                title="Code"
+                dataIndex="Assistance.code"
               />
-              <Column
-                title="Department"
-                dataIndex="course.Department.name"
-              />
-              <Column
-                title="Total"
-                key="total"
-                render={(text, record) => (
-                  record.portofolios.length
-                )}
-              />
-              <Column
-                title="Competed"
-                key="completed"
-                render={(text, record) => (
-                  record.portofolios.length > 0 ?
-                    record.portofolios.filter(portofolio => (portofolio.completed)).length :
-                    '-'
-                )}
-              />
-              <Column
-                title="Completion"
-                key="completions"
-                render={(text, record) => {
-                  if (record.portofolios.length > 0) {
-                    const percentage =
-                    (record.portofolios.filter(portofolio => (portofolio.completed)).length
-                    / record.portofolios.length) * 100;
-                    return `${numeral(percentage).format('0,0')}%`;
-                  }
 
-                  return '-';
-                }}
-              />
             </Table>
           </Spin>
         </TabPane>

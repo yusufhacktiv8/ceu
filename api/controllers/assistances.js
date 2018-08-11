@@ -2,6 +2,7 @@ const Excel = require('exceljs');
 const models = require('../models');
 const moment = require('moment');
 const Readable = require('stream').Readable;
+const sequelize = require('sequelize');
 const Constant = require('../Constant');
 
 const sendError = (err, res) => {
@@ -308,14 +309,28 @@ exports.fileUpload = (req, res) => {
   });
 };
 
-exports.attendance = function findOne(req, res) {
-  models.AssistanceParticipant.findOne({
+exports.attendance = function findAll(req, res) {
+
+  let batch = 0;
+  let year = 0;
+  models.AssistanceParticipant.findAll({
     where: { StudentId: req.params.studentId },
-    include: [],
+    include: [
+      { model: models.Assistance },
+    ],
   })
   .then((assistanceParticipants) => {
-    res.json({
-      attendances: assistanceParticipants,
+    if (assistanceParticipants && assistanceParticipants.length > 0) {
+      batch = assistanceParticipants[0].batch;
+    }
+    models.Assistance.findAll({
+      where: sequelize.where(sequelize.literal('EXTRACT(YEAR FROM "eventDate")', 2018)),
+    })
+    .then((assistances) => {
+      res.json({
+        attendances: assistanceParticipants,
+        assistances,
+      });
     });
   })
   .catch((err) => {
