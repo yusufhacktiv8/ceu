@@ -321,10 +321,16 @@ exports.attendance = function findAll(req, res) {
   })
   .then((assistanceParticipants) => {
     if (assistanceParticipants && assistanceParticipants.length > 0) {
-      batch = assistanceParticipants[0].batch;
+      batch = assistanceParticipants[0].Assistance.batch;
+      year = moment(assistanceParticipants[0].Assistance.eventDate).year();
     }
     models.Assistance.findAll({
-      where: sequelize.where(sequelize.literal('EXTRACT(YEAR FROM "eventDate")'), 2018),
+      where: {
+        $and: [
+          sequelize.where(sequelize.literal('EXTRACT(YEAR FROM "eventDate")'), year),
+          batch,
+        ],
+      },
     })
     .then((assistances) => {
       res.json({
