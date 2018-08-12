@@ -207,7 +207,7 @@ class AssistancePage extends Component {
       </Button>,
     ];
 
-    const attendancePercentage = attendances.length > 0 ? (assistances.length / attendances.length) * 100 : 0;
+    const attendancePercentage = assistances.length > 0 ? (attendances.length / assistances.length) * 100 : 0;
 
     return (
       <Tabs
