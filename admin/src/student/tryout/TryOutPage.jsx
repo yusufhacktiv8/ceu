@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Form, DatePicker, Checkbox, Button, Tabs, Table, Spin, Icon, Row, Col, Popconfirm, message } from 'antd';
+import { Form, Checkbox, Button, Tabs, Table, Row, Col, Popconfirm, message } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
-import numeral from 'numeral';
 import showError from '../../utils/ShowError';
 import ScoreWindow from '../yudisium/ScoreWindow';
 
-const FormItem = Form.Item;
 const { TabPane } = Tabs;
 const { Column } = Table;
 
-const YUDISIUM_CHECKLISTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/yudisiumchecklists`;
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
 const getScoresUrl = studentId => `${STUDENTS_URL}/${studentId}/kompres`;
@@ -27,81 +24,12 @@ class TryOutPage extends Component {
   }
 
   componentDidMount() {
-    this.fetchYudisium();
-    this.fetchPortofolioCompletions();
     this.fetchScores();
-  }
-
-  onSubmit = () => {
-    const { form } = this.props;
-    const { yudisium } = this.state;
-    form.validateFields((err, values) => {
-      if (!err) {
-        this.setState({ saving: true });
-        const axiosObj = axios.put(`${YUDISIUM_CHECKLISTS_URL}/${yudisium.id}`, values);
-        axiosObj.then(() => {
-          message.success('Saving yudisium success');
-          this.setState({
-            saving: false,
-          });
-        })
-          .catch((error) => {
-            this.setState({
-              saving: false,
-            });
-            showError(error);
-          });
-      }
-    });
   }
 
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchScores();
-  }
-
-  fetchYudisium() {
-    const { studentId } = this.props;
-    this.setState({
-      loadingYudisium: true,
-    });
-    axios.get(`${YUDISIUM_CHECKLISTS_URL}/findbystudent/${studentId}`, { params: {} })
-      .then((response) => {
-        this.setState({
-          yudisium: response.data,
-          loadingYudisium: false,
-        });
-      })
-      .catch((error) => {
-        showError(error);
-      })
-      .finally(() => {
-        this.setState({
-          loadingYudisium: false,
-        });
-      });
-  }
-
-  fetchPortofolioCompletions() {
-    const { studentId } = this.props;
-    this.setState({
-      loading: true,
-    });
-    axios.get(`${YUDISIUM_CHECKLISTS_URL}/portofolios/${studentId}`, { params: {} })
-      .then((response) => {
-        this.setState({
-          portofolioCompletions: response.data,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        showError(error);
-      })
-      .finally(() => {
-        this.setState({
-          loading: false,
-        });
-      });
   }
 
   fetchScores = () => {
@@ -157,22 +85,12 @@ class TryOutPage extends Component {
   }
 
   render() {
-    const { form, studentId } = this.props;
-    const { yudisium, portofolioCompletions, loadingYudisium, loading, saving } = this.state;
-    const { getFieldDecorator } = form;
-    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
-    const buttons = [
-      <Button loading={saving} style={{ marginLeft: 8 }} key="save" type="primary" size="small" onClick={this.onSubmit}>
-        Save
-      </Button>,
-    ];
+    const { studentId } = this.props;
 
     return (
       <Tabs
         defaultActiveKey="1"
         style={{ marginTop: -10, height: 300, overflow: 'scroll' }}
-        tabBarExtraContent={buttons}
       >
         <TabPane tab="Final kompre" key="1">
           <Row gutter={10} style={{ marginBottom: 10 }}>
