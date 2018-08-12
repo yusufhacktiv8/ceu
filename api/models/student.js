@@ -22,6 +22,8 @@ module.exports = function(sequelize, DataTypes) {
     sppFileId: DataTypes.STRING,
     ijazah: DataTypes.BOOLEAN,
     ijazahFileId: DataTypes.STRING,
+    ijazahAkhir: DataTypes.BOOLEAN,
+    ijazahAkhirFileId: DataTypes.STRING,
     fatherName: DataTypes.STRING,
     motherName: DataTypes.STRING,
     parentAddress: DataTypes.STRING,

@@ -585,3 +585,69 @@ exports.deleteIjazahFile = function deleteIjazahFile(req, res) {
     }
   });
 };
+
+exports.ijazahAkhirUpload = function ijazahAkhirUpload(req, res) {
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
+  const ijazahAkhirFile = req.files.ijazahAkhirFile;
+  const studentId = req.params.studentId;
+
+  const base64data = new Buffer(ijazahAkhirFile.data, 'binary');
+  const s3 = new AWS.S3();
+
+  models.Student.findOne({
+    where: { id: studentId },
+  })
+  .then((student) => {
+    const fileId = student.ijazahAkhirFileId ? student.ijazahAkhirFileId : shortid.generate();
+    const fileKey = `students/${studentId}/ijazahakhir/${fileId}.jpg`;
+    s3.putObject({
+      Bucket: 'ceufkumifiles',
+      Key: fileKey,
+      Body: base64data,
+      ACL: 'public-read',
+    }, () => {
+      console.log('Successfully uploaded ijazah akhir.');
+      student.ijazahAkhirFileId = fileId;
+      student.save()
+      .then(() => {
+        res.send(fileId);
+      });
+    });
+  });
+};
+
+exports.deleteIjazahAkhirFile = function deleteIjazahAkhirFile(req, res) {
+  const studentId = req.params.studentId;
+
+  const s3 = new AWS.S3();
+
+  models.Student.findOne({
+    where: { id: studentId },
+  })
+  .then((student) => {
+    if (student.ijazahAkhirFileId) {
+      const fileKey = `students/${studentId}/ijazahakhir/${student.ijazahAkhirFileId}.jpg`;
+      s3.deleteObject({
+        Bucket: BUCKET_NAME,
+        Key: fileKey,
+      }, (err) => {
+        if (!err) {
+          console.log('Successfully delete ijazah akhir.');
+          student.ijazahAkhirFileId = null;
+          student.save()
+          .then(() => {
+            res.send(student.ijazahAkhirFileId);
+          });
+        } else {
+          sendError(err, res);
+        }
+      });
+    } else {
+      sendError(new Error('No file found'), res);
+    }
+  });
+};

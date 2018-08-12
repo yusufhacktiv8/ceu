@@ -20,6 +20,8 @@ router.post('/:studentId/ukmppds', isAuthorizedAs('ADMIN'), StudentController.ad
 router.get('/:studentId/ukmppds', isAuthorizedAs('ADMIN'), StudentController.findUkmppds);
 router.post('/:studentId/uploadfile/ijazah', isAuthorizedAs('ADMIN'), StudentController.ijazahUpload);
 router.put('/:studentId/uploadfile/ijazah', isAuthorizedAs('ADMIN'), StudentController.deleteIjazahFile);
+router.post('/:studentId/uploadfile/ijazahakhir', isAuthorizedAs('ADMIN'), StudentController.ijazahAkhirUpload);
+router.put('/:studentId/uploadfile/ijazahakhir', isAuthorizedAs('ADMIN'), StudentController.deleteIjazahAkhirFile);
 router.get('/:studentId/spps', isAuthorizedAsIn(['ADMIN']), StudentController.findSpps);
 router.post('/:studentId/spps', isAuthorizedAsIn(['ADMIN']), StudentController.addSpp);
 router.get('/:studentId/krss', isAuthorizedAsIn(['ADMIN']), StudentController.findKrss);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Checkbox, Upload, Button, Icon, Row, Col, Spin, Tabs, Popconfirm, notification, message } from 'antd';
+import { Form, Upload, Button, Icon, Row, Col, Spin, Tabs, Popconfirm, notification, message } from 'antd';
 import showError from '../../utils/ShowError';
 
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
@@ -14,7 +14,7 @@ class GraduatePage extends Component {
     saving: false,
   }
   componentWillMount() {
-    this.setUploadProps(this.props.student);
+    this.setUploadProps(this.props.studentId);
   }
 
   onSubmit = () => {
@@ -42,7 +42,7 @@ class GraduatePage extends Component {
     });
   }
 
-  setUploadProps = (student) => {
+  setUploadProps = (studentId) => {
     const { onStudentUpdate } = this.props;
     const token = window.sessionStorage.getItem('token');
     const uploadProps = {
@@ -52,7 +52,7 @@ class GraduatePage extends Component {
         authorization: `Bearer ${token}`,
       },
     };
-    uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/ijazahakhir`;
+    uploadProps.action = `${STUDENTS_URL}/${studentId}/uploadfile/ijazahakhir`;
     uploadProps.onChange = (info) => {
       if (info.file.status !== 'uploading') {
         // console.log(info.file, info.fileList);
@@ -92,15 +92,12 @@ class GraduatePage extends Component {
   }
 
   render() {
-    const { saving } = this.state;
-    const { student, form, loading } = this.props;
-    const { getFieldDecorator } = form;
+    const { student, loading } = this.props;
 
-    const studentId = student.id;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     let ijazahFileIdComponent = 'No File';
-    if (student.ijazahFileId) {
+    if (student.ijazahAkhirFileId) {
       ijazahFileIdComponent = (
         <div>
           <span style={{ marginRight: 5 }}>
@@ -118,8 +115,8 @@ class GraduatePage extends Component {
             </Popconfirm>
           </span>
           <span>
-            <a target="_blank" href={`${FILES_URL}/students/${student.id}/ijazah/${student.ijazahFileId}.jpg`}>
-              {student.ijazahFileId}
+            <a target="_blank" href={`${FILES_URL}/students/${student.id}/ijazahakhir/${student.ijazahAkhirFileId}.jpg`}>
+              {student.ijazahAkhirFileId}
             </a>
           </span>
         </div>

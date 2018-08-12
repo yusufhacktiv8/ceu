@@ -11,3 +11,5 @@ ALTER TABLE public."YudisiumChecklists" ADD "checklist4B" bool NULL;
 ALTER TABLE public."YudisiumChecklists" ADD "yudisiumDateB" date NULL;
 ALTER TABLE public."YudisiumChecklists" ADD "completedB" bool NULL;
 ALTER TABLE public."YudisiumChecklists" ADD "assistanceCompleted" bool NULL;
+ALTER TABLE public."Students" ADD "ijazahAkhir" bool NULL;
+ALTER TABLE public."Students" ADD "ijazahAkhirFileId" varchar(255) NULL;
