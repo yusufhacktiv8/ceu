@@ -10,16 +10,7 @@ class UkmppdTypeSelect extends Component {
     const value = this.props.value;
     this.state = {
       value,
-      ukmppdTypes: [
-        {
-          id: 'CBT',
-          name: 'CBT',
-        },
-        {
-          id: 'OSCE',
-          name: 'OSCE',
-        },
-      ],
+      ukmppdTypes: ['CBT', 'OSCE'],
     };
   }
 
@@ -52,7 +43,7 @@ class UkmppdTypeSelect extends Component {
         value={this.state.value}
       >
         {this.state.ukmppdTypes.map(ukmppdType => (
-          <Option key={ukmppdType.id} value={ukmppdType.id}>{ukmppdType.name}</Option>
+          <Option key={ukmppdType} value={ukmppdType}>{ukmppdType}</Option>
         ))}
       </Select>
     );

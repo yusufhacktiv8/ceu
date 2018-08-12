@@ -76,8 +76,8 @@ class ScoreWindow extends Component {
             )}
           </FormItem>
           <FormItem label="Type">
-            {getFieldDecorator('ukmppdType', {
-              initialValue: score.KompreType ? score.KompreType.id : undefined,
+            {getFieldDecorator('testType', {
+              initialValue: score.testType,
               rules: [
                 { required: true, message: 'Please input type' },
               ],
