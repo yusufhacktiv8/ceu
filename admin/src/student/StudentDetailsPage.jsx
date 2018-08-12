@@ -20,7 +20,7 @@ const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 8,
+    current: 2,
     student: {},
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
@@ -186,11 +186,6 @@ export default class StudentDetailsPage extends Component {
               this.state.current < stepsCount - 1
               &&
               <Button onClick={() => this.next()}>Next <Icon type="right" /></Button>
-            }
-            {
-              this.state.current === stepsCount - 1
-              &&
-              <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
             }
           </div>
         </Content>
