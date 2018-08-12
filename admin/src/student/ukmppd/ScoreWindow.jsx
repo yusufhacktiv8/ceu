@@ -55,7 +55,7 @@ class ScoreWindow extends Component {
       <Modal
         wrapClassName="vertical-center-modal"
         visible={visible}
-        title="Kompre Score"
+        title="UKMPPD Score"
         okText="Save"
         footer={[
           <Button key="cancel" onClick={onCancel}>Cancel</Button>,
