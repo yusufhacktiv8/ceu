@@ -96,16 +96,16 @@ export default class StudentDetailsPage extends Component {
               )
           }
 
-          <Steps current={current}>
+          <Steps current={current} size="small">
             <Step title="Registration" />
             <Step title="Level 1" />
             <Step title="Yudisium 1" />
             <Step title="Level 2" />
             <Step title="Assistance" />
             <Step title="Try Out" />
-            <Step title="Yudisium Profesi" />
+            <Step title="Yudis Profesi" />
             <Step title="UKMPPD" />
-            <Step title="Yudisium Dokter" />
+            <Step title="Yudis Dokter" />
           </Steps>
           <div className="steps-content">
             {
