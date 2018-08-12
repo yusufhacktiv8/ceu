@@ -105,7 +105,7 @@ export default class StudentDetailsPage extends Component {
             <Step title="Try Out" />
             <Step title="Yudisium Profesi" />
             <Step title="UKMPPD" />
-            <Step title="Graduate" />
+            <Step title="Yudisium Dokter" />
           </Steps>
           <div className="steps-content">
             {
