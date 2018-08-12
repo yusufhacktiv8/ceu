@@ -4,7 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import numeral from 'numeral';
 import showError from '../../utils/ShowError';
-import ScoreWindow from '../ukmppd/ScoreWindow';
+import ScoreWindow from './ScoreWindow';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
