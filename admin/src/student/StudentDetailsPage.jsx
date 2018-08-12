@@ -117,6 +117,7 @@ export default class StudentDetailsPage extends Component {
                     loading={loading}
                     student={student}
                     onStudentUpdate={this.onStudentUpdate}
+                    studentId={studentId}
                   />
                 </Col>
               </Row>

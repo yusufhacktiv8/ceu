@@ -16,7 +16,7 @@ class RegistrationForm extends Component {
     saving: false,
   }
   componentWillMount() {
-    this.setUploadProps(this.props.student);
+    this.setUploadProps(this.props.studentId);
   }
 
   onSubmit = () => {
@@ -44,7 +44,7 @@ class RegistrationForm extends Component {
     });
   }
 
-  setUploadProps = (student) => {
+  setUploadProps = (studentId) => {
     const { onStudentUpdate } = this.props;
     const token = window.sessionStorage.getItem('token');
     const uploadProps = {
@@ -54,7 +54,7 @@ class RegistrationForm extends Component {
         authorization: `Bearer ${token}`,
       },
     };
-    uploadProps.action = `${STUDENTS_URL}/${student.id}/uploadfile/ijazah`;
+    uploadProps.action = `${STUDENTS_URL}/${studentId}/uploadfile/ijazah`;
     uploadProps.onChange = (info) => {
       if (info.file.status !== 'uploading') {
         // console.log(info.file, info.fileList);
