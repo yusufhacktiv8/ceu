@@ -8,6 +8,7 @@ import Yudisium2Page from './yudisium/Yudisium2Page';
 import AssistancePage from './assistance/AssistancePage';
 import UkmppdPage from './ukmppd/UkmppdPage';
 import TryOutPage from './tryout/TryOutPage';
+import GraduatePage from './graduate/GraduatePage';
 import showError from '../utils/ShowError';
 
 const { Header, Content } = Layout;
@@ -19,7 +20,7 @@ const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 1,
+    current: 8,
     student: {},
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
@@ -161,6 +162,16 @@ export default class StudentDetailsPage extends Component {
               this.state.current === 7
               &&
               <UkmppdPage studentId={studentId} history={this.props.history} />
+            }
+
+            {
+              this.state.current === 8
+              &&
+              <GraduatePage
+                loading={loading}
+                student={student}
+                onStudentUpdate={this.onStudentUpdate}
+              />
             }
           </div>
           <div className="steps-action">
