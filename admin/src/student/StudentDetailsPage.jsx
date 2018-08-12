@@ -20,7 +20,7 @@ const spinIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 export default class StudentDetailsPage extends Component {
   state = {
-    current: 2,
+    current: 1,
     student: {},
     addCourseByLevelWindowVisible: false,
     addCourseByDepartmentWindowVisible: false,
