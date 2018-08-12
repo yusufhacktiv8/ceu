@@ -103,7 +103,7 @@ export default class StudentDetailsPage extends Component {
             <Step title="Level 2" />
             <Step title="Assistance" />
             <Step title="Try Out" />
-            <Step title="Yudisium 2" />
+            <Step title="Yudisium Profesi" />
             <Step title="UKMPPD" />
             <Step title="Graduate" />
           </Steps>
