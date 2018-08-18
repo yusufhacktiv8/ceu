@@ -13,3 +13,6 @@ ALTER TABLE public."YudisiumChecklists" ADD "completedB" bool NULL;
 ALTER TABLE public."YudisiumChecklists" ADD "assistanceCompleted" bool NULL;
 ALTER TABLE public."Students" ADD "ijazahAkhir" bool NULL;
 ALTER TABLE public."Students" ADD "ijazahAkhirFileId" varchar(255) NULL;
+
+# 18/08/2018
+ALTER TABLE public."Students" ADD "yudisium2Check" bool NULL;

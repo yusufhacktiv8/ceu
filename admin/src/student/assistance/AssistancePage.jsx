@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const { TabPane } = Tabs;
 const { Column } = Table;
 
-const YUDISIUM_CHECKLISTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/yudisiumchecklists`;
+const YUDISIUM2_CHECKLISTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/yudisium2checklists`;
 const ASSISTANCE_ATTENDANCE_URL = `${process.env.REACT_APP_SERVER_URL}/api/assistanceattendance`;
 const STUDENTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/students`;
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/kompres`;
@@ -44,7 +44,7 @@ class AssistancePage extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         this.setState({ saving: true });
-        const axiosObj = axios.put(`${YUDISIUM_CHECKLISTS_URL}/${yudisium.id}`, values);
+        const axiosObj = axios.put(`${YUDISIUM2_CHECKLISTS_URL}/${yudisium.id}`, values);
         axiosObj.then(() => {
           message.success('Saving yudisium success');
           this.setState({
@@ -71,7 +71,7 @@ class AssistancePage extends Component {
     this.setState({
       loadingYudisium: true,
     });
-    axios.get(`${YUDISIUM_CHECKLISTS_URL}/findbystudent/${studentId}`, { params: {} })
+    axios.get(`${YUDISIUM2_CHECKLISTS_URL}/findbystudent/${studentId}`, { params: {} })
       .then((response) => {
         this.setState({
           yudisium: response.data,
@@ -93,7 +93,7 @@ class AssistancePage extends Component {
     this.setState({
       loading: true,
     });
-    axios.get(`${YUDISIUM_CHECKLISTS_URL}/portofolios/${studentId}`, { params: { level: 2 } })
+    axios.get(`${YUDISIUM2_CHECKLISTS_URL}/portofolios/${studentId}`, { params: { level: 2 } })
       .then((response) => {
         this.setState({
           portofolioCompletions: response.data,
