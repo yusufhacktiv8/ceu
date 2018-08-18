@@ -270,7 +270,7 @@ class AssistancePage extends Component {
                 )}
               />
               <Column
-                title="Competed"
+                title="Completed"
                 key="completed"
                 render={(text, record) => (
                   record.portofolios.length > 0 ?
