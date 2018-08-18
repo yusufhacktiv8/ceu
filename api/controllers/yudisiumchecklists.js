@@ -187,7 +187,10 @@ exports.updateLevel2 = function update(req, res) {
               const portofolioCount = portofolios.length;
               const completedPortofolioCount =
               portofolios.filter(portofolio => portofolio.completed).length;
-              if (portofolioCount === completedPortofolioCount) {
+              // console.log('========> course.id: ', course.id);
+              // console.log('========> portofolioCount: ', portofolioCount);
+              // console.log('========> completedPortofolioCount: ', completedPortofolioCount);
+              if (portofolioCount > 0 && (portofolioCount === completedPortofolioCount)) {
                 resolve(true);
               } else {
                 resolve(false);
