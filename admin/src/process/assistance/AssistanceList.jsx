@@ -115,14 +115,6 @@ class AssistanceList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={6}>
-            <RangePicker
-              value={this.state.dateRange}
-              onChange={(date) => {
-                this.onRangeChange(date);
-              }}
-            />
-          </Col>
           <Col span={7}>
             <Input
               value={this.state.searchText}
@@ -138,12 +130,6 @@ class AssistanceList extends Component {
                 icon="search"
                 onClick={() => this.fetchCourses()}
                 style={{ marginRight: 5 }}
-              />
-              <Button
-                shape="circle"
-                icon="export"
-                onClick={() => this.openExportWindow()}
-                style={{ backgroundColor: '#50C14E', color: '#fff' }}
               />
             </span>
           </Col>
@@ -161,24 +147,8 @@ class AssistanceList extends Component {
                 pageSize: this.state.pageSize,
               }}
               onChange={this.pageChanged}
-              rowSelection={rowSelection}
               size="small"
             >
-              <Column
-                title="Title"
-                dataIndex="title"
-                key="title"
-              />
-              <Column
-                title="End Date"
-                dataIndex="realEndDate"
-                key="realEndDate"
-                render={text => (
-                  <span>
-                    {moment(text).format('DD/MM/YYYY')}
-                  </span>
-                )}
-              />
               <Column
                 title="Old SID"
                 dataIndex="Student.oldSid"
@@ -194,14 +164,6 @@ class AssistanceList extends Component {
             </Table>
           </Col>
         </Row>
-        <AssistanceExportWindow
-          visible={this.state.exportWindowVisible}
-          courseIds={this.state.selectedRowKeys}
-          onSaveSuccess={this.onSaveSuccess}
-          onCancel={this.closeExportWindow}
-          onClose={this.closeExportWindow}
-          ref={exportWindow => (this.exportWindow = exportWindow)}
-        />
       </div>
     );
   }
