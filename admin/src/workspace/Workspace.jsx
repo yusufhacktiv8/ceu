@@ -21,6 +21,7 @@ import PreTestPage from '../report/schedule/PreTestPage';
 import DashboardPage from '../dashboard/DashboardPage';
 import YudisiumCandidatePage from '../report/schedule/YudisiumSchedulePage';
 import MidKompreSchedulePage from '../report/schedule/MidKompreSchedulePage';
+import ScoreUploadPage from '../uploads/scores/ScoreUploadPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -97,6 +98,8 @@ class Workspace extends Component {
       selectedKeys = ['yudisiumschedule'];
     } else if (location.includes('midkomreschedule')) {
       selectedKeys = ['midkomreschedule'];
+    } else if (location.includes('uploadscores')) {
+      selectedKeys = ['uploadscores'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -174,6 +177,11 @@ class Workspace extends Component {
                     </Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
+                <SubMenu title={<span><Icon type="upload" />Uploads</span>}>
+                  <Menu.Item key="uploadscores">
+                    <Link to="/uploadscores">Scores</Link>
+                  </Menu.Item>
+                </SubMenu>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
                     <Menu.Item key="users">
@@ -216,6 +224,7 @@ class Workspace extends Component {
             <Route exact path="/pretest" component={PreTestPage} />
             <Route exact path="/yudisiumschedule" component={YudisiumCandidatePage} />
             <Route exact path="/midkomrepschedule" component={MidKompreSchedulePage} />
+            <Route exact path="/uploadscores" component={ScoreUploadPage} />
           </div>
         </Content>
       </Layout>
