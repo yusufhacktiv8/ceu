@@ -21,7 +21,7 @@ exports.findAll = function findAll(req, res) {
   });
 };
 
-exports.addScore = function addScore(req, res) {
+exports.create = function create(req, res) {
   const courseId = req.params.courseId;
   const scoreForm = req.body;
   scoreForm.CourseId = parseInt(courseId, 10);

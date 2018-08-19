@@ -5,7 +5,7 @@ import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreWindow from '../../student/course/details/score/ScoreWindow';
 
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/scores`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 const Column = Table.Column;
 
 class ScoreList extends Component {
