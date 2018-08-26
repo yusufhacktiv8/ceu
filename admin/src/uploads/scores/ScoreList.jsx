@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
-import ScoreWindow from '../../student/course/details/score/ScoreWindow';
+import ScoreWindow from './ScoreWindow';
 
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 const Column = Table.Column;
@@ -21,7 +21,7 @@ class ScoreList extends Component {
     changePasswordWindowVisible: false,
   }
   componentDidMount() {
-    this.fetchUsers();
+    this.fetchScores();
   }
 
   onSearchChange = (e) => {
@@ -32,15 +32,15 @@ class ScoreList extends Component {
 
   onSaveSuccess = () => {
     this.closeEditWindow();
-    this.fetchUsers();
+    this.fetchScores();
   }
 
   onChangePasswordSuccess = () => {
     this.closeChangePasswordWindow();
-    this.fetchUsers();
+    this.fetchScores();
   }
 
-  fetchUsers() {
+  fetchScores() {
     this.setState({
       loading: true,
     });
@@ -69,7 +69,7 @@ class ScoreList extends Component {
   filterUsers = () => {
     this.setState({
       currentPage: 1,
-    }, () => { this.fetchUsers(); });
+    }, () => { this.fetchScores(); });
   }
 
   deleteUser(score) {
@@ -77,7 +77,7 @@ class ScoreList extends Component {
     axios.delete(`${SCORES_URL}/${score.id}`)
       .then(() => {
         message.success('Delete score success');
-        this.fetchUsers();
+        this.fetchScores();
       })
       .catch((error) => {
         showError(error);
@@ -121,7 +121,7 @@ class ScoreList extends Component {
     const page = pagination.current;
     this.setState({
       currentPage: page,
-    }, () => { this.fetchUsers(); });
+    }, () => { this.fetchScores(); });
   }
 
   render() {
@@ -170,7 +170,23 @@ class ScoreList extends Component {
               size="small"
             >
               <Column
-                title="Value"
+                title="Department"
+                dataIndex="Course.Department.name"
+              />
+              <Column
+                title="Name"
+                dataIndex="Course.Student.name"
+              />
+              <Column
+                title="Old SID"
+                dataIndex="Course.Student.oldSid"
+              />
+              <Column
+                title="New SID"
+                dataIndex="Course.Student.newSid"
+              />
+              <Column
+                title="Score"
                 dataIndex="scoreValue"
                 key="scoreValue"
               />

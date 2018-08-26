@@ -9,12 +9,27 @@ const sendError = (err, res) => {
 };
 
 exports.findAll = function findAll(req, res) {
-  models.Score.findAll({
+  const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 10;
+  const currentPage = req.query.currentPage ? parseInt(req.query.currentPage, 10) : 1;
+  const offset = (currentPage - 1) * limit;
+  models.Score.findAndCountAll({
     where: {},
     include: [
-      { model: models.Course, where: { id: req.params.courseId } },
+      { model: models.Course,
+        // where: { id: req.params.courseId },
+        include: [
+          {
+            model: models.Student,
+          },
+          {
+            model: models.Department,
+          },
+        ],
+      },
       { model: models.ScoreType },
     ],
+    limit,
+    offset,
   })
   .then((scores) => {
     res.json(scores);
