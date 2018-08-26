@@ -8,9 +8,7 @@ import DepartmentSelect from '../../settings/department/DepartmentSelect';
 import StudentSearch from '../../student/StudentSearch';
 import { dateFormat } from '../../constant';
 
-const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/scores`;
-const getScoresUrl = courseId => `${COURSES_URL}/${courseId}/scores`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 
 const FormItem = Form.Item;
 
@@ -29,9 +27,8 @@ class ScoreWindow extends Component {
         saving: true,
       }, () => {
         const scoreId = score.id;
-        const { courseId } = this.props;
         const data = { ...values, scoreDate: values.scoreDate.format(dateFormat) }
-        const axiosObj = scoreId ? axios.put(`${SCORES_URL}/${scoreId}`, data) : axios.post(getScoresUrl(courseId), data);
+        const axiosObj = scoreId ? axios.put(`${SCORES_URL}/${scoreId}`, data) : axios.post(SCORES_URL, data);
         axiosObj.then(() => {
           message.success('Saving score success');
           this.setState({
@@ -56,6 +53,7 @@ class ScoreWindow extends Component {
     const { getFieldDecorator } = form;
     return (
       <Modal
+        wrapClassName="vertical-center-modal"
         visible={visible}
         title="Score"
         okText="Save"

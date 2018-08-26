@@ -37,37 +37,34 @@ exports.findAll = function findAll(req, res) {
 };
 
 exports.create = function create(req, res) {
-
-  // models.Course.findOne({
-  //   where: {
-  //     status: 1,
-  //   },
-  //   include: [
-  //     {
-  //       model: models.Student,
-  //       where: {
-  //         newSid,
-  //       },
-  //     },
-  //     {
-  //       model: models.Department,
-  //       where: {
-  //         code: departmentCode,
-  //       },
-  //     },
-  //   ],
-  // })
-  const courseId = req.params.courseId;
   const scoreForm = req.body;
-  scoreForm.CourseId = parseInt(courseId, 10);
-  scoreForm.ScoreTypeId = parseInt(scoreForm.scoreType, 10);
-  models.Score.create(scoreForm)
-  .then((result) => {
-    res.json(result);
+  const studentId = parseInt(scoreForm.student, 10);
+  const departmentId = parseInt(scoreForm.department, 10);
+  const scoreTypeId = parseInt(scoreForm.scoreType, 10);
+
+  models.Course.findOne({
+    where: {
+      StudentId: studentId,
+      DepartmentId: departmentId,
+    },
   })
-  .catch((err) => {
-    console.log(err);
-    res.status(500).send('Error when doing operation.');
+  .then((course) => {
+    if (course) {
+      models.Score.create({
+        ...scoreForm,
+        CourseId: course.id,
+        ScoreTypeId: scoreTypeId,
+      })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send('Error when doing operation.');
+      });
+    } else {
+      res.status(500).send('No course found.');
+    }
   });
 };
 
