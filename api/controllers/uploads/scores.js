@@ -37,6 +37,26 @@ exports.findAll = function findAll(req, res) {
 };
 
 exports.create = function create(req, res) {
+
+  // models.Course.findOne({
+  //   where: {
+  //     status: 1,
+  //   },
+  //   include: [
+  //     {
+  //       model: models.Student,
+  //       where: {
+  //         newSid,
+  //       },
+  //     },
+  //     {
+  //       model: models.Department,
+  //       where: {
+  //         code: departmentCode,
+  //       },
+  //     },
+  //   ],
+  // })
   const courseId = req.params.courseId;
   const scoreForm = req.body;
   scoreForm.CourseId = parseInt(courseId, 10);

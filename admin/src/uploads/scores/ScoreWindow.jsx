@@ -5,6 +5,7 @@ import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreTypeSelect from '../../student/course/details/score/ScoreTypeSelect';
 import DepartmentSelect from '../../settings/department/DepartmentSelect';
+import StudentSearch from '../../student/StudentSearch';
 import { dateFormat } from '../../constant';
 
 const COURSES_URL = `${process.env.REACT_APP_SERVER_URL}/api/courses`;
@@ -66,6 +67,16 @@ class ScoreWindow extends Component {
         ]}
       >
         <Form layout="vertical">
+          <FormItem label="Student">
+            {getFieldDecorator('student', {
+              initialValue: score.Course ? score.Course.Student.id : undefined,
+              rules: [
+                { required: true, message: 'Please input student' },
+              ],
+            })(
+              <StudentSearch />,
+            )}
+          </FormItem>
           <FormItem label="Department">
             {getFieldDecorator('department', {
               initialValue: score.Course ? String(score.Course.Department.id) : undefined,
