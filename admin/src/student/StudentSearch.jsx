@@ -14,9 +14,14 @@ class StudentSearch extends Component {
     this.fetchStudents = debounce(this.fetchStudents, 800);
 
     const value = this.props.value;
+    const initialStudent = this.props.initialStudent;
+    const students = [];
+    if (initialStudent) {
+      students.push(initialStudent);
+    }
     this.state = {
       value,
-      students: [],
+      students,
       fetching: false,
     };
   }
@@ -28,7 +33,13 @@ class StudentSearch extends Component {
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       const value = nextProps.value;
-      this.setState({ value });
+      this.setState({ value }, () => {
+        const students = [];
+        if (nextProps.initialStudent) {
+          students.push(nextProps.initialStudent);
+          this.setState({ students });
+        }
+      });
     }
   }
 
@@ -76,7 +87,7 @@ class StudentSearch extends Component {
         notFoundContent={fetching ? <Spin size="small" /> : null}
       >
         {this.state.students.map(student => (
-          <Option key={student.id} value={`${student.id}`}>{student.name}</Option>
+          <Option key={student.id} value={`${student.id}`}>{`${student.name} (${student.oldSid} - ${student.newSid})`}</Option>
         ))}
       </Select>
     );

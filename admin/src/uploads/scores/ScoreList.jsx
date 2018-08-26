@@ -125,6 +125,7 @@ class ScoreList extends Component {
   }
 
   render() {
+    const { score } = this.state;
     const { courseId } = this.props || 0;
     return (
       <div>
@@ -235,11 +236,12 @@ class ScoreList extends Component {
 
         <ScoreWindow
           courseId={courseId}
+          initialStudent={score && score.Course ? score.Course.Student : undefined}
           visible={this.state.scoreWindowVisible}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}
           onClose={this.closeEditWindow}
-          score={this.state.score}
+          score={score}
           ref={scoreWindow => (this.scoreWindow = scoreWindow)}
         />
       </div>

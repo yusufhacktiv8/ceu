@@ -49,7 +49,7 @@ class ScoreWindow extends Component {
 
   render() {
     const { saving } = this.state;
-    const { visible, onCancel, form, score } = this.props;
+    const { visible, onCancel, form, score, initialStudent } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Modal
@@ -67,12 +67,12 @@ class ScoreWindow extends Component {
         <Form layout="vertical">
           <FormItem label="Student">
             {getFieldDecorator('student', {
-              initialValue: score.Course ? score.Course.Student.id : undefined,
+              initialValue: score.Course ? String(score.Course.Student.id) : undefined,
               rules: [
                 { required: true, message: 'Please input student' },
               ],
             })(
-              <StudentSearch />,
+              <StudentSearch initialStudent={initialStudent} />,
             )}
           </FormItem>
           <FormItem label="Department">
