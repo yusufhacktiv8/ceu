@@ -61,9 +61,11 @@ class ScoreTypeSelect extends Component {
   render() {
     return (
       <Select
+        allowClear
         placeholder="Select Type"
         onChange={this.handleChange}
         value={this.state.value}
+        style={{ width: '100%' }}
       >
         {this.state.scoreTypes.map(scoreType => (
           <Option key={scoreType.id} value={scoreType.id}>{scoreType.name}</Option>

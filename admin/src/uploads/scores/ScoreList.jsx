@@ -5,6 +5,7 @@ import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreWindow from './ScoreWindow';
 import DepartmentSelect from '../../settings/department/DepartmentSelect';
+import ScoreTypeSelect from '../../student/course/details/score/ScoreTypeSelect';
 
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscorefile`;
@@ -21,6 +22,7 @@ class ScoreList extends Component {
   state = {
     searchText: '',
     searchDepartment: '',
+    searchScoreType: '',
     score: {},
     scores: [],
     loading: false,
@@ -46,6 +48,12 @@ class ScoreList extends Component {
     });
   }
 
+  onScoreTypeSearchChange = (e) => {
+    this.setState({
+      searchScoreType: e,
+    });
+  }
+
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchScores();
@@ -63,6 +71,7 @@ class ScoreList extends Component {
     axios.get(SCORES_URL, { params: {
       searchText: this.state.searchText,
       searchDepartment: this.state.searchDepartment,
+      searchScoreType: this.state.searchScoreType,
       currentPage: this.state.currentPage,
       pageSize: this.state.pageSize,
     } })
@@ -171,7 +180,7 @@ class ScoreList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={4}>
+          <Col span={6}>
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
@@ -183,6 +192,11 @@ class ScoreList extends Component {
             <DepartmentSelect
               level={-1}
               onChange={this.onDepartmentSearchChange}
+            />
+          </Col>
+          <Col span={4}>
+            <ScoreTypeSelect
+              onChange={this.onScoreTypeSearchChange}
             />
           </Col>
           <Col span={2}>
