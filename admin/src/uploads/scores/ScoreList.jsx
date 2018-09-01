@@ -80,7 +80,7 @@ class ScoreList extends Component {
     }, () => { this.fetchScores(); });
   }
 
-  deleteUser(score) {
+  deleteScore(score) {
     const hide = message.loading('Action in progress..', 0);
     axios.delete(`${SCORES_URL}/${score.id}`)
       .then(() => {
