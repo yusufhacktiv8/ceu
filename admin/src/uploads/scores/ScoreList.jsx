@@ -4,6 +4,7 @@ import { Table, Button, Input, Row, Col, Upload, message, Popconfirm, notificati
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreWindow from './ScoreWindow';
+import DepartmentSelect from '../../settings/department/DepartmentSelect';
 
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscorefile`;
@@ -19,6 +20,7 @@ const uploadProps = {
 class ScoreList extends Component {
   state = {
     searchText: '',
+    searchDepartment: '',
     score: {},
     scores: [],
     loading: false,
@@ -38,6 +40,12 @@ class ScoreList extends Component {
     });
   }
 
+  onDepartmentSearchChange = (e) => {
+    this.setState({
+      searchDepartment: e,
+    });
+  }
+
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchScores();
@@ -54,6 +62,7 @@ class ScoreList extends Component {
     });
     axios.get(SCORES_URL, { params: {
       searchText: this.state.searchText,
+      searchDepartment: this.state.searchDepartment,
       currentPage: this.state.currentPage,
       pageSize: this.state.pageSize,
     } })
@@ -162,12 +171,18 @@ class ScoreList extends Component {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
+          <Col span={4}>
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
               placeholder="Username or name"
               maxLength="100"
+            />
+          </Col>
+          <Col span={4}>
+            <DepartmentSelect
+              level={-1}
+              onChange={this.onDepartmentSearchChange}
             />
           </Col>
           <Col span={2}>

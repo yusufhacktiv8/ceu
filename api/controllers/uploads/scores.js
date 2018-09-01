@@ -10,6 +10,7 @@ const sendError = (err, res) => {
 
 exports.findAll = function findAll(req, res) {
   const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
+  const searchDepartment = req.query.searchDepartment;
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 10;
   const currentPage = req.query.currentPage ? parseInt(req.query.currentPage, 10) : 1;
   const offset = (currentPage - 1) * limit;
@@ -21,6 +22,11 @@ exports.findAll = function findAll(req, res) {
       { newSid: { $ilike: searchText } },
     ],
   };
+
+  const departmentWhere = {};
+  if (searchDepartment) {
+    departmentWhere.id = searchDepartment;
+  }
 
   models.Score.findAndCountAll({
     // where: {},
@@ -36,10 +42,15 @@ exports.findAll = function findAll(req, res) {
           },
           {
             model: models.Department,
+            required: true,
+            where: departmentWhere,
           },
         ],
       },
-      { model: models.ScoreType },
+      {
+        model: models.ScoreType,
+        required: true,
+      },
     ],
     limit,
     offset,
