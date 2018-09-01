@@ -9,17 +9,30 @@ const sendError = (err, res) => {
 };
 
 exports.findAll = function findAll(req, res) {
+  const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 10;
   const currentPage = req.query.currentPage ? parseInt(req.query.currentPage, 10) : 1;
   const offset = (currentPage - 1) * limit;
+
+  const studentWhere = {
+    $or: [
+      { name: { $ilike: searchText } },
+      { oldSid: { $ilike: searchText } },
+      { newSid: { $ilike: searchText } },
+    ],
+  };
+
   models.Score.findAndCountAll({
-    where: {},
+    // where: {},
     include: [
       { model: models.Course,
         // where: { id: req.params.courseId },
+        required: true,
         include: [
           {
             model: models.Student,
+            required: true,
+            where: studentWhere,
           },
           {
             model: models.Department,
