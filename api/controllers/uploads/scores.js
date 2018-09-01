@@ -106,7 +106,7 @@ exports.upload = function upload(req, res) {
   const scoreFile = req.files.scoreFile;
 
   // Use the mv() method to place the file somewhere on your server
-  const firstLineIndex = 1;
+  const firstLineIndex = 2;
   const uploadTypeIndex = 'B';
   const departmentCodeIndex = 'C';
   const newSidIndex = 'D';
@@ -126,7 +126,7 @@ exports.upload = function upload(req, res) {
         for (let i = firstLineIndex; i <= Constant.MAX_SCORE_UPLOADED_ROW + firstLineIndex; i += 1) {
           const departmentCode = worksheet.getCell(`${departmentCodeIndex}${i}`).value;
           const uploadType = worksheet.getCell(`${uploadTypeIndex}${i}`).value;
-          const newSid = worksheet.getCell(`${newSidIndex}${i}`).value;
+          const newSid = String(worksheet.getCell(`${newSidIndex}${i}`).value);
           if (departmentCode === null) {
             break;
           }
