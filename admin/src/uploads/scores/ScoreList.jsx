@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Input, Row, Col, Upload, message, Popconfirm, notification } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreWindow from './ScoreWindow';
 
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
+const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscorefile`;
 const Column = Table.Column;
+
+const uploadProps = {
+  name: 'scoreFile',
+  headers: {
+    authorization: 'authorization-text',
+  },
+};
 
 class ScoreList extends Component {
   state = {
@@ -66,7 +74,7 @@ class ScoreList extends Component {
       });
   }
 
-  filterUsers = () => {
+  filterScores = () => {
     this.setState({
       currentPage: 1,
     }, () => { this.fetchScores(); });
@@ -127,6 +135,30 @@ class ScoreList extends Component {
   render() {
     const { score } = this.state;
     const { courseId } = this.props || 0;
+
+    const token = window.sessionStorage.getItem('token');
+    uploadProps.headers = {
+      authorization: `Bearer ${token}`,
+    };
+    uploadProps.action = SCORES_UPLOAD_URL;
+    uploadProps.onChange = (info) => {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        this.fetchScores();
+
+        notification.success({
+          message: 'Upload file success',
+          description: info.file.response,
+        });
+      } else if (info.file.status === 'error') {
+        notification.error({
+          message: 'Upload file error',
+          description: `${info.file.name} file upload failed.`,
+        });
+      }
+    };
     return (
       <div>
         <Row gutter={10}>
@@ -138,12 +170,12 @@ class ScoreList extends Component {
               maxLength="100"
             />
           </Col>
-          <Col span={16}>
+          <Col span={2}>
             <span>
               <Button
                 shape="circle"
                 icon="search"
-                onClick={this.filterUsers}
+                onClick={this.filterScores}
                 style={{ marginRight: 15 }}
               />
               <Button
@@ -153,6 +185,28 @@ class ScoreList extends Component {
                 onClick={() => this.openEditWindow({})}
               />
             </span>
+          </Col>
+          <Col span={8}>
+            <Row>
+              <Col span={2}>
+                <Upload {...uploadProps}>
+                  <Button
+                    shape="circle"
+                    icon="upload"
+                    onClick={() => this.upload({})}
+                    style={{ marginLeft: 10 }}
+                  />
+                </Upload>
+              </Col>
+              <Col span={12}>
+                <Button
+                  shape="circle"
+                  icon="download"
+                  onClick={() => this.upload({})}
+                  style={{ marginLeft: 15 }}
+                />
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>
