@@ -131,7 +131,7 @@ exports.upload = function upload(req, res) {
             break;
           }
           const scoreDate = moment(worksheet.getCell(`${scoreDateIndex}${i}`).value, 'DD/MM/YYYY HH:mm:ss').toDate();
-          const scoreValue = parseFloat(worksheet.getCell(`${scoreValueIndex}${i}`).value.result);
+          const scoreValue = parseFloat(worksheet.getCell(`${scoreValueIndex}${i}`).value);
 
           const promise = new Promise((resolve, reject) => {
             models.Score.findOne({
@@ -139,9 +139,9 @@ exports.upload = function upload(req, res) {
               include: [
                 {
                   model: models.Course,
-                  where: {
-                    status: 1,
-                  },
+                  // where: {
+                  //   status: 1,
+                  // },
                   include: [
                     {
                       model: models.Student,
@@ -174,9 +174,9 @@ exports.upload = function upload(req, res) {
                 });
               } else {
                 models.Course.findOne({
-                  where: {
-                    status: 1,
-                  },
+                  // where: {
+                  //   status: 1,
+                  // },
                   include: [
                     {
                       model: models.Student,
