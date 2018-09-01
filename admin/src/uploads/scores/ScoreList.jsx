@@ -193,7 +193,6 @@ class ScoreList extends Component {
                   <Button
                     shape="circle"
                     icon="upload"
-                    onClick={() => this.upload({})}
                     style={{ marginLeft: 10 }}
                   />
                 </Upload>
@@ -202,7 +201,7 @@ class ScoreList extends Component {
                 <Button
                   shape="circle"
                   icon="download"
-                  onClick={() => this.upload({})}
+                  onClick={() => this.download({})}
                   style={{ marginLeft: 15 }}
                 />
               </Col>

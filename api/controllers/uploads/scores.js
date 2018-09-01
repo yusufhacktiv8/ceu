@@ -97,7 +97,7 @@ exports.destroy = function destroy(req, res) {
   });
 };
 
-const processUpload = (req, res, uploadType) => {
+exports.upload = function upload(req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -106,17 +106,12 @@ const processUpload = (req, res, uploadType) => {
   const scoreFile = req.files.scoreFile;
 
   // Use the mv() method to place the file somewhere on your server
-  let firstLineIndex = 6;
-  let newSidIndex = 'C';
-  let departmentCodeIndex = 'B';
-  let scoreValueIndex = 'G';
-
-  if (uploadType === 'POSTTEST') {
-    firstLineIndex = 8;
-    newSidIndex = 'B';
-    departmentCodeIndex = 'D';
-    scoreValueIndex = 'G';
-  }
+  const firstLineIndex = 1;
+  const uploadTypeIndex = 'B';
+  const departmentCodeIndex = 'C';
+  const newSidIndex = 'D';
+  const scoreDateIndex = 'F';
+  const scoreValueIndex = 'G';
 
   const workbook = new Excel.Workbook();
   const stream = new Readable();
@@ -127,14 +122,15 @@ const processUpload = (req, res, uploadType) => {
       .then(() => {
         const worksheet = workbook.getWorksheet(1);
         const promises = [];
-        const scoreDate = moment().toDate();
+
         for (let i = firstLineIndex; i <= Constant.MAX_SCORE_UPLOADED_ROW + firstLineIndex; i += 1) {
           const departmentCode = worksheet.getCell(`${departmentCodeIndex}${i}`).value;
+          const uploadType = worksheet.getCell(`${uploadTypeIndex}${i}`).value;
           const newSid = worksheet.getCell(`${newSidIndex}${i}`).value;
           if (departmentCode === null) {
             break;
           }
-
+          const scoreDate = moment(worksheet.getCell(`${scoreDateIndex}${i}`).value, 'DD/MM/YYYY HH:mm:ss').toDate();
           const scoreValue = parseFloat(worksheet.getCell(`${scoreValueIndex}${i}`).value.result);
 
           const promise = new Promise((resolve, reject) => {
@@ -236,12 +232,4 @@ const processUpload = (req, res, uploadType) => {
       .catch((errReadExcel) => {
         res.status(500).send(errReadExcel.message);
       });
-};
-
-exports.preTestUpload = function (req, res) {
-  processUpload(req, res, 'PRETEST');
-};
-
-exports.postTestUpload = function (req, res) {
-  processUpload(req, res, 'POSTTEST');
 };
