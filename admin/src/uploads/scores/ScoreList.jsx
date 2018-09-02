@@ -124,10 +124,36 @@ class ScoreList extends Component {
   }
 
   download = () => {
-    const { searchText, searchDepartment, searchScoreType } = this.state;
-    const url = `${SCORES_DOWNLOAD_URL}?searchText=${searchText}
-    &searchDepartment=${searchDepartment}&searchScoreType=${searchScoreType}`;
-    window.open(url, '_blank');
+    // const token = window.sessionStorage.getItem('token');
+    // uploadProps.headers = {
+    //   authorization: `Bearer ${token}`,
+    // };
+    // const { searchText, searchDepartment, searchScoreType } = this.state;
+    // const url = `${SCORES_DOWNLOAD_URL}?searchText=${searchText}
+    // &searchDepartment=${searchDepartment}&searchScoreType=${searchScoreType}`;
+    // window.open(url, '_blank');
+
+    axios.get(SCORES_DOWNLOAD_URL, { responseType: 'blob', params: {
+      searchText: this.state.searchText,
+      searchDepartment: this.state.searchDepartment,
+      searchScoreType: this.state.searchScoreType,
+    } })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'score.xlsx');
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
   }
 
   closeChangePasswordWindow = () => {
