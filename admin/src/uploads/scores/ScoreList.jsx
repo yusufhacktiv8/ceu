@@ -9,6 +9,7 @@ import ScoreTypeSelect from '../../student/course/details/score/ScoreTypeSelect'
 
 const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
 const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscorefile`;
+const SCORES_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/downloadscorefile`;
 const Column = Table.Column;
 
 const uploadProps = {
@@ -120,6 +121,13 @@ class ScoreList extends Component {
     }, () => {
       this.scoreWindow.resetFields();
     });
+  }
+
+  download = () => {
+    const { searchText, searchDepartment, searchScoreType } = this.state;
+    const url = `${SCORES_DOWNLOAD_URL}?searchText=${searchText}
+    &searchDepartment=${searchDepartment}&searchScoreType=${searchScoreType}`;
+    window.open(url, '_blank');
   }
 
   closeChangePasswordWindow = () => {

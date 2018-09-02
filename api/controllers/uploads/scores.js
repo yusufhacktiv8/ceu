@@ -266,10 +266,17 @@ exports.upload = function upload(req, res) {
 };
 
 exports.download = function download(req, res) {
+  // const options = {
+  //   filename: 'streamed-workbook.xlsx',
+  // };
+  // const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
   const workbook = new Excel.Workbook();
   const sheet = workbook.addWorksheet('My Sheet');
   const cell = sheet.getCell('C3');
   cell.value = 'Hello';
+
+  // res.setContentType('application/vnd.ms-excel');
+  res.setHeader('Content-disposition', 'attachment; filename=score.xlsx');
 
   workbook.xlsx.write(res)
     .then(function() {
