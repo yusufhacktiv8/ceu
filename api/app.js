@@ -126,6 +126,7 @@ app.use('/api/assistancetopicsbydepartment', assistanceTopicsByDepartment);
 app.use('/api/assistanceattendance', assistanceAttendance);
 app.use('/api/uploadscores', uploadScores);
 app.use('/api/uploadscorefile', uploadScoreFile);
+app.use('/api/downloadscorefile', uploadScoreFile);
 app.use('/api/security', security);
 app.use('/api/reports', reports);
 app.use('/api/bakordik', bakordik);

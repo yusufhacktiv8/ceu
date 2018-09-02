@@ -264,3 +264,15 @@ exports.upload = function upload(req, res) {
         res.status(500).send(errReadExcel.message);
       });
 };
+
+exports.download = function download(req, res) {
+  const workbook = new Excel.Workbook();
+  const sheet = workbook.addWorksheet('My Sheet');
+  const cell = sheet.getCell('C3');
+  cell.value = 'Hello';
+
+  workbook.xlsx.write(res)
+    .then(function() {
+        // done
+    });
+};
