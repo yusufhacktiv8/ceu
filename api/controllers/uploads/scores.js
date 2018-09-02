@@ -334,6 +334,7 @@ exports.download = function download(req, res) {
       sheet.getCell(`E${i+2}`).value = scores[i].Course.Student.oldSid;
       sheet.getCell(`F${i+2}`).value = scores[i].Course.Student.newSid;
       sheet.getCell(`G${i+2}`).value = scores[i].scoreValue;
+      sheet.getCell(`H${i+2}`).value = moment(scores[i].scoreDate).format('DD/MM/YYYY')
     }
 
     // res.setContentType('application/vnd.ms-excel');
