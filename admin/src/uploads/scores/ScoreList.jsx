@@ -124,15 +124,6 @@ class ScoreList extends Component {
   }
 
   download = () => {
-    // const token = window.sessionStorage.getItem('token');
-    // uploadProps.headers = {
-    //   authorization: `Bearer ${token}`,
-    // };
-    // const { searchText, searchDepartment, searchScoreType } = this.state;
-    // const url = `${SCORES_DOWNLOAD_URL}?searchText=${searchText}
-    // &searchDepartment=${searchDepartment}&searchScoreType=${searchScoreType}`;
-    // window.open(url, '_blank');
-
     axios.get(SCORES_DOWNLOAD_URL, { responseType: 'blob', params: {
       searchText: this.state.searchText,
       searchDepartment: this.state.searchDepartment,

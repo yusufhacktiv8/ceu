@@ -266,20 +266,82 @@ exports.upload = function upload(req, res) {
 };
 
 exports.download = function download(req, res) {
-  // const options = {
-  //   filename: 'streamed-workbook.xlsx',
-  // };
-  // const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
-  const workbook = new Excel.Workbook();
-  const sheet = workbook.addWorksheet('My Sheet');
-  const cell = sheet.getCell('C3');
-  cell.value = 'Hello';
+  const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
+  const searchDepartment = req.query.searchDepartment;
+  const searchScoreType = req.query.searchScoreType;
 
-  // res.setContentType('application/vnd.ms-excel');
-  res.setHeader('Content-disposition', 'attachment; filename=score.xlsx');
+  const studentWhere = {
+    $or: [
+      { name: { $ilike: searchText } },
+      { oldSid: { $ilike: searchText } },
+      { newSid: { $ilike: searchText } },
+    ],
+  };
 
-  workbook.xlsx.write(res)
-    .then(function() {
-        // done
-    });
+  const departmentWhere = {};
+  if (searchDepartment) {
+    departmentWhere.id = searchDepartment;
+  }
+
+  const scoreTypeWhere = {};
+  if (searchScoreType) {
+    scoreTypeWhere.id = searchScoreType;
+  }
+
+  models.Score.findAll({
+    // where: {},
+    include: [
+      { model: models.Course,
+        // where: { id: req.params.courseId },
+        required: true,
+        include: [
+          {
+            model: models.Student,
+            required: true,
+            where: studentWhere,
+          },
+          {
+            model: models.Department,
+            required: true,
+            where: departmentWhere,
+          },
+        ],
+      },
+      {
+        model: models.ScoreType,
+        required: true,
+        where: scoreTypeWhere,
+      },
+    ],
+  })
+  .then((scores) => {
+    const workbook = new Excel.Workbook();
+    const sheet = workbook.addWorksheet('My Sheet');
+    sheet.getCell('A1').value = 'No';
+    sheet.getCell('B1').value = 'Departemen';
+    sheet.getCell('C1').value = 'Tipe';
+    sheet.getCell('D1').value = 'Nama';
+    sheet.getCell('E1').value = 'Stambuk Lama';
+    sheet.getCell('F1').value = 'Stambuk Baru';
+    sheet.getCell('G1').value = 'Nilai';
+    sheet.getCell('H1').value = 'Tanggal';
+
+    for (let i = 0; i < scores.length; i += 1) {
+      sheet.getCell(`A${i+2}`).value = i + 1;
+      sheet.getCell(`B${i+2}`).value = scores[i].Course.Department.name;
+      sheet.getCell(`C${i+2}`).value = scores[i].ScoreType.code;
+      sheet.getCell(`D${i+2}`).value = scores[i].Course.Student.name;
+      sheet.getCell(`E${i+2}`).value = scores[i].Course.Student.oldSid;
+      sheet.getCell(`F${i+2}`).value = scores[i].Course.Student.newSid;
+      sheet.getCell(`G${i+2}`).value = scores[i].scoreValue;
+    }
+
+    // res.setContentType('application/vnd.ms-excel');
+    res.setHeader('Content-disposition', 'attachment; filename=score.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(function() {
+          // done
+      });
+  });
 };
