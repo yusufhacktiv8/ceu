@@ -147,33 +147,35 @@ class RotationList extends Component {
             >
               <Column
                 title="Name"
-                dataIndex="name"
-                key="name"
+                dataIndex="Student.name"
               />
               <Column
                 title="Old SID"
-                dataIndex="oldSid"
-                key="oldSid"
+                dataIndex="Student.oldSid"
               />
               <Column
                 title="New SID"
-                dataIndex="newSid"
-                key="newSid"
+                dataIndex="Student.newSid"
               />
               <Column
                 title="Department"
-                dataIndex="department"
-                key="department"
+                dataIndex="Department.name"
               />
               <Column
                 title="Hospital"
-                dataIndex="hospital"
-                key="hospital"
+                dataIndex="hospital1.name"
+              />
+              <Column
+                title="Clinic"
+                dataIndex="clinic.name"
               />
               <Column
                 title="Tutor"
-                dataIndex="tutor"
-                key="tutor"
+                dataIndex="adviser.name"
+              />
+              <Column
+                title="Examiner"
+                dataIndex="examiner.name"
               />
               <Column
                 title="Score"
