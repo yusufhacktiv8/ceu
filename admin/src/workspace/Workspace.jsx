@@ -22,6 +22,7 @@ import DashboardPage from '../dashboard/DashboardPage';
 import YudisiumCandidatePage from '../report/schedule/YudisiumSchedulePage';
 import MidKompreSchedulePage from '../report/schedule/MidKompreSchedulePage';
 import ScoreUploadPage from '../uploads/scores/ScoreUploadPage';
+import RotationPage from '../report/rotation/RotationPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -100,6 +101,8 @@ class Workspace extends Component {
       selectedKeys = ['midkomreschedule'];
     } else if (location.includes('uploadscores')) {
       selectedKeys = ['uploadscores'];
+    } else if (location.includes('rotations')) {
+      selectedKeys = ['rotations'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -176,6 +179,11 @@ class Workspace extends Component {
                       <Link to="/yudisiumschedule">Yudisium</Link>
                     </Menu.Item>
                   </MenuItemGroup>
+                  <MenuItemGroup title="Resumes">
+                    <Menu.Item key="rotations">
+                      <Link to="/rotations">Rotations</Link>
+                    </Menu.Item>
+                  </MenuItemGroup>
                 </SubMenu>
                 <SubMenu title={<span><Icon type="upload" />Uploads</span>}>
                   <Menu.Item key="uploadscores">
@@ -225,6 +233,7 @@ class Workspace extends Component {
             <Route exact path="/yudisiumschedule" component={YudisiumCandidatePage} />
             <Route exact path="/midkomrepschedule" component={MidKompreSchedulePage} />
             <Route exact path="/uploadscores" component={ScoreUploadPage} />
+            <Route exact path="/rotations" component={RotationPage} />
           </div>
         </Content>
       </Layout>
