@@ -40,6 +40,11 @@ exports.findAll = function findAll(req, res) {
       },
       {
         model: models.Score,
+        include: [
+          {
+            model: models.ScoreType,
+          },
+        ],
       },
       {
         model: models.Hospital,

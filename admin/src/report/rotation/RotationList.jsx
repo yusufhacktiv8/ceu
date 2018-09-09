@@ -6,6 +6,47 @@ import showError from '../../utils/ShowError';
 const ROTATIONS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/rotations`;
 const Column = Table.Column;
 
+const getCriteriaByScore = (scores) => {
+  const score1Arr = scores.filter(score => score.ScoreType.code === 'PRETEST');
+  const score1 = score1Arr.length > 0 ? score1Arr[0].scoreValue : null;
+  const score1Percentage = score1 ? score1 * 0 : null;
+
+  const score2Arr = scores.filter(score => score.ScoreType.code === 'CASEREPORT');
+  const score2 = score2Arr.length > 0 ? score2Arr[0].scoreValue : null;
+  const score2Percentage = score2 ? score2 * 0.1 : null;
+
+  const score3Arr = scores.filter(score => score.ScoreType.code === 'WEEKLYDISCUSSION');
+  const score3 = score3Arr.length > 0 ? score3Arr[0].scoreValue : null;
+  const score3Percentage = score3 ? score3 * 0.2 : null;
+
+  const score4Arr = scores.filter(score => score.ScoreType.code === 'CASETEST');
+  const score4 = score4Arr.length > 0 ? score4Arr[0].scoreValue : null;
+  const score4Percentage = score4 ? score4 * 0.35 : null;
+
+  const score5Arr = scores.filter(score => score.ScoreType.code === 'POSTTEST');
+  const score5 = score5Arr.length > 0 ? score5Arr[0].scoreValue : null;
+  const score5Percentage = score5 ? score5 * 0.35 : null;
+
+  const totalPercentage = score1Percentage + score2Percentage + score3Percentage
+  + score4Percentage + score5Percentage;
+
+  let totalInCriteria = null;
+  const totalPercentageRound = totalPercentage; // mathjs.round(totalPercentage, 2);
+  if (totalPercentageRound >= 80 && totalPercentageRound <= 100) {
+    totalInCriteria = <span style={{ color: '#5093E1' }}>A</span>;
+  } else if (totalPercentageRound >= 70 && totalPercentageRound <= 79) {
+    totalInCriteria = <span style={{ color: '#50C14E' }}>B</span>;
+  } else if (totalPercentageRound >= 60 && totalPercentageRound <= 69) {
+    totalInCriteria = <span style={{ color: 'orange' }}>C</span>;
+  } else if (totalPercentageRound > 0 && totalPercentageRound <= 59) {
+    totalInCriteria = <span style={{ color: 'red' }}>E</span>;
+  } else if (totalPercentageRound <= 0) {
+    totalInCriteria = <span style={{ color: 'gray' }}>-</span>;
+  }
+
+  return totalInCriteria;
+};
+
 class RotationList extends Component {
   state = {
     searchText: '',
@@ -180,7 +221,9 @@ class RotationList extends Component {
               <Column
                 title="Score"
                 dataIndex="score"
-                key="score"
+                render={(columnText, record) => {
+                  return getCriteriaByScore(record.Scores);
+                }}
               />
               <Column
                 title="Action"
