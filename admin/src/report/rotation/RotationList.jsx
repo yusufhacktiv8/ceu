@@ -146,36 +146,39 @@ class RotationList extends Component {
               size="small"
             >
               <Column
-                title="Code"
-                dataIndex="code"
-                key="code"
-                render={(columnText, record) => {
-                  const reg = new RegExp(this.state.searchText, 'gi');
-                  const match = columnText.match(reg);
-                  return (
-                    <span key={record.code}>
-                      {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
-                      ))}
-                    </span>
-                  );
-                }}
-              />
-              <Column
                 title="Name"
                 dataIndex="name"
                 key="name"
-                render={(columnText, record) => {
-                  const reg = new RegExp(this.state.searchText, 'gi');
-                  const match = columnText.match(reg);
-                  return (
-                    <span key={record.code}>
-                      {columnText.split(reg).map((text, i) => (
-                        i > 0 ? [<span key={record.code} style={{ color: '#F50' }}>{match[0]}</span>, text] : text
-                      ))}
-                    </span>
-                  );
-                }}
+              />
+              <Column
+                title="Old SID"
+                dataIndex="oldSid"
+                key="oldSid"
+              />
+              <Column
+                title="New SID"
+                dataIndex="newSid"
+                key="newSid"
+              />
+              <Column
+                title="Department"
+                dataIndex="department"
+                key="department"
+              />
+              <Column
+                title="Hospital"
+                dataIndex="hospital"
+                key="hospital"
+              />
+              <Column
+                title="Tutor"
+                dataIndex="tutor"
+                key="tutor"
+              />
+              <Column
+                title="Score"
+                dataIndex="score"
+                key="score"
               />
               <Column
                 title="Action"

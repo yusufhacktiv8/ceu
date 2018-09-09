@@ -67,6 +67,7 @@ var krss = require('./routes/krs');
 
 var midKompreCandidate = require('./routes/midkomprecandidates');
 var yudisiumCandidate = require('./routes/yudisiumcandidates');
+var rotations = require('./routes/rotations');
 
 var app = express();
 
@@ -143,6 +144,7 @@ app.use('/api/spps', spps);
 app.use('/api/krss', krss);
 app.use('/api/midkomprecandidates', midKompreCandidate);
 app.use('/api/reports/yudisiumcandidates', yudisiumCandidate);
+app.use('/api/reports/rotations', rotations);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
