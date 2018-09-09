@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Input, Row, Col, message, Popconfirm, Tag } from 'antd';
+import numeral from 'numeral';
+import DepartmentSelect from '../../settings/department/DepartmentSelect';
 import showError from '../../utils/ShowError';
 
 const ROTATIONS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/rotations`;
+const ROTATIONS_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/rotations/download`;
 const Column = Table.Column;
 
 const getCriteriaByScore = (scores) => {
@@ -30,6 +33,9 @@ const getCriteriaByScore = (scores) => {
   const totalPercentage = score1Percentage + score2Percentage + score3Percentage
   + score4Percentage + score5Percentage;
 
+  const total = score1 + score2 + score3
+  + score4 + score5;
+
   let totalInCriteria = null;
   const totalPercentageRound = totalPercentage; // mathjs.round(totalPercentage, 2);
   if (totalPercentageRound >= 80 && totalPercentageRound <= 100) {
@@ -44,12 +50,13 @@ const getCriteriaByScore = (scores) => {
     totalInCriteria = <span style={{ color: 'gray' }}>-</span>;
   }
 
-  return totalInCriteria;
+  return <span><Tag>{numeral(total).format('0,0.00')}</Tag> <Tag>{`${numeral(totalPercentage).format('0,0.00')} %`}</Tag> <Tag>{totalInCriteria}</Tag></span>;
 };
 
 class RotationList extends Component {
   state = {
     searchText: '',
+    searchDepartment: '',
     rotation: {},
     rotations: [],
     loading: false,
@@ -68,6 +75,12 @@ class RotationList extends Component {
     });
   }
 
+  onDepartmentSearchChange = (e) => {
+    this.setState({
+      searchDepartment: e,
+    });
+  }
+
   onSaveSuccess = () => {
     this.closeEditWindow();
     this.fetchRotations();
@@ -79,6 +92,7 @@ class RotationList extends Component {
     });
     axios.get(ROTATIONS_URL, { params: {
       searchText: this.state.searchText,
+      searchDepartment: this.state.searchDepartment,
       currentPage: this.state.currentPage,
       pageSize: this.state.pageSize,
     } })
@@ -142,11 +156,34 @@ class RotationList extends Component {
     }, () => { this.fetchRotations(); });
   }
 
+  download = () => {
+    axios.get(ROTATIONS_DOWNLOAD_URL, { responseType: 'blob', params: {
+      searchText: this.state.searchText,
+      searchDepartment: this.state.searchDepartment,
+    } })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'rotation.xlsx');
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
   render() {
     return (
       <div>
         <Row gutter={10}>
-          <Col span={8}>
+          <Col span={6}>
             <Input
               value={this.state.searchText}
               onChange={this.onSearchChange}
@@ -154,7 +191,13 @@ class RotationList extends Component {
               maxLength="50"
             />
           </Col>
-          <Col span={16}>
+          <Col span={4}>
+            <DepartmentSelect
+              level={-1}
+              onChange={this.onDepartmentSearchChange}
+            />
+          </Col>
+          <Col span={8}>
             <span>
               <Button
                 shape="circle"
@@ -167,6 +210,12 @@ class RotationList extends Component {
                 shape="circle"
                 icon="plus"
                 onClick={() => this.openEditWindow({})}
+              />
+              <Button
+                shape="circle"
+                icon="download"
+                onClick={() => this.download({})}
+                style={{ marginLeft: 10 }}
               />
             </span>
           </Col>
@@ -224,31 +273,6 @@ class RotationList extends Component {
                 render={(columnText, record) => {
                   return getCriteriaByScore(record.Scores);
                 }}
-              />
-              <Column
-                title="Action"
-                key="action"
-                render={(text, record) => (
-                  <span>
-                    <Button
-                      icon="ellipsis"
-                      size="small"
-                      onClick={() => this.openEditWindow(record)}
-                      style={{ marginRight: 5 }}
-                    />
-                    <Popconfirm
-                      title={`Are you sure delete rotation ${record.name}`}
-                      onConfirm={() => this.deleteRotation(record)}
-                      okText="Yes" cancelText="No"
-                    >
-                      <Button
-                        type="danger"
-                        icon="delete"
-                        size="small"
-                      />
-                    </Popconfirm>
-                  </span>
-                )}
               />
             </Table>
           </Col>
