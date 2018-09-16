@@ -7,7 +7,7 @@ const { Header, Content } = Layout;
 export default () => (
   <Layout style={{ height: '100%' }}>
     <Header className="page-header">
-      <span>Uploads &gt;</span><span className="page-header-title"> UKMPPD Scores</span>
+      <span>Uploads &gt;</span><span className="page-header-title"> Kompre Scores</span>
     </Header>
     <Content className="page-content">
       <ScoreList />

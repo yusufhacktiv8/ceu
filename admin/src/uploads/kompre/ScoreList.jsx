@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, Upload, message, Popconfirm, notification } from 'antd';
+import { Table, Button, Input, Checkbox, Row, Col, Upload, message, Popconfirm, notification } from 'antd';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
 import ScoreWindow from './ScoreWindow';
-import DepartmentSelect from '../../settings/department/DepartmentSelect';
-import ScoreTypeSelect from '../../student/course/details/score/ScoreTypeSelect';
+import KompreTypeSelect from '../../student/yudisium/KompreTypeSelect';
 
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
-const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscorefile`;
-const SCORES_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/downloadscorefile`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadkompres`;
+const SCORES_UPLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadkomprefile`;
+const SCORES_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/downloadkomprefile`;
 const Column = Table.Column;
 
 const uploadProps = {
@@ -22,8 +21,7 @@ const uploadProps = {
 class ScoreList extends Component {
   state = {
     searchText: '',
-    searchDepartment: '',
-    searchScoreType: '',
+    searchKompreType: '',
     score: {},
     scores: [],
     loading: false,
@@ -43,15 +41,9 @@ class ScoreList extends Component {
     });
   }
 
-  onDepartmentSearchChange = (e) => {
+  onKompreTypeSearchChange = (e) => {
     this.setState({
-      searchDepartment: e,
-    });
-  }
-
-  onScoreTypeSearchChange = (e) => {
-    this.setState({
-      searchScoreType: e,
+      searchKompreType: e,
     });
   }
 
@@ -71,8 +63,7 @@ class ScoreList extends Component {
     });
     axios.get(SCORES_URL, { params: {
       searchText: this.state.searchText,
-      searchDepartment: this.state.searchDepartment,
-      searchScoreType: this.state.searchScoreType,
+      searchKompreType: this.state.searchKompreType,
       currentPage: this.state.currentPage,
       pageSize: this.state.pageSize,
     } })
@@ -126,8 +117,7 @@ class ScoreList extends Component {
   download = () => {
     axios.get(SCORES_DOWNLOAD_URL, { responseType: 'blob', params: {
       searchText: this.state.searchText,
-      searchDepartment: this.state.searchDepartment,
-      searchScoreType: this.state.searchScoreType,
+      searchKompreType: this.state.searchKompreType,
     } })
       .then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -145,21 +135,6 @@ class ScoreList extends Component {
           loading: false,
         });
       });
-  }
-
-  closeChangePasswordWindow = () => {
-    this.setState({
-      changePasswordWindowVisible: false,
-    });
-  }
-
-  openChangePasswordWindow = (record) => {
-    this.setState({
-      score: record,
-      changePasswordWindowVisible: true,
-    }, () => {
-      this.changePasswordWindow.resetFields();
-    });
   }
 
   closeEditWindow = () => {
@@ -214,14 +189,8 @@ class ScoreList extends Component {
             />
           </Col>
           <Col span={4}>
-            <DepartmentSelect
-              level={-1}
-              onChange={this.onDepartmentSearchChange}
-            />
-          </Col>
-          <Col span={4}>
-            <ScoreTypeSelect
-              onChange={this.onScoreTypeSearchChange}
+            <KompreTypeSelect
+              onChange={this.onKompreTypeSearchChange}
             />
           </Col>
           <Col span={2}>
@@ -278,25 +247,34 @@ class ScoreList extends Component {
               size="small"
             >
               <Column
+                title="Selected"
+                dataIndex="selected"
+                render={(text, record) => (
+                  <span>
+                    <Checkbox checked={record.selected} />
+                  </span>
+                )}
+              />
+              <Column
                 title="Name"
-                dataIndex="Course.Student.name"
+                dataIndex="Student.name"
               />
               <Column
                 title="Old SID"
-                dataIndex="Course.Student.oldSid"
+                dataIndex="Student.oldSid"
               />
               <Column
                 title="New SID"
-                dataIndex="Course.Student.newSid"
+                dataIndex="Student.newSid"
               />
               <Column
                 title="Score"
-                dataIndex="scoreValue"
-                key="scoreValue"
+                dataIndex="score"
+                key="score"
               />
               <Column
                 title="Type"
-                dataIndex="ScoreType.name"
+                dataIndex="KompreType.name"
               />
               <Column
                 title="Date"
@@ -320,7 +298,7 @@ class ScoreList extends Component {
                       style={{ marginRight: 5 }}
                     />
                     <Popconfirm
-                      title={`Are you sure delete score ${record.ScoreType.name}`}
+                      title={`Are you sure delete score ${record.KompreType.name}`}
                       onConfirm={() => this.deleteScore(record)}
                       okText="Yes" cancelText="No"
                     >
@@ -339,7 +317,7 @@ class ScoreList extends Component {
 
         <ScoreWindow
           courseId={courseId}
-          initialStudent={score && score.Course ? score.Course.Student : undefined}
+          initialStudent={score && score.Course ? score.Student : undefined}
           visible={this.state.scoreWindowVisible}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}

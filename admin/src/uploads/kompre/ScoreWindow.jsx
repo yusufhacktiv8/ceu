@@ -3,12 +3,11 @@ import { Modal, Form, DatePicker, InputNumber, Button, message } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
-import ScoreTypeSelect from '../../student/course/details/score/ScoreTypeSelect';
-import DepartmentSelect from '../../settings/department/DepartmentSelect';
+import KompreTypeSelect from '../../student/yudisium/KompreTypeSelect';
 import StudentSearch from '../../student/StudentSearch';
 import { dateFormat } from '../../constant';
 
-const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadscores`;
+const SCORES_URL = `${process.env.REACT_APP_SERVER_URL}/api/uploadkompres`;
 
 const FormItem = Form.Item;
 
@@ -67,22 +66,12 @@ class ScoreWindow extends Component {
         <Form layout="vertical">
           <FormItem label="Student">
             {getFieldDecorator('student', {
-              initialValue: score.Course ? String(score.Course.Student.id) : undefined,
+              initialValue: score.Student ? String(score.Student.id) : undefined,
               rules: [
                 { required: true, message: 'Please input student' },
               ],
             })(
               <StudentSearch initialStudent={initialStudent} />,
-            )}
-          </FormItem>
-          <FormItem label="Department">
-            {getFieldDecorator('department', {
-              initialValue: score.Course ? String(score.Course.Department.id) : undefined,
-              rules: [
-                { required: true, message: 'Please input department' },
-              ],
-            })(
-              <DepartmentSelect level={-1} />,
             )}
           </FormItem>
           <FormItem label="Score">
@@ -97,12 +86,12 @@ class ScoreWindow extends Component {
           </FormItem>
           <FormItem label="Type">
             {getFieldDecorator('scoreType', {
-              initialValue: score.ScoreType ? score.ScoreType.id : undefined,
+              initialValue: score.KompreType ? score.KompreType.id : undefined,
               rules: [
                 { required: true, message: 'Please input type' },
               ],
             })(
-              <ScoreTypeSelect />,
+              <KompreTypeSelect />,
             )}
           </FormItem>
           <FormItem label="Date">

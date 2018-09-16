@@ -60,6 +60,7 @@ class KompreTypeSelect extends Component {
         placeholder="Select Type"
         onChange={this.handleChange}
         value={this.state.value}
+        style={{ width: '100%' }}
       >
         {this.state.kompreTypes.map(kompreType => (
           <Option key={kompreType.id} value={kompreType.id}>{kompreType.name}</Option>
