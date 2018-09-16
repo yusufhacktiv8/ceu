@@ -64,8 +64,8 @@ class WorkspaceAssesment1 extends Component {
                 </span>
               </div>
             </Col>
-            <Col span={6} offset={12}>
-              <div style={{ paddingTop: 18, paddingRight: 25, textAlign: 'right' }}>
+            <Col span={6} offset={10}>
+              <div style={{ paddingTop: 18, paddingRight: 10, textAlign: 'right', width: 400 }}>
                 <Dropdown overlay={userMenu} style={{ width: 300 }}>
                   <a className="ant-dropdown-link" href="#">
                     {this.state.name} ({this.state.role}) <Icon type="down" />

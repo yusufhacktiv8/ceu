@@ -49,7 +49,6 @@ var assistanceParticipants = require('./routes/assistance_participants');
 var assistanceTopics = require('./routes/assistance_topics');
 var assistanceTopicsByDepartment = require('./routes/assistance_topics_by_department');
 var assistanceAttendance = require('./routes/assistance_attendance');
-var scoreFileUpload = require('./routes/score_fileupload');
 var security = require('./routes/security');
 var reports = require('./routes/reports');
 var bakordik = require('./routes/bakordik');
