@@ -5,7 +5,7 @@ const StudentController = require('../controllers/students');
 const { isAuthorizedAs, isAuthorizedAsIn } = require('../helpers/AuthUtils');
 
 /* GET users listing. */
-router.get('/', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO', 'KOMKORDIK']), StudentController.findAll);
+router.get('/', isAuthorizedAsIn(['ADMIN', 'EMPLOYEE', 'SGL', 'PORTOFOLIO', 'KOMKORDIK', 'CONTINUING_ASSESMENT']), StudentController.findAll);
 router.get('/:studentId', isAuthorizedAsIn(['ADMIN', 'SGL', 'PORTOFOLIO', 'KOMKORDIK']), StudentController.findOne);
 router.post('/', isAuthorizedAs('ADMIN'), StudentController.create);
 router.put('/:studentId', isAuthorizedAs('ADMIN'), StudentController.update);

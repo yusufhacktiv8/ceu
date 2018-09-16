@@ -317,7 +317,7 @@ class ScoreList extends Component {
 
         <ScoreWindow
           courseId={courseId}
-          initialStudent={score && score.Course ? score.Student : undefined}
+          initialStudent={score && score.Student ? score.Student : undefined}
           visible={this.state.scoreWindowVisible}
           onSaveSuccess={this.onSaveSuccess}
           onCancel={this.closeEditWindow}

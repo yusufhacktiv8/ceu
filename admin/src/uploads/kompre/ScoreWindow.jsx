@@ -26,7 +26,7 @@ class ScoreWindow extends Component {
         saving: true,
       }, () => {
         const scoreId = score.id;
-        const data = { ...values, scoreDate: values.scoreDate.format(dateFormat) }
+        const data = { ...values, kompreDate: values.kompreDate.format(dateFormat) }
         const axiosObj = scoreId ? axios.put(`${SCORES_URL}/${scoreId}`, data) : axios.post(SCORES_URL, data);
         axiosObj.then(() => {
           message.success('Saving score success');
@@ -75,8 +75,8 @@ class ScoreWindow extends Component {
             )}
           </FormItem>
           <FormItem label="Score">
-            {getFieldDecorator('scoreValue', {
-              initialValue: score.scoreValue,
+            {getFieldDecorator('score', {
+              initialValue: score.score,
               rules: [
                 { required: true, message: 'Please input score' },
               ],
@@ -85,7 +85,7 @@ class ScoreWindow extends Component {
             )}
           </FormItem>
           <FormItem label="Type">
-            {getFieldDecorator('scoreType', {
+            {getFieldDecorator('kompreType', {
               initialValue: score.KompreType ? score.KompreType.id : undefined,
               rules: [
                 { required: true, message: 'Please input type' },
@@ -95,8 +95,8 @@ class ScoreWindow extends Component {
             )}
           </FormItem>
           <FormItem label="Date">
-            {getFieldDecorator('scoreDate', {
-              initialValue: score.scoreDate ? moment(score.scoreDate) : undefined,
+            {getFieldDecorator('kompreDate', {
+              initialValue: score.kompreDate ? moment(score.kompreDate) : undefined,
               rules: [
                 { required: true, message: 'Please input date' },
               ],
