@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Form, DatePicker, InputNumber, Button, message } from 'antd';
+import { Modal, Form, DatePicker, InputNumber, Checkbox, Button, message } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import showError from '../../utils/ShowError';
@@ -102,6 +102,14 @@ class ScoreWindow extends Component {
               ],
             })(
               <DatePicker />,
+            )}
+          </FormItem>
+          <FormItem label="">
+            {getFieldDecorator('selected', {
+              initialValue: score.selected,
+              valuePropName: 'checked',
+            })(
+              <Checkbox>Selected</Checkbox>,
             )}
           </FormItem>
         </Form>

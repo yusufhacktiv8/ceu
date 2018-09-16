@@ -57,6 +57,7 @@ class KompreTypeSelect extends Component {
   render() {
     return (
       <Select
+        allowClear
         placeholder="Select Type"
         onChange={this.handleChange}
         value={this.state.value}

@@ -193,7 +193,7 @@ class ScoreList extends Component {
 
         notification.success({
           message: 'Upload file success',
-          description: JSON.stringify(info.file.response),
+          description: 'Success',
         });
       } else if (info.file.status === 'error') {
         notification.error({

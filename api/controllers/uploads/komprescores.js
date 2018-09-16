@@ -99,6 +99,9 @@ exports.destroy = function destroy(req, res) {
 };
 
 exports.upload = function upload(req, res) {
+
+  console.log('kompre upload ---------->');
+
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -110,8 +113,8 @@ exports.upload = function upload(req, res) {
   const firstLineIndex = 2;
   const uploadTypeIndex = 'B';
   const newSidIndex = 'C';
-  const kompreDateIndex = 'D';
-  const kompreValueIndex = 'F';
+  const kompreDateIndex = 'E';
+  const scoreIndex = 'F';
 
   const workbook = new Excel.Workbook();
   const stream = new Readable();
@@ -125,11 +128,15 @@ exports.upload = function upload(req, res) {
 
         for (let i = firstLineIndex; i <= Constant.MAX_SCORE_UPLOADED_ROW + firstLineIndex; i += 1) {
           const uploadType = worksheet.getCell(`${uploadTypeIndex}${i}`).value;
+
+          if (!uploadType) break;
+
           const newSid = String(worksheet.getCell(`${newSidIndex}${i}`).value);
           const kompreDate = moment(worksheet.getCell(`${kompreDateIndex}${i}`).value, 'DD/MM/YYYY HH:mm:ss').toDate();
-          const kompreValue = parseFloat(worksheet.getCell(`${kompreValueIndex}${i}`).value);
+          const score = parseFloat(worksheet.getCell(`${scoreIndex}${i}`).value);
 
           const promise = new Promise((resolve, reject) => {
+            console.log('kompre find one ---------->');
             models.Kompre.findOne({
               where: {},
               include: [
@@ -148,13 +155,15 @@ exports.upload = function upload(req, res) {
               ],
             }).then((foundKompre) => {
               if (foundKompre) {
-                foundKompre.kompreValue = kompreValue;
+                console.log('found kompre ---------->');
+                foundKompre.score = score;
                 foundKompre.kompreDate = kompreDate;
                 foundKompre.save()
                 .then(() => {
                   resolve({ newSid, found: true });
                 });
               } else {
+                console.log('find student ---------->');
                 models.Student.findOne({
                   where: {
                     newSid,
@@ -169,7 +178,7 @@ exports.upload = function upload(req, res) {
                     })
                     .then((foundKompreType) => {
                       models.Kompre.create({
-                        kompreValue,
+                        score,
                         kompreDate,
                         StudentId: foundStudent.id,
                         KompreTypeId: foundKompreType.id,
@@ -195,6 +204,9 @@ exports.upload = function upload(req, res) {
         Promise.all(promises)
         .then((uploadResult) => {
           res.json(uploadResult);
+        })
+        .catch((errPromise) => {
+          console.error(errPromise);
         });
       })
       .catch((errReadExcel) => {
@@ -251,7 +263,7 @@ exports.download = function download(req, res) {
       sheet.getCell(`C${i+2}`).value = kompres[i].Student.name;
       sheet.getCell(`D${i+2}`).value = kompres[i].Student.oldSid;
       sheet.getCell(`E${i+2}`).value = kompres[i].Student.newSid;
-      sheet.getCell(`F${i+2}`).value = kompres[i].kompreValue;
+      sheet.getCell(`F${i+2}`).value = kompres[i].score;
       sheet.getCell(`G${i+2}`).value = moment(kompres[i].kompreDate).format('DD/MM/YYYY')
     }
 

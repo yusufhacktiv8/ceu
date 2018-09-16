@@ -157,6 +157,9 @@ exports.upload = function upload(req, res) {
         for (let i = firstLineIndex; i <= Constant.MAX_SCORE_UPLOADED_ROW + firstLineIndex; i += 1) {
           const departmentCode = worksheet.getCell(`${departmentCodeIndex}${i}`).value;
           const uploadType = worksheet.getCell(`${uploadTypeIndex}${i}`).value;
+
+          if (!uploadType) break;
+
           const newSid = String(worksheet.getCell(`${newSidIndex}${i}`).value);
           if (departmentCode === null) {
             break;

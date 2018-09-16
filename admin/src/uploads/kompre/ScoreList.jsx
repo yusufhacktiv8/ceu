@@ -12,7 +12,7 @@ const SCORES_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/downloadkom
 const Column = Table.Column;
 
 const uploadProps = {
-  name: 'scoreFile',
+  name: 'kompreFile',
   headers: {
     authorization: 'authorization-text',
   },
@@ -123,7 +123,7 @@ class ScoreList extends Component {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'score.xlsx');
+        link.setAttribute('download', 'kompre.xlsx');
         document.body.appendChild(link);
         link.click();
       })
@@ -168,7 +168,7 @@ class ScoreList extends Component {
 
         notification.success({
           message: 'Upload file success',
-          description: JSON.stringify(info.file.response),
+          description: 'Success',
         });
       } else if (info.file.status === 'error') {
         notification.error({
@@ -278,8 +278,8 @@ class ScoreList extends Component {
               />
               <Column
                 title="Date"
-                dataIndex="scoreDate"
-                key="scoreDate"
+                dataIndex="kompreDate"
+                key="kompreDate"
                 render={(text, record) => (
                   <span>
                     {moment(text).format('DD/MM/YYYY')}
