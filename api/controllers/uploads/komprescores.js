@@ -256,6 +256,8 @@ exports.download = function download(req, res) {
     sheet.getCell('E1').value = 'Stambuk Baru';
     sheet.getCell('F1').value = 'Nilai';
     sheet.getCell('G1').value = 'Tanggal';
+    sheet.getCell('H1').value = 'Selected';
+
 
     for (let i = 0; i < kompres.length; i += 1) {
       sheet.getCell(`A${i+2}`).value = i + 1;
@@ -264,7 +266,8 @@ exports.download = function download(req, res) {
       sheet.getCell(`D${i+2}`).value = kompres[i].Student.oldSid;
       sheet.getCell(`E${i+2}`).value = kompres[i].Student.newSid;
       sheet.getCell(`F${i+2}`).value = kompres[i].score;
-      sheet.getCell(`G${i+2}`).value = moment(kompres[i].kompreDate).format('DD/MM/YYYY')
+      sheet.getCell(`G${i+2}`).value = moment(kompres[i].kompreDate).format('DD/MM/YYYY');
+      sheet.getCell(`H${i+2}`).value = kompres[i].selected;
     }
 
     // res.setContentType('application/vnd.ms-excel');
