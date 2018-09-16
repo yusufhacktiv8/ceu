@@ -22,6 +22,7 @@ import DashboardPage from '../dashboard/DashboardPage';
 import YudisiumCandidatePage from '../report/schedule/YudisiumSchedulePage';
 import MidKompreSchedulePage from '../report/schedule/MidKompreSchedulePage';
 import ScoreUploadPage from '../uploads/scores/ScoreUploadPage';
+import UkmppdScoreUploadPage from '../uploads/ukmppd/ScoreUploadPage';
 import RotationPage from '../report/rotation/RotationPage';
 
 const { Header, Content } = Layout;
@@ -101,6 +102,8 @@ class Workspace extends Component {
       selectedKeys = ['midkomreschedule'];
     } else if (location.includes('uploadscores')) {
       selectedKeys = ['uploadscores'];
+    } else if (location.includes('uploadukmppdscores')) {
+      selectedKeys = ['uploadukmppdscores'];
     } else if (location.includes('rotations')) {
       selectedKeys = ['rotations'];
     }
@@ -189,6 +192,9 @@ class Workspace extends Component {
                   <Menu.Item key="uploadscores">
                     <Link to="/uploadscores">Scores</Link>
                   </Menu.Item>
+                  <Menu.Item key="uploadukmppdscores">
+                    <Link to="/uploadukmppdscores">UKMPPD Scores</Link>
+                  </Menu.Item>
                 </SubMenu>
                 <SubMenu title={<span><Icon type="setting" />Settings</span>}>
                   <MenuItemGroup title="Security">
@@ -233,6 +239,7 @@ class Workspace extends Component {
             <Route exact path="/yudisiumschedule" component={YudisiumCandidatePage} />
             <Route exact path="/midkomrepschedule" component={MidKompreSchedulePage} />
             <Route exact path="/uploadscores" component={ScoreUploadPage} />
+            <Route exact path="/uploadukmppdscores" component={UkmppdScoreUploadPage} />
             <Route exact path="/rotations" component={RotationPage} />
           </div>
         </Content>
