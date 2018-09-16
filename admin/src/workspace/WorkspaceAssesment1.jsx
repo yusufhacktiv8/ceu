@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Route, Link } from 'react-router-dom';
 import DashboardPage from '../dashboard/DashboardPage';
 import ScoreUploadPage from '../uploads/scores/ScoreUploadPage';
+import KompreScoreUploadPage from '../uploads/kompre/ScoreUploadPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -91,9 +92,14 @@ class WorkspaceAssesment1 extends Component {
                     }}
                   ><Icon type="pie-chart" />Dashboard</Link>
                 </Menu.Item>
-                <Menu.Item key="uploadscores">
-                  <Link to="/uploadscores"><Icon type="team" />Upload Scores</Link>
-                </Menu.Item>
+                <SubMenu title={<span><Icon type="upload" />Uploads</span>}>
+                  <Menu.Item key="uploadscores">
+                    <Link to="/uploadscores">Scores</Link>
+                  </Menu.Item>
+                  <Menu.Item key="uploadukomprescores">
+                    <Link to="/uploadukomprescores">Kompre Scores</Link>
+                  </Menu.Item>
+                </SubMenu>
               </Menu>
             </div>
           </Affix>
@@ -102,6 +108,7 @@ class WorkspaceAssesment1 extends Component {
           <div>
             <Route exact path="/" component={DashboardPage} />
             <Route exact path="/uploadscores" component={ScoreUploadPage} />
+            <Route exact path="/uploadukomprescores" component={KompreScoreUploadPage} />
           </div>
         </Content>
       </Layout>
