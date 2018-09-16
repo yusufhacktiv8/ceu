@@ -44,6 +44,7 @@ class StudentSearch extends Component {
   }
 
   fetchStudents = (searchText) => {
+    if (!searchText) return;
     axios.get(STUDENTS_URL, { params: {
       searchText,
       start: 0,
