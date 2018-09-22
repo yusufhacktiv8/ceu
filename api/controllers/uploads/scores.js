@@ -173,18 +173,21 @@ exports.upload = function upload(req, res) {
               include: [
                 {
                   model: models.Course,
+                  required: true,
                   // where: {
                   //   status: 1,
                   // },
                   include: [
                     {
                       model: models.Student,
+                      required: true,
                       where: {
                         newSid,
                       },
                     },
                     {
                       model: models.Department,
+                      required: true,
                       where: {
                         code: departmentCode,
                       },
@@ -193,6 +196,7 @@ exports.upload = function upload(req, res) {
                 },
                 {
                   model: models.ScoreType,
+                  required: true,
                   where: {
                     code: uploadType,
                   },
@@ -204,7 +208,7 @@ exports.upload = function upload(req, res) {
                 foundScore.scoreDate = scoreDate;
                 foundScore.save()
                 .then(() => {
-                  resolve({ newSid, found: true });
+                  resolve({ newSid, found: true, action: 'updating' });
                 });
               } else {
                 models.Course.findOne({
@@ -214,12 +218,14 @@ exports.upload = function upload(req, res) {
                   include: [
                     {
                       model: models.Student,
+                      required: true,
                       where: {
                         newSid,
                       },
                     },
                     {
                       model: models.Department,
+                      required: true,
                       where: {
                         code: departmentCode,
                       },
@@ -241,7 +247,7 @@ exports.upload = function upload(req, res) {
                         ScoreTypeId: foundScoreType.id,
                       })
                       .then(() => {
-                        resolve({ newSid, found: true });
+                        resolve({ newSid, found: true, action: 'create new' });
                       });
                     });
                   } else {
