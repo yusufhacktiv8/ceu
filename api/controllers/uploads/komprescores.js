@@ -142,12 +142,14 @@ exports.upload = function upload(req, res) {
               include: [
                 {
                   model: models.Student,
+                  required: true,
                   where: {
                     newSid,
                   },
                 },
                 {
                   model: models.KompreType,
+                  required: true,
                   where: {
                     code: uploadType,
                   },
@@ -160,7 +162,7 @@ exports.upload = function upload(req, res) {
                 foundKompre.kompreDate = kompreDate;
                 foundKompre.save()
                 .then(() => {
-                  resolve({ newSid, found: true });
+                  resolve({ newSid, found: true, action: 'update' });
                 });
               } else {
                 console.log('find student ---------->');
@@ -184,7 +186,7 @@ exports.upload = function upload(req, res) {
                         KompreTypeId: foundKompreType.id,
                       })
                       .then(() => {
-                        resolve({ newSid, found: true });
+                        resolve({ newSid, found: true, action: 'create new' });
                       });
                     });
                   } else {
