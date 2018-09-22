@@ -423,10 +423,12 @@ exports.assistanceXpt = function(req, res) {
 
 exports.findPreTests = function(req, res) {
   const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
-  const dateSelect = req.query.dateSelect;
-  let preTestDate = null;
-  if (dateSelect) {
-    preTestDate = moment(dateSelect.replace(/"/g, ''));
+  const dateRange = req.query.dateRange;
+  let startDate = null;
+  let endDate = null;
+  if (dateRange) {
+    startDate = moment(dateRange[0].replace(/"/g, ''));
+    endDate = moment(dateRange[1].replace(/"/g, ''));
   } else {
     res.json({
       count: 0,
@@ -441,8 +443,8 @@ exports.findPreTests = function(req, res) {
     where: {
       // preTestDate: preTestDate.toDate(),
       preTestDate: {
-        $gte: preTestDate.toDate(),
-        $lte: preTestDate.toDate(),
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate(),
       },
       status: 0,
     },
