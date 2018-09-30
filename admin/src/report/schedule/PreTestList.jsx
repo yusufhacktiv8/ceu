@@ -8,6 +8,7 @@ const { RangePicker } = DatePicker;
 const { confirm } = Modal;
 
 const PRE_TEST_REPORTS_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/pretests`;
+const PRE_TEST_DOWNLOAD_URL = `${process.env.REACT_APP_SERVER_URL}/api/reports/downloadpretest`;
 const Column = Table.Column;
 
 class PreTestList extends Component {
@@ -109,6 +110,29 @@ class PreTestList extends Component {
     });
   }
 
+  download = () => {
+    axios.get(PRE_TEST_DOWNLOAD_URL, { responseType: 'blob', params: {
+      searchText: this.state.searchText,
+      dateRange: this.state.dateRange,
+    } })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'pretest.xlsx');
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
   render() {
     const { selectedRowKeys } = this.state;
     const { rowKeysChanged } = this;
@@ -151,6 +175,12 @@ class PreTestList extends Component {
                 shape="circle"
                 icon="delete"
                 onClick={() => this.confirmDelete()}
+              />
+              <Button
+                shape="circle"
+                icon="download"
+                onClick={() => this.download({})}
+                style={{ marginLeft: 15 }}
               />
             </span>
           </Col>
