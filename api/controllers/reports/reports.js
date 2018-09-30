@@ -1,3 +1,4 @@
+const Excel = require('exceljs');
 const moment = require('moment');
 const models = require('../../models');
 
@@ -451,6 +452,7 @@ exports.findPreTests = function(req, res) {
     include: [
       {
         model: models.Student,
+        required: true,
         where: {
           $or: [
             { name: { $ilike: searchText } },
@@ -497,6 +499,72 @@ exports.removeCoursesFormPreTest = function(req, res) {
   Promise.all(promises)
   .then((result) => {
     res.json(result);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
+
+exports.downloadPreTest = function downloadPreTest(req, res) {
+  const searchText = req.query.searchText ? `%${req.query.searchText}%` : '%%';
+  const dateRange = req.query.dateRange;
+  let startDate = null;
+  let endDate = null;
+  if (dateRange) {
+    startDate = moment(dateRange[0].replace(/"/g, ''));
+    endDate = moment(dateRange[1].replace(/"/g, ''));
+  } else {
+    sendError(new Error('No date range'), res);
+    return;
+  }
+
+  models.Course.findAll({
+    where: {
+      // preTestDate: preTestDate.toDate(),
+      preTestDate: {
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate(),
+      },
+      status: 0,
+    },
+    include: [
+      {
+        model: models.Student,
+        required: true,
+        where: {
+          $or: [
+            { name: { $ilike: searchText } },
+            { oldSid: { $ilike: searchText } },
+            { newSid: { $ilike: searchText } },
+          ],
+        },
+      },
+    ],
+  })
+  .then((courses) => {
+    const workbook = new Excel.Workbook();
+    const sheet = workbook.addWorksheet('My Sheet');
+    sheet.getCell('A1').value = 'No';
+    sheet.getCell('B1').value = 'Tanggal';
+    sheet.getCell('C1').value = 'Stambuk Lama';
+    sheet.getCell('D1').value = 'Stambuk Baru';
+    sheet.getCell('E1').value = 'Nama';
+
+    for (let i = 0; i < courses.length; i += 1) {
+      sheet.getCell(`A${i + 2}`).value = i + 1;
+      sheet.getCell(`B${i + 2}`).value = moment(courses[i].preTestDate).format('DD/MM/YYYY');
+      sheet.getCell(`C${i + 2}`).value = courses[i].Student.oldSid;
+      sheet.getCell(`D${i + 2}`).value = courses[i].Student.newSid;
+      sheet.getCell(`E${i + 2}`).value = courses[i].Student.name;
+    }
+
+    // res.setContentType('application/vnd.ms-excel');
+    res.setHeader('Content-disposition', 'attachment; filename=pretest.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(() => {
+          // done
+      });
   })
   .catch((err) => {
     sendError(err, res);
