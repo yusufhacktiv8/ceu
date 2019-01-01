@@ -70,6 +70,8 @@ var midKompreCandidate = require('./routes/midkomprecandidates');
 var yudisiumCandidate = require('./routes/yudisiumcandidates');
 var rotations = require('./routes/rotations');
 
+const studentAppCourses = require('./student_app/routes/courses');
+
 var app = express();
 
 // view engine setup
@@ -149,6 +151,8 @@ app.use('/api/krss', krss);
 app.use('/api/midkomprecandidates', midKompreCandidate);
 app.use('/api/reports/yudisiumcandidates', yudisiumCandidate);
 app.use('/api/reports/rotations', rotations);
+
+app.use('/api/studentapp/courses', studentAppCourses);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
