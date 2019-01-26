@@ -6,6 +6,24 @@ const sendError = (err, res) => {
   res.status(500).send(`Error while doing operation: ${err.name}, ${err.message}`);
 };
 
+const getSglCount = courseId => (
+  new Promise((resolve, reject) => {
+    models.Sgl.count({
+      where: {},
+      include: [
+        { model: models.Course, where: { id: courseId } },
+        { model: models.SglType },
+      ],
+    })
+    .then((sglCount) => {
+      resolve(sglCount);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  })
+);
+
 exports.findAll = function findAll(req, res) {
   const studentId = 1; // req.params.studentId;
   const courseFilter = {
@@ -55,6 +73,19 @@ exports.findOne = function findOne(req, res) {
     ],
   })
   .then((course) => {
-    res.json(course);
+    getSglCount(course.id)
+    .then((sglCount) => {
+      const result = {
+        id: course.id,
+        Department: course.Department,
+        title: course.title,
+        status: course.status,
+        sglCount,
+      };
+      res.json(result);
+    })
+    .catch((err) => {
+      sendError(err, res);
+    });
   });
 };
