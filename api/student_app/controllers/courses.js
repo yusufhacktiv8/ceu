@@ -90,6 +90,24 @@ const getSeminarCount = courseId => (
   })
 );
 
+const getScores = courseId => (
+  new Promise((resolve, reject) => {
+    models.Score.findAll({
+      where: {},
+      include: [
+        { model: models.Course, where: { id: courseId } },
+        { model: models.ScoreType },
+      ],
+    })
+    .then((scores) => {
+      resolve(scores);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  })
+);
+
 exports.findAll = function findAll(req, res) {
   const studentId = 1; // req.params.studentId;
   const courseFilter = {
@@ -147,17 +165,24 @@ exports.findOne = function findOne(req, res) {
         .then((seminarCount) => {
           getProblemCount(course.id)
           .then((problemCount) => {
-            const result = {
-              id: course.id,
-              Department: course.Department,
-              title: course.title,
-              status: course.status,
-              sglCount,
-              portofolioCount,
-              seminarCount,
-              problemCount,
-            };
-            res.json(result);
+            getScores(course.id)
+            .then((scores) => {
+              const result = {
+                id: course.id,
+                Department: course.Department,
+                title: course.title,
+                status: course.status,
+                sglCount,
+                portofolioCount,
+                seminarCount,
+                problemCount,
+                scores,
+              };
+              res.json(result);
+            })
+            .catch((err) => {
+              sendError(err, res);
+            });
           })
           .catch((err) => {
             sendError(err, res);
