@@ -42,6 +42,24 @@ const getPortofolioCount = courseId => (
   })
 );
 
+const getProblemCount = courseId => (
+  new Promise((resolve, reject) => {
+    models.CourseProblem.count({
+      where: {},
+      include: [
+        { model: models.Course, where: { id: courseId } },
+        { model: models.CourseProblemType },
+      ],
+    })
+    .then((courseProblemCount) => {
+      resolve(courseProblemCount);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  })
+);
+
 const getSeminarCount = courseId => (
   new Promise((resolve, reject) => {
     models.Course.findOne({
@@ -127,16 +145,23 @@ exports.findOne = function findOne(req, res) {
       .then((portofolioCount) => {
         getSeminarCount(course.id)
         .then((seminarCount) => {
-          const result = {
-            id: course.id,
-            Department: course.Department,
-            title: course.title,
-            status: course.status,
-            sglCount,
-            portofolioCount,
-            seminarCount,
-          };
-          res.json(result);
+          getProblemCount(course.id)
+          .then((problemCount) => {
+            const result = {
+              id: course.id,
+              Department: course.Department,
+              title: course.title,
+              status: course.status,
+              sglCount,
+              portofolioCount,
+              seminarCount,
+              problemCount,
+            };
+            res.json(result);
+          })
+          .catch((err) => {
+            sendError(err, res);
+          });
         })
         .catch((err) => {
           sendError(err, res);
