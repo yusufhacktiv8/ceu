@@ -24,6 +24,54 @@ const getSglCount = courseId => (
   })
 );
 
+const getPortofolioCount = courseId => (
+  new Promise((resolve, reject) => {
+    models.Portofolio.count({
+      where: {},
+      include: [
+        { model: models.Course, where: { id: courseId } },
+        { model: models.PortofolioType },
+      ],
+    })
+    .then((portofolioCount) => {
+      resolve(portofolioCount);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  })
+);
+
+const getSeminarCount = courseId => (
+  new Promise((resolve, reject) => {
+    models.Course.findOne({
+      where: { id: courseId },
+      include: [
+        { model: models.Student },
+      ],
+    })
+    .then((course) => {
+      const where = {
+        eventDate: {},
+      };
+      models.Participant.count({
+        where: {},
+        include: [
+          { model: models.Seminar,
+            where,
+          },
+          { model: models.Student, where: { id: course.Student.id } },
+        ],
+      })
+      .then((participantCount) => {
+        resolve(participantCount);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  })
+);
+
 exports.findAll = function findAll(req, res) {
   const studentId = 1; // req.params.studentId;
   const courseFilter = {
@@ -75,14 +123,28 @@ exports.findOne = function findOne(req, res) {
   .then((course) => {
     getSglCount(course.id)
     .then((sglCount) => {
-      const result = {
-        id: course.id,
-        Department: course.Department,
-        title: course.title,
-        status: course.status,
-        sglCount,
-      };
-      res.json(result);
+      getPortofolioCount(course.id)
+      .then((portofolioCount) => {
+        getSeminarCount(course.id)
+        .then((seminarCount) => {
+          const result = {
+            id: course.id,
+            Department: course.Department,
+            title: course.title,
+            status: course.status,
+            sglCount,
+            portofolioCount,
+            seminarCount,
+          };
+          res.json(result);
+        })
+        .catch((err) => {
+          sendError(err, res);
+        });
+      })
+      .catch((err) => {
+        sendError(err, res);
+      });
     })
     .catch((err) => {
       sendError(err, res);
