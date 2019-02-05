@@ -224,3 +224,29 @@ exports.findOne = function findOne(req, res) {
     });
   });
 };
+
+exports.findSgls = function findSgls(req, res) {
+  const courseId = req.params.courseId;
+  const departmentCode = req.query.department;
+  models.Sgl.findAll({
+    where: {},
+    include: [
+      { model: models.Course, where: { id: courseId } },
+      { model: models.SglType,
+        include: [
+          { model: models.Department, where: { code: departmentCode } },
+        ],
+      },
+    ],
+  })
+  .then((sgls) => {
+    res.json(sgls.map(sgl => ({
+      name: sgl.SglType.name,
+      sglDate: sgl.sglDate,
+      completed: sgl.completed,
+    })));
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
