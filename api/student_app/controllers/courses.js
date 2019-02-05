@@ -250,3 +250,29 @@ exports.findSgls = function findSgls(req, res) {
     sendError(err, res);
   });
 };
+
+exports.findPortofolios = function findPortofolios(req, res) {
+  const courseId = req.params.courseId;
+  const departmentCode = req.query.department;
+  models.Portofolio.findAll({
+    where: {},
+    include: [
+      { model: models.Course, where: { id: courseId } },
+      { model: models.PortofolioType,
+        include: [
+          { model: models.Department, where: { code: departmentCode } },
+        ],
+      },
+    ],
+  })
+  .then((portofolios) => {
+    res.json(portofolios.map(portofolio => ({
+      name: portofolio.PortofolioType.name,
+      portofolioDate: portofolio.portofolioDate,
+      completed: portofolio.completed,
+    })));
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
