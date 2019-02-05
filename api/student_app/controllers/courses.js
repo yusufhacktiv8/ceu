@@ -319,3 +319,20 @@ exports.findSeminars = function findSeminars(req, res) {
     });
   });
 };
+
+exports.findProblems = function findProblems(req, res) {
+  const courseId = req.params.courseId;
+  models.CourseProblem.findAll({
+    where: {},
+    include: [
+      { model: models.Course, where: { id: courseId } },
+      { model: models.CourseProblemType },
+    ],
+  })
+  .then((courseProblems) => {
+    res.json(courseProblems);
+  })
+  .catch((err) => {
+    sendError(err, res);
+  });
+};
