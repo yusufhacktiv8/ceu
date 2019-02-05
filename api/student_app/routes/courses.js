@@ -9,6 +9,7 @@ router.get('/', isAuthorizedAsIn(['ADMIN', 'STUDENT']), CourseController.findAll
 router.get('/:courseId', isAuthorizedAsIn(['ADMIN', 'STUDENT']), CourseController.findOne);
 router.get('/:courseId/sgls', isAuthorizedAsIn(['ADMIN', 'STUDENT']), CourseController.findSgls);
 router.get('/:courseId/portofolios', isAuthorizedAsIn(['ADMIN', 'STUDENT']), CourseController.findPortofolios);
+router.get('/:courseId/seminars', isAuthorizedAsIn(['ADMIN', 'STUDENT']), CourseController.findSeminars);
 // router.get('/', CourseController.findAll);
 
 module.exports = router;
