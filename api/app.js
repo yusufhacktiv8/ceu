@@ -71,6 +71,7 @@ var yudisiumCandidate = require('./routes/yudisiumcandidates');
 var rotations = require('./routes/rotations');
 
 const studentAppCourses = require('./student_app/routes/courses');
+const studentAppProfiles = require('./student_app/routes/profiles');
 
 var app = express();
 
@@ -153,6 +154,7 @@ app.use('/api/reports/yudisiumcandidates', yudisiumCandidate);
 app.use('/api/reports/rotations', rotations);
 
 app.use('/api/studentapp/courses', studentAppCourses);
+app.use('/api/studentapp/profile', studentAppProfiles);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
