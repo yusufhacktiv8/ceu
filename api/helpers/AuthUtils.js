@@ -72,9 +72,27 @@ const isAuthorizedAsIn = roles => (
   }
 );
 
+const getUserId = req => (
+  new Promise((resolve, reject) => {
+    const authorizationHeader = req.headers.authorization;
+    if (authorizationHeader) {
+      const token = authorizationHeader.replace('Bearer ', '');
+      jwt.verify(token, process.env.TOKEN_PASSWORD, (err, decoded) => {
+        if (decoded) {
+          resolve(decoded.userId);
+        }
+        reject('Unauthorized');
+      });
+    } else {
+      reject('Unauthorized');
+    }
+  })
+);
+
 module.exports = {
   isAuthorizedAs,
   isAuthorizedAsIn,
   isAuthorizedAsAdmin,
   isAuthenticated,
+  getUserId,
 };
