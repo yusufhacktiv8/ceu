@@ -5,7 +5,7 @@ const ProfileController = require('../controllers/profiles');
 const { isAuthorizedAsIn } = require('../../helpers/AuthUtils');
 
 router.get('/', isAuthorizedAsIn(['ADMIN', 'STUDENT']), ProfileController.findStudent);
-router.get('/changepassword', isAuthorizedAsIn(['ADMIN', 'STUDENT']), ProfileController.changePassword);
+router.put('/changepassword', isAuthorizedAsIn(['ADMIN', 'STUDENT']), ProfileController.changePassword);
 
 module.exports = router;
 
