@@ -6,7 +6,7 @@ const sendError = (err, res) => {
 
 exports.findStudent = function findStudent(req, res) {
   const studentId = 1; // req.params.studentId;
-  models.User.findOne({
+  models.Student.findOne({
     where: { id: studentId },
   })
   .then((user) => {
