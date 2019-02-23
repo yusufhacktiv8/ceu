@@ -70,6 +70,7 @@ var midKompreCandidate = require('./routes/midkomprecandidates');
 var yudisiumCandidate = require('./routes/yudisiumcandidates');
 var rotations = require('./routes/rotations');
 
+const studentUsers = require('./routes/student_users');
 const studentAppCourses = require('./student_app/routes/courses');
 const studentAppProfiles = require('./student_app/routes/profiles');
 
@@ -153,6 +154,7 @@ app.use('/api/midkomprecandidates', midKompreCandidate);
 app.use('/api/reports/yudisiumcandidates', yudisiumCandidate);
 app.use('/api/reports/rotations', rotations);
 
+app.use('/api/studentusers', studentUsers);
 app.use('/api/studentapp/courses', studentAppCourses);
 app.use('/api/studentapp/profile', studentAppProfiles);
 

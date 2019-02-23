@@ -24,6 +24,7 @@ import MidKompreSchedulePage from '../report/schedule/MidKompreSchedulePage';
 import ScoreUploadPage from '../uploads/scores/ScoreUploadPage';
 import KompreScoreUploadPage from '../uploads/kompre/ScoreUploadPage';
 import RotationPage from '../report/rotation/RotationPage';
+import StudentUserPage from '../settings/student_user/UserPage';
 
 const { Header, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -106,6 +107,8 @@ class Workspace extends Component {
       selectedKeys = ['uploadukomprescores'];
     } else if (location.includes('rotations')) {
       selectedKeys = ['rotations'];
+    } else if (location.includes('studentusers')) {
+      selectedKeys = ['studentusers'];
     }
     return (
       <Layout style={{ height: '100%' }}>
@@ -204,6 +207,9 @@ class Workspace extends Component {
                     <Menu.Item key="bakordik">
                       <Link to="/bakordik">Hospital Users</Link>
                     </Menu.Item>
+                    <Menu.Item key="studentusers">
+                      <Link to="/studentusers">Student Users</Link>
+                    </Menu.Item>
                     <Menu.Item key="roles">
                       <Link to="/roles">Roles</Link></Menu.Item>
                   </MenuItemGroup>
@@ -241,6 +247,7 @@ class Workspace extends Component {
             <Route exact path="/uploadscores" component={ScoreUploadPage} />
             <Route exact path="/uploadukomprescores" component={KompreScoreUploadPage} />
             <Route exact path="/rotations" component={RotationPage} />
+            <Route path="/studentusers" component={StudentUserPage} />
           </div>
         </Content>
       </Layout>
