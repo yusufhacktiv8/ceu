@@ -1,5 +1,6 @@
 const moment = require('moment');
 const models = require('../../models');
+const { getUserId } = require('../../helpers/AuthUtils');
 
 const DEFAULT_LEVEL = 1;
 
@@ -110,99 +111,121 @@ const getScores = courseId => (
 );
 
 exports.findAll = function findAll(req, res) {
-  const studentId = 1; // req.params.studentId;
-  const courseFilter = {
-    level: DEFAULT_LEVEL,
-  };
-  if (req.query.level) {
-    courseFilter.level = parseInt(req.query.level, 10);
-  }
-  models.Course.findAll({
-    where: {
-      StudentId: studentId,
-    },
-    include: [
-      { model: models.Department, where: { ...courseFilter } },
-    ],
-    order: [
-      ['planStartDate'],
-    ],
-  })
-  .then((courses) => {
-    res.json(courses);
-  })
-  .catch((err) => {
-    sendError(err, res);
+  getUserId(req)
+  .then((userId) => {
+    models.StudentUser.findOne({
+      where: { UserId: userId },
+    })
+    .then((studentUser) => {
+      const studentId = studentUser.StudentId;
+      const courseFilter = {
+        level: DEFAULT_LEVEL,
+      };
+      if (req.query.level) {
+        courseFilter.level = parseInt(req.query.level, 10);
+      }
+      models.Course.findAll({
+        where: {
+          StudentId: studentId,
+        },
+        include: [
+          { model: models.Department, where: { ...courseFilter } },
+        ],
+        order: [
+          ['planStartDate'],
+        ],
+      })
+      .then((courses) => {
+        res.json(courses);
+      })
+      .catch((err) => {
+        sendError(err, res);
+      });
+    });
   });
 };
 
 exports.findOne = function findOne(req, res) {
-  const studentId = 1; // req.params.studentId;
-  models.Course.findOne({
-    where: { id: req.params.courseId },
-    include: [
-      {
-        model: models.Student,
-        where: {
-          id: studentId,
-        },
-      },
-      { model: models.Department },
-      { model: models.Score },
-      { model: models.Hospital, as: 'hospital1' },
-      { model: models.Hospital, as: 'hospital2' },
-      { model: models.Hospital, as: 'clinic' },
-      { model: models.Docent, as: 'adviser' },
-      { model: models.Docent, as: 'examiner' },
-      { model: models.Docent, as: 'dpk' },
-    ],
-  })
-  .then((course) => {
-    getSglCount(course.id)
-    .then((sglCount) => {
-      getPortofolioCount(course.id)
-      .then((portofolioCount) => {
-        getSeminarCount(course.id)
-        .then((seminarCount) => {
-          getProblemCount(course.id)
-          .then((problemCount) => {
-            getScores(course.id)
-            .then((scores) => {
-              const result = {
-                id: course.id,
-                Department: course.Department,
-                title: course.title,
-                status: course.status,
-                planStartDate: course.planStartDate,
-                planStartDate1: course.planStartDate1,
-                planStartDate2: course.planStartDate2,
-                planStartDate3: course.planStartDate3,
-                planEndDate: course.planEndDate,
-                planEndDate1: course.planEndDate1,
-                planEndDate2: course.planEndDate2,
-                planEndDate3: course.planEndDate3,
+  getUserId(req)
+  .then((userId) => {
+    models.StudentUser.findOne({
+      where: { UserId: userId },
+    })
+    .then((studentUser) => {
+      const studentId = studentUser.StudentId;
+      models.Course.findOne({
+        where: { id: req.params.courseId },
+        include: [
+          {
+            model: models.Student,
+            where: {
+              id: studentId,
+            },
+          },
+          { model: models.Department },
+          { model: models.Score },
+          { model: models.Hospital, as: 'hospital1' },
+          { model: models.Hospital, as: 'hospital2' },
+          { model: models.Hospital, as: 'clinic' },
+          { model: models.Docent, as: 'adviser' },
+          { model: models.Docent, as: 'examiner' },
+          { model: models.Docent, as: 'dpk' },
+        ],
+      })
+      .then((course) => {
+        getSglCount(course.id)
+        .then((sglCount) => {
+          getPortofolioCount(course.id)
+          .then((portofolioCount) => {
+            getSeminarCount(course.id)
+            .then((seminarCount) => {
+              getProblemCount(course.id)
+              .then((problemCount) => {
+                getScores(course.id)
+                .then((scores) => {
+                  const result = {
+                    id: course.id,
+                    Department: course.Department,
+                    title: course.title,
+                    status: course.status,
+                    planStartDate: course.planStartDate,
+                    planStartDate1: course.planStartDate1,
+                    planStartDate2: course.planStartDate2,
+                    planStartDate3: course.planStartDate3,
+                    planEndDate: course.planEndDate,
+                    planEndDate1: course.planEndDate1,
+                    planEndDate2: course.planEndDate2,
+                    planEndDate3: course.planEndDate3,
 
-                realStartDate: course.realStartDate,
-                realStartDate1: course.realStartDate1,
-                realStartDate2: course.realStartDate2,
-                realStartDate3: course.realStartDate3,
-                realEndDate: course.realEndDate,
-                realEndDate1: course.realEndDate1,
-                realEndDate2: course.realEndDate2,
-                realEndDate3: course.realEndDate3,
-                hospital1: course.hospital1 != null ? course.hospital1.name : null,
-                hospital2: course.hospital2 != null ? course.hospital2.name : null,
-                clinic: course.clinic != null ? course.clinic.name : null,
-                adviser: course.adviser != null ? course.adviser.name : null,
-                examiner: course.examiner != null ? course.examiner.name : null,
-                dpk: course.dpk != null ? course.dpk.name : null,
-                sglCount,
-                portofolioCount,
-                seminarCount,
-                problemCount,
-                scores,
-              };
-              res.json(result);
+                    realStartDate: course.realStartDate,
+                    realStartDate1: course.realStartDate1,
+                    realStartDate2: course.realStartDate2,
+                    realStartDate3: course.realStartDate3,
+                    realEndDate: course.realEndDate,
+                    realEndDate1: course.realEndDate1,
+                    realEndDate2: course.realEndDate2,
+                    realEndDate3: course.realEndDate3,
+                    hospital1: course.hospital1 != null ? course.hospital1.name : null,
+                    hospital2: course.hospital2 != null ? course.hospital2.name : null,
+                    clinic: course.clinic != null ? course.clinic.name : null,
+                    adviser: course.adviser != null ? course.adviser.name : null,
+                    examiner: course.examiner != null ? course.examiner.name : null,
+                    dpk: course.dpk != null ? course.dpk.name : null,
+                    sglCount,
+                    portofolioCount,
+                    seminarCount,
+                    problemCount,
+                    scores,
+                  };
+                  res.json(result);
+                })
+                .catch((err) => {
+                  sendError(err, res);
+                });
+              })
+              .catch((err) => {
+                sendError(err, res);
+              });
             })
             .catch((err) => {
               sendError(err, res);
@@ -215,13 +238,7 @@ exports.findOne = function findOne(req, res) {
         .catch((err) => {
           sendError(err, res);
         });
-      })
-      .catch((err) => {
-        sendError(err, res);
       });
-    })
-    .catch((err) => {
-      sendError(err, res);
     });
   });
 };

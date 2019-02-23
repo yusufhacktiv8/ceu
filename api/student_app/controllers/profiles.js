@@ -9,15 +9,23 @@ const sendError = (err, res) => {
 };
 
 exports.findStudent = function findStudent(req, res) {
-  const studentId = 1; // req.params.studentId;
-  models.Student.findOne({
-    where: { id: studentId },
-  })
-  .then((user) => {
-    res.json(user);
-  })
-  .catch((err) => {
-    sendError(err, res);
+  getUserId(req)
+  .then((userId) => {
+    models.StudentUser.findOne({
+      where: { UserId: userId },
+    })
+    .then((studentUser) => {
+      const studentId = studentUser.StudentId;
+      models.Student.findOne({
+        where: { id: studentId },
+      })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        sendError(err, res);
+      });
+    });
   });
 };
 
