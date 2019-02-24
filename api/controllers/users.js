@@ -158,3 +158,37 @@ exports.destroy = function destroy(req, res) {
     sendError(err, res);
   });
 };
+
+exports.userPhotoUpload = function userPhotoUpload(req, res) {
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "seminarFile") is used to retrieve the uploaded file
+  const userPhotoFile = req.files.userPhotoFile;
+  const userId = req.params.userId;
+
+  const base64data = new Buffer(userPhotoFile.data, 'binary');
+  const s3 = new AWS.S3();
+
+  models.User.findOne({
+    where: { id: userId },
+  })
+  .then((user) => {
+    const fileId = user.userPhotoFileId ? user.userPhotoFileId : shortid.generate();
+    const fileKey = `users/${userId}/photo/${fileId}.jpg`;
+    s3.putObject({
+      Bucket: 'ceufkumifiles',
+      Key: fileKey,
+      Body: base64data,
+      ACL: 'public-read',
+    }, () => {
+      console.log('Successfully uploaded user photo.');
+      user.userPhotoFileId = fileId;
+      user.save()
+      .then(() => {
+        res.send(fileId);
+      });
+    });
+  });
+};
