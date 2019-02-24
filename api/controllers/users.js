@@ -1,5 +1,8 @@
+const AWS = require('aws-sdk');
+const shortid = require('shortid');
 const bcrypt = require('bcrypt');
 const models = require('../models');
+const { BUCKET_NAME } = require('../Constant');
 
 const saltRounds = 10;
 
@@ -176,7 +179,7 @@ exports.userPhotoUpload = function userPhotoUpload(req, res) {
   })
   .then((user) => {
     const fileId = user.userPhotoFileId ? user.userPhotoFileId : shortid.generate();
-    const fileKey = `users/${userId}/photo/${fileId}.jpg`;
+    const fileKey = `users/${userId}/photos/${fileId}.jpg`;
     s3.putObject({
       Bucket: 'ceufkumifiles',
       Key: fileKey,
@@ -184,11 +187,43 @@ exports.userPhotoUpload = function userPhotoUpload(req, res) {
       ACL: 'public-read',
     }, () => {
       console.log('Successfully uploaded user photo.');
-      user.userPhotoFileId = fileId;
+      user.photo = fileId;
       user.save()
       .then(() => {
         res.send(fileId);
       });
     });
+  });
+};
+
+exports.deleteUserPhoto = function deleteUserPhoto(req, res) {
+  const userId = req.params.userId;
+
+  const s3 = new AWS.S3();
+
+  models.User.findOne({
+    where: { id: userId },
+  })
+  .then((user) => {
+    if (user.photo) {
+      const fileKey = `users/${userId}/photos/${user.photo}.jpg`;
+      s3.deleteObject({
+        Bucket: BUCKET_NAME,
+        Key: fileKey,
+      }, (err) => {
+        if (!err) {
+          console.log('Successfully delete user.');
+          user.photo = null;
+          user.save()
+          .then(() => {
+            res.send(user.photo);
+          });
+        } else {
+          sendError(err, res);
+        }
+      });
+    } else {
+      sendError(new Error('No file found'), res);
+    }
   });
 };

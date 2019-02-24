@@ -1,13 +1,45 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Input, Row, Col, message, Popconfirm } from 'antd';
+import { Table, Button, Input, Row, Col, Upload, message, Popconfirm, notification } from 'antd';
 import showError from '../utils/ShowError';
 import UserWindow from './UserWindow';
 import ChangePasswordWindow from './ChangePasswordWindow';
 
 const USERS_URL = `${process.env.REACT_APP_SERVER_URL}/api/users`;
+const FILES_URL = process.env.REACT_APP_FILES_URL;
 const Column = Table.Column;
 
+const getAuthorizationHeader = () => {
+  const token = window.sessionStorage.getItem('token');
+  return `Bearer ${token}`;
+};
+
+const getUploadProps = (userId, afterUpload) => (
+  {
+    name: 'userPhotoFile',
+    headers: {
+      authorization: getAuthorizationHeader(),
+    },
+    action: `${USERS_URL}/${userId}`,
+    onChange: (info) => {
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        notification.success({
+          message: 'Upload success',
+          description: info.file.response,
+        });
+        afterUpload();
+      } else if (info.file.status === 'error') {
+        notification.error({
+          message: 'Upload error',
+          description: `${info.file.name} file upload failed.`,
+        });
+      }
+    },
+  }
+);
 class UserList extends Component {
   state = {
     searchText: '',
@@ -78,6 +110,21 @@ class UserList extends Component {
       .then(() => {
         message.success('Delete user success');
         this.fetchUsers();
+      })
+      .catch((error) => {
+        showError(error);
+      })
+      .finally(() => {
+        hide();
+      });
+  }
+
+  deleteUserPhotoFile(user) {
+    const hide = message.loading('Action in progress..', 0);
+    axios.put(`${USERS_URL}/${user.id}/deleteuserphoto`)
+      .then(() => {
+        message.success('Delete file success');
+        this.filterUsers();
       })
       .catch((error) => {
         showError(error);
@@ -205,6 +252,37 @@ class UserList extends Component {
                 dataIndex="Role.code"
               />
               <Column
+                title="File"
+                render={(text, record) => {
+                  if (record.photo) {
+                    return (
+                      <div>
+                        <span style={{ marginRight: 5 }}>
+                          <Popconfirm
+                            title={'Are you sure to remove file'}
+                            onConfirm={() => this.deleteUserPhotoFile(record)}
+                            okText="Yes" cancelText="No"
+                          >
+                            <Button
+                              style={{ border: 0 }}
+                              icon="close-circle"
+                              shape="circle"
+                              size="small"
+                            />
+                          </Popconfirm>
+                        </span>
+                        <span>
+                          <a target="_blank" href={`${FILES_URL}/users/${record.id}/photos/${record.photo}.jpg`}>
+                            {record.photo}
+                          </a>
+                        </span>
+                      </div>
+                    );
+                  }
+                  return (<div>No File</div>);
+                }}
+              />
+              <Column
                 title="Action"
                 key="action"
                 render={(text, record) => (
@@ -215,6 +293,13 @@ class UserList extends Component {
                       onClick={() => this.openEditWindow(record)}
                       style={{ marginRight: 5 }}
                     />
+                    <Upload {...getUploadProps(record.id, () => (this.filterUsers()))} showUploadList={false}>
+                      <Button
+                        icon="upload"
+                        size="small"
+                        style={{ marginRight: 5 }}
+                      />
+                    </Upload>
                     <Button
                       icon="key"
                       size="small"
