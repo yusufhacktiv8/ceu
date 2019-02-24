@@ -188,6 +188,7 @@ exports.findOne = function findOne(req, res) {
                     Department: course.Department,
                     title: course.title,
                     status: course.status,
+                    problemDescription: course.problemDescription,
                     planStartDate: course.planStartDate,
                     planStartDate1: course.planStartDate1,
                     planStartDate2: course.planStartDate2,
